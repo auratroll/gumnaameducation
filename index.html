@@ -47,10 +47,147 @@
 
   </main>
 
+  <!-- Auth Popup Modal -->
+  <div id="auth-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center hidden z-50 p-4">
+    <div class="bg-white w-full max-w-md p-8 rounded-3xl shadow-2xl border border-emerald-100 relative">
+      
+      <!-- Close Button -->
+      <button id="close-modal" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+        <i class="fa-solid fa-xmark text-xl"></i>
+      </button>
+
+      <!-- Modal Header -->
+      <div class="text-center mb-6">
+        <img src="logo.png" alt="Gumnaam Education" class="w-16 h-16 mx-auto mb-2 drop-shadow-md">
+        <h2 class="text-2xl font-bold text-slate-800">Welcome Back</h2>
+        <p class="text-sm text-slate-500">Sign in to access all study materials</p>
+      </div>
+
+      <!-- Google Sign In Button -->
+      <button id="google-btn" class="w-full bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold py-3 px-4 rounded-xl shadow-sm flex items-center justify-center gap-3 transition-all mb-4">
+        <i class="fa-brands fa-google text-red-500 text-lg"></i>
+        Continue with Google
+      </button>
+
+      <div class="flex items-center my-4">
+        <div class="flex-grow border-t border-slate-200"></div>
+        <span class="px-3 text-xs text-slate-400 uppercase font-semibold">Or with Email</span>
+        <div class="flex-grow border-t border-slate-200"></div>
+      </div>
+
+      <!-- Email Form -->
+      <form id="auth-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Email Address</label>
+          <input type="email" id="auth-email" required placeholder="student@gmail.com" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-600">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Password</label>
+          <input type="password" id="auth-password" required placeholder="••••••••" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-600">
+        </div>
+
+        <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-amber-300 font-bold py-3 rounded-xl shadow-md transition-all">
+          Sign Up / Sign In
+        </button>
+      </form>
+
+    </div>
+  </div>
+
   <!-- Footer -->
   <footer class="bg-white border-t border-slate-100 py-6 text-center text-sm text-slate-500">
     © 2026 Gumnaam Education Official Pakistan [News & Info]. All Rights Reserved.
   </footer>
+
+  <!-- Firebase & App Script Integration -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+    import { 
+      getAuth, 
+      signInWithPopup, 
+      GoogleAuthProvider, 
+      createUserWithEmailAndPassword, 
+      signInWithEmailAndPassword,
+      onAuthStateChanged 
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    // Aapka Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyD8-II4YOIt1ZGk6x4VhOMvAIr7xazjhPY",
+      authDomain: "gumnaam-education.firebaseapp.com",
+      projectId: "gumnaam-education",
+      storageBucket: "gumnaam-education.firebasestorage.app",
+      messagingSenderId: "680513198806",
+      appId: "1:680513198806:web:5a96acd811b6ec4b7b8777",
+      measurementId: "G-H35HFVKMHL"
+    };
+
+    // Firebase Initialize
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const auth = getAuth(app);
+    const googleProvider = new GoogleAuthProvider();
+
+    // DOM Elements
+    const authModal = document.getElementById('auth-modal');
+    const ctaBtn = document.getElementById('cta-signup-btn');
+    const navLoginBtn = document.getElementById('nav-login-btn');
+    const closeModalBtn = document.getElementById('close-modal');
+    const googleBtn = document.getElementById('google-btn');
+    const authForm = document.getElementById('auth-form');
+
+    // Open Modal Events
+    ctaBtn?.addEventListener('click', () => authModal.classList.remove('hidden'));
+    navLoginBtn?.addEventListener('click', () => authModal.classList.remove('hidden'));
+
+    // Close Modal Event
+    closeModalBtn?.addEventListener('click', () => authModal.classList.add('hidden'));
+
+    // Google Sign-In Functionality
+    googleBtn?.addEventListener('click', async () => {
+      try {
+        const result = await signInWithPopup(auth, googleProvider);
+        alert(`Welcome ${result.user.displayName}!`);
+        authModal.classList.add('hidden');
+      } catch (error) {
+        alert("Google Login Error: " + error.message);
+      }
+    });
+
+    // Email/Password Sign-In/Up Functionality
+    authForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('auth-email').value;
+      const password = document.getElementById('auth-password').value;
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        alert('Successfully Logged In!');
+        authModal.classList.add('hidden');
+      } catch (error) {
+        if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found') {
+          try {
+            await createUserWithEmailAndPassword(auth, email, password);
+            alert('Account Created Successfully!');
+            authModal.classList.add('hidden');
+          } catch (signUpErr) {
+            alert("Sign Up Error: " + signUpErr.message);
+          }
+        } else {
+          alert("Login Error: " + error.message);
+        }
+      }
+    });
+
+    // Check Login State
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        navLoginBtn.innerText = "Logged In";
+        navLoginBtn.classList.replace("bg-emerald-700", "bg-emerald-900");
+      }
+    });
+  </script>
 
 </body>
 </html>
