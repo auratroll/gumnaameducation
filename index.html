@@ -18,20 +18,21 @@
       <img src="logo.png" alt="Gumnaam Education Logo" class="w-12 h-12 object-contain rounded-lg drop-shadow-md">
       <span class="font-bold text-xl text-emerald-800 tracking-wide">Gumnaam Education</span>
     </div>
-    <button id="nav-login-btn" class="bg-emerald-700 hover:bg-emerald-800 text-white font-medium px-5 py-2 rounded-full transition-all shadow-md hover:shadow-lg">
-      Sign In
-    </button>
+    
+    <div class="flex items-center gap-4">
+      <span id="user-display" class="hidden text-sm font-semibold text-emerald-900 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200"></span>
+      <button id="auth-action-btn" class="bg-emerald-700 hover:bg-emerald-800 text-white font-medium px-5 py-2 rounded-full transition-all shadow-md">
+        Sign In
+      </button>
+    </div>
   </header>
 
-  <!-- Hero / Landing Section -->
-  <main class="flex-grow flex flex-col items-center justify-center text-center px-4 py-12">
-    
-    <!-- 3D Animated Logo Card -->
+  <!-- HERO / LANDING SECTION (Visible before Sign In) -->
+  <section id="landing-section" class="flex-grow flex flex-col items-center justify-center text-center px-4 py-12">
     <div class="logo-3d-card bg-white p-6 rounded-3xl shadow-2xl border border-emerald-100 mb-8 max-w-xs sm:max-w-sm transition-transform duration-500">
       <img src="logo.png" alt="Gumnaam Education" class="w-64 h-64 object-contain mx-auto pulse-animation">
     </div>
 
-    <!-- Main Title & Tagline -->
     <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">
       Welcome to <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-800 to-amber-600">Gumnaam Education</span>
     </h1>
@@ -39,11 +40,100 @@
       Pakistan's Premier Educational Portal for Study Materials, Target Papers, Class Notes & Latest News.
     </p>
 
-    <!-- Call to Action Button -->
-    <button id="cta-signup-btn" class="cta-btn bg-gradient-to-r from-emerald-700 to-emerald-900 hover:from-emerald-800 hover:to-emerald-950 text-amber-300 font-bold text-lg px-8 py-4 rounded-2xl shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-3">
+    <button id="cta-signup-btn" class="cta-btn bg-gradient-to-r from-emerald-700 to-emerald-900 hover:from-emerald-800 hover:to-emerald-950 text-amber-300 font-bold text-lg px-8 py-4 rounded-2xl shadow-xl transition-all duration-300 flex items-center gap-3">
       <i class="fa-solid fa-graduation-cap text-amber-400"></i>
       Sign Up to Start for Free
     </button>
+  </section>
+
+  <!-- DASHBOARD SECTION (Visible after Sign In) -->
+  <main id="dashboard-section" class="hidden flex-grow max-w-7xl w-full mx-auto px-4 py-8">
+    
+    <!-- Welcome Banner -->
+    <div class="bg-gradient-to-r from-emerald-800 to-emerald-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl mb-10 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-amber-300 mb-2">Study Material Portal 📚</h2>
+        <p class="text-emerald-100 max-w-xl">Select your class below to access Notes, Target Papers, 10 Years & Books directly via Google Drive.</p>
+      </div>
+      <img src="logo.png" class="w-24 h-24 object-contain drop-shadow-lg hidden md:block" alt="Logo">
+    </div>
+
+    <!-- Class Selection Tabs (Only 9th, 10th, 11th, 12th) -->
+    <div class="flex flex-wrap gap-2 sm:gap-4 justify-center mb-10">
+      <button class="class-tab active-tab bg-emerald-700 text-white font-semibold px-6 py-2.5 rounded-xl border border-emerald-700 shadow-md transition-all" data-class="9th">Class 9th</button>
+      <button class="class-tab bg-white text-slate-700 font-semibold px-6 py-2.5 rounded-xl border border-slate-200 hover:bg-emerald-50 transition-all" data-class="10th">Class 10th</button>
+      <button class="class-tab bg-white text-slate-700 font-semibold px-6 py-2.5 rounded-xl border border-slate-200 hover:bg-emerald-50 transition-all" data-class="11th">Class 11th</button>
+      <button class="class-tab bg-white text-slate-700 font-semibold px-6 py-2.5 rounded-xl border border-slate-200 hover:bg-emerald-50 transition-all" data-class="12th">Class 12th</button>
+    </div>
+
+    <!-- Subject Cards Grid -->
+    <div id="materials-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+      <!-- Dynamic Subject Cards Rendered via JS -->
+    </div>
+
+    <!-- Official WhatsApp Channels Hub -->
+    <div class="bg-white rounded-3xl p-8 border border-emerald-100 shadow-xl text-center mb-12">
+      <h3 class="text-2xl font-bold text-slate-800 mb-2">Join Our Official WhatsApp Channels</h3>
+      <p class="text-slate-500 mb-6 text-sm">Stay connected for instant updates, notifications, and PDF alerts.</p>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
+        
+        <!-- Main Channel -->
+        <a href="https://whatsapp.com" target="_blank" class="flex items-center gap-3 bg-emerald-50 border border-emerald-200 hover:bg-emerald-600 hover:text-white text-emerald-800 font-bold p-4 rounded-2xl transition-all shadow-sm">
+          <i class="fa-brands fa-whatsapp text-3xl text-emerald-600 group-hover:text-white"></i>
+          <div class="text-left">
+            <div class="text-sm font-bold">Main WhatsApp Channel</div>
+            <div class="text-xs font-normal opacity-80">Gumnaam Education</div>
+          </div>
+        </a>
+
+        <!-- SSC Channel -->
+        <a href="https://whatsapp.com" target="_blank" class="flex items-center gap-3 bg-emerald-50 border border-emerald-200 hover:bg-emerald-600 hover:text-white text-emerald-800 font-bold p-4 rounded-2xl transition-all shadow-sm">
+          <i class="fa-brands fa-whatsapp text-3xl text-emerald-600 group-hover:text-white"></i>
+          <div class="text-left">
+            <div class="text-sm font-bold">SSC WhatsApp Channel</div>
+            <div class="text-xs font-normal opacity-80">Class 9th & 10th</div>
+          </div>
+        </a>
+
+        <!-- HSC Channel -->
+        <a href="https://whatsapp.com" target="_blank" class="flex items-center gap-3 bg-emerald-50 border border-emerald-200 hover:bg-emerald-600 hover:text-white text-emerald-800 font-bold p-4 rounded-2xl transition-all shadow-sm">
+          <i class="fa-brands fa-whatsapp text-3xl text-emerald-600 group-hover:text-white"></i>
+          <div class="text-left">
+            <div class="text-sm font-bold">HSC WhatsApp Channel</div>
+            <div class="text-xs font-normal opacity-80">Class 11th & 12th</div>
+          </div>
+        </a>
+
+        <!-- Karachi University Channel -->
+        <a href="https://whatsapp.com" target="_blank" class="flex items-center gap-3 bg-emerald-50 border border-emerald-200 hover:bg-emerald-600 hover:text-white text-emerald-800 font-bold p-4 rounded-2xl transition-all shadow-sm">
+          <i class="fa-brands fa-whatsapp text-3xl text-emerald-600 group-hover:text-white"></i>
+          <div class="text-left">
+            <div class="text-sm font-bold">Karachi University</div>
+            <div class="text-xs font-normal opacity-80">KU Admission & Info</div>
+          </div>
+        </a>
+
+        <!-- DAE Channel -->
+        <a href="https://whatsapp.com" target="_blank" class="flex items-center gap-3 bg-emerald-50 border border-emerald-200 hover:bg-emerald-600 hover:text-white text-emerald-800 font-bold p-4 rounded-2xl transition-all shadow-sm">
+          <i class="fa-brands fa-whatsapp text-3xl text-emerald-600 group-hover:text-white"></i>
+          <div class="text-left">
+            <div class="text-sm font-bold">DAE WhatsApp Channel</div>
+            <div class="text-xs font-normal opacity-80">Diploma Engineering</div>
+          </div>
+        </a>
+
+        <!-- Ziauddin Board Channel -->
+        <a href="https://whatsapp.com" target="_blank" class="flex items-center gap-3 bg-emerald-50 border border-emerald-200 hover:bg-emerald-600 hover:text-white text-emerald-800 font-bold p-4 rounded-2xl transition-all shadow-sm">
+          <i class="fa-brands fa-whatsapp text-3xl text-emerald-600 group-hover:text-white"></i>
+          <div class="text-left">
+            <div class="text-sm font-bold">Ziauddin Board Channel</div>
+            <div class="text-xs font-normal opacity-80">Updates & Info</div>
+          </div>
+        </a>
+
+      </div>
+    </div>
 
   </main>
 
@@ -51,19 +141,16 @@
   <div id="auth-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center hidden z-50 p-4">
     <div class="bg-white w-full max-w-md p-8 rounded-3xl shadow-2xl border border-emerald-100 relative">
       
-      <!-- Close Button -->
       <button id="close-modal" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
         <i class="fa-solid fa-xmark text-xl"></i>
       </button>
 
-      <!-- Modal Header -->
       <div class="text-center mb-6">
         <img src="logo.png" alt="Gumnaam Education" class="w-16 h-16 mx-auto mb-2 drop-shadow-md">
         <h2 class="text-2xl font-bold text-slate-800">Welcome Back</h2>
         <p class="text-sm text-slate-500">Sign in to access all study materials</p>
       </div>
 
-      <!-- Google Sign In Button -->
       <button id="google-btn" class="w-full bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold py-3 px-4 rounded-xl shadow-sm flex items-center justify-center gap-3 transition-all mb-4">
         <i class="fa-brands fa-google text-red-500 text-lg"></i>
         Continue with Google
@@ -75,7 +162,6 @@
         <div class="flex-grow border-t border-slate-200"></div>
       </div>
 
-      <!-- Email Form -->
       <form id="auth-form" class="space-y-4">
         <div>
           <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Email Address</label>
@@ -109,7 +195,8 @@
       GoogleAuthProvider, 
       createUserWithEmailAndPassword, 
       signInWithEmailAndPassword,
-      onAuthStateChanged 
+      onAuthStateChanged,
+      signOut 
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
     // Aapka Firebase Configuration
@@ -132,30 +219,116 @@
     // DOM Elements
     const authModal = document.getElementById('auth-modal');
     const ctaBtn = document.getElementById('cta-signup-btn');
-    const navLoginBtn = document.getElementById('nav-login-btn');
+    const authActionBtn = document.getElementById('auth-action-btn');
     const closeModalBtn = document.getElementById('close-modal');
     const googleBtn = document.getElementById('google-btn');
     const authForm = document.getElementById('auth-form');
+    const landingSection = document.getElementById('landing-section');
+    const dashboardSection = document.getElementById('dashboard-section');
+    const userDisplay = document.getElementById('user-display');
+    const materialsGrid = document.getElementById('materials-grid');
 
-    // Open Modal Events
+    // Study Data with 4 Links per Subject (Google Drive links yahan paste karein)
+    const studyData = {
+      "9th": [
+        { title: "Physics", icon: "fa-atom", notes: "https://drive.google.com", target: "https://drive.google.com", tenYears: "https://drive.google.com", books: "https://drive.google.com" },
+        { title: "Chemistry", icon: "fa-flask", notes: "https://drive.google.com", target: "https://drive.google.com", tenYears: "https://drive.google.com", books: "https://drive.google.com" },
+        { title: "Biology", icon: "fa-dna", notes: "https://drive.google.com", target: "https://drive.google.com", tenYears: "https://drive.google.com", books: "https://drive.google.com" },
+        { title: "Mathematics", icon: "fa-calculator", notes: "https://drive.google.com", target: "https://drive.google.com", tenYears: "https://drive.google.com", books: "https://drive.google.com" },
+        { title: "Computer Science", icon: "fa-laptop-code", notes: "https://drive.google.com", target: "https://drive.google.com", tenYears: "https://drive.google.com", books: "https://drive.google.com" }
+      ],
+      "10th": [
+        { title: "Physics", icon: "fa-atom", notes: "https://drive.google.com", target: "https://drive.google.com", tenYears: "https://drive.google.com", books: "https://drive.google.com" },
+        { title: "Chemistry", icon: "fa-flask", notes: "https://drive.google.com", target: "https://drive.google.com", tenYears: "https://drive.google.com", books: "https://drive.google.com" },
+        { title: "Mathematics", icon: "fa-calculator", notes: "https://drive.google.com", target: "https://drive.google.com", tenYears: "https://drive.google.com", books: "https://drive.google.com" },
+        { title: "English", icon: "fa-book-open", notes: "https://drive.google.com", target: "https://drive.google.com", tenYears: "https://drive.google.com", books: "https://drive.google.com" }
+      ],
+      "11th": [
+        { title: "Physics (Part 1)", icon: "fa-atom", notes: "https://drive.google.com", target: "https://drive.google.com", tenYears: "https://drive.google.com", books: "https://drive.google.com" },
+        { title: "Chemistry (Part 1)", icon: "fa-flask", notes: "https://drive.google.com", target: "https://drive.google.com", tenYears: "https://drive.google.com", books: "https://drive.google.com" },
+        { title: "Mathematics (Part 1)", icon: "fa-calculator", notes: "https://drive.google.com", target: "https://drive.google.com", tenYears: "https://drive.google.com", books: "https://drive.google.com" }
+      ],
+      "12th": [
+        { title: "Physics (Part 2)", icon: "fa-atom", notes: "https://drive.google.com", target: "https://drive.google.com", tenYears: "https://drive.google.com", books: "https://drive.google.com" },
+        { title: "Chemistry (Part 2)", icon: "fa-flask", notes: "https://drive.google.com", target: "https://drive.google.com", tenYears: "https://drive.google.com", books: "https://drive.google.com" },
+        { title: "Biology (Part 2)", icon: "fa-dna", notes: "https://drive.google.com", target: "https://drive.google.com", tenYears: "https://drive.google.com", books: "https://drive.google.com" }
+      ]
+    };
+
+    // Render Cards Function
+    function renderMaterials(selectedClass) {
+      materialsGrid.innerHTML = '';
+      const subjects = studyData[selectedClass] || [];
+
+      subjects.forEach(sub => {
+        const card = document.createElement('div');
+        card.className = "bg-white p-6 rounded-2xl shadow-md hover:shadow-xl border border-emerald-100 transition-all flex flex-col justify-between";
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 flex items-center justify-center text-xl shadow-sm">
+                <i class="fa-solid ${sub.icon}"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-lg text-slate-800">${sub.title}</h4>
+                <span class="text-xs text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded-md">Updated Material</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-2 gap-2 mt-4">
+            <a href="${sub.notes}" target="_blank" class="bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold py-2.5 px-3 rounded-xl text-center flex items-center justify-center gap-1.5 transition-all shadow-sm">
+              <i class="fa-solid fa-file-lines"></i> Notes
+            </a>
+            <a href="${sub.target}" target="_blank" class="bg-amber-500 hover:bg-amber-600 text-slate-900 text-xs font-bold py-2.5 px-3 rounded-xl text-center flex items-center justify-center gap-1.5 transition-all shadow-sm">
+              <i class="fa-solid fa-bullseye"></i> Target Paper
+            </a>
+            <a href="${sub.tenYears}" target="_blank" class="bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold py-2.5 px-3 rounded-xl text-center flex items-center justify-center gap-1.5 transition-all shadow-sm">
+              <i class="fa-solid fa-clock-rotate-left"></i> 10 Years
+            </a>
+            <a href="${sub.books}" target="_blank" class="bg-slate-700 hover:bg-slate-800 text-white text-xs font-semibold py-2.5 px-3 rounded-xl text-center flex items-center justify-center gap-1.5 transition-all shadow-sm">
+              <i class="fa-solid fa-book"></i> Books
+            </a>
+          </div>
+        `;
+        materialsGrid.appendChild(card);
+      });
+    }
+
+    // Class Tab Event Listeners
+    document.querySelectorAll('.class-tab').forEach(tab => {
+      tab.addEventListener('click', (e) => {
+        document.querySelectorAll('.class-tab').forEach(t => {
+          t.className = "class-tab bg-white text-slate-700 font-semibold px-6 py-2.5 rounded-xl border border-slate-200 hover:bg-emerald-50 transition-all";
+        });
+        e.target.className = "class-tab active-tab bg-emerald-700 text-white font-semibold px-6 py-2.5 rounded-xl border border-emerald-700 shadow-md transition-all";
+        renderMaterials(e.target.dataset.class);
+      });
+    });
+
+    // Auth Modal Handlers
     ctaBtn?.addEventListener('click', () => authModal.classList.remove('hidden'));
-    navLoginBtn?.addEventListener('click', () => authModal.classList.remove('hidden'));
-
-    // Close Modal Event
     closeModalBtn?.addEventListener('click', () => authModal.classList.add('hidden'));
 
-    // Google Sign-In Functionality
-    googleBtn?.addEventListener('click', async () => {
-      try {
-        const result = await signInWithPopup(auth, googleProvider);
-        alert(`Welcome ${result.user.displayName}!`);
-        authModal.classList.add('hidden');
-      } catch (error) {
-        alert("Google Login Error: " + error.message);
+    authActionBtn?.addEventListener('click', () => {
+      if (auth.currentUser) {
+        signOut(auth);
+      } else {
+        authModal.classList.remove('hidden');
       }
     });
 
-    // Email/Password Sign-In/Up Functionality
+    // Google Login Logic
+    googleBtn?.addEventListener('click', async () => {
+      try {
+        await signInWithPopup(auth, googleProvider);
+        authModal.classList.add('hidden');
+      } catch (error) {
+        alert("Google Error: " + error.message);
+      }
+    });
+
+    // Email/Password Login Logic
     authForm?.addEventListener('submit', async (e) => {
       e.preventDefault();
       const email = document.getElementById('auth-email').value;
@@ -163,13 +336,11 @@
 
       try {
         await signInWithEmailAndPassword(auth, email, password);
-        alert('Successfully Logged In!');
         authModal.classList.add('hidden');
       } catch (error) {
         if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found') {
           try {
             await createUserWithEmailAndPassword(auth, email, password);
-            alert('Account Created Successfully!');
             authModal.classList.add('hidden');
           } catch (signUpErr) {
             alert("Sign Up Error: " + signUpErr.message);
@@ -180,11 +351,20 @@
       }
     });
 
-    // Check Login State
+    // Auth State Monitor
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        navLoginBtn.innerText = "Logged In";
-        navLoginBtn.classList.replace("bg-emerald-700", "bg-emerald-900");
+        landingSection.classList.add('hidden');
+        dashboardSection.classList.remove('hidden');
+        userDisplay.classList.remove('hidden');
+        userDisplay.innerText = user.displayName || user.email.split('@')[0];
+        authActionBtn.innerText = "Sign Out";
+        renderMaterials("9th"); // Default view: 9th class
+      } else {
+        landingSection.classList.remove('hidden');
+        dashboardSection.classList.add('hidden');
+        userDisplay.classList.add('hidden');
+        authActionBtn.innerText = "Sign In";
       }
     });
   </script>
