@@ -1,0 +1,28 @@
+/* Custom Animations for Logo & Card */
+
+.logo-3d-card {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  box-shadow: 0 20px 40px -15px rgba(11, 93, 55, 0.15);
+}
+
+.logo-3d-card:hover {
+  transform: translateY(-8px) rotateX(4deg) rotateY(-4deg);
+  box-shadow: 0 30px 50px -12px rgba(11, 93, 55, 0.25);
+}
+
+/* Subtle Pulse Effect for Logo */
+@keyframes softPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+.pulse-animation {
+  animation: softPulse 4s ease-in-out infinite;
+}
+
+/* Glow Effect on Button Hover */
+.cta-btn:hover {
+  box-shadow: 0 10px 25px -5px rgba(11, 93, 55, 0.4);
+}
