@@ -1,1 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Gumnaam Education</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col justify-between">
 
+  <!-- Header -->
+  <header class="bg-white border-b border-emerald-100 py-4 px-6 flex justify-between items-center shadow-sm">
+    <div class="flex items-center gap-3">
+      <img src="logo.png" alt="Logo" class="w-10 h-10 object-contain">
+      <span class="font-bold text-lg text-emerald-800">Gumnaam Admin Panel</span>
+    </div>
+    <a href="index.html" class="text-sm font-semibold text-emerald-700 hover:underline">Go to Website</a>
+  </header>
+
+  <!-- Main Admin Section -->
+  <main class="max-w-3xl mx-auto px-4 py-8 w-full flex-grow">
+    
+    <!-- Login Card (If Not Admin) -->
+    <div id="admin-login-card" class="bg-white p-8 rounded-3xl shadow-xl border border-emerald-100 max-w-md mx-auto">
+      <h2 class="text-2xl font-bold text-center text-slate-800 mb-2">Admin Login</h2>
+      <p class="text-xs text-center text-slate-500 mb-6">Sign in with authorized admin account</p>
+      
+      <form id="admin-login-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Admin Email</label>
+          <input type="email" id="admin-email" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-600">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Password</label>
+          <input type="password" id="admin-password" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-600">
+        </div>
+        <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-3 rounded-xl shadow-md transition-all">
+          Login as Admin
+        </button>
+      </form>
+    </div>
+
+    <!-- Manager Form (Visible After Login) -->
+    <div id="admin-panel-card" class="hidden bg-white p-8 rounded-3xl shadow-xl border border-emerald-100">
+      <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">Update Drive Links</h2>
+          <p class="text-xs text-slate-500">Select class and update resource links instantly</p>
+        </div>
+        <button id="admin-logout-btn" class="text-xs bg-red-50 text-red-600 border border-red-200 px-3 py-1.5 rounded-lg font-semibold hover:bg-red-100">Logout</button>
+      </div>
+
+      <form id="links-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Select Class</label>
+          <select id="select-class" class="w-full px-4 py-3 rounded-xl border border-slate-200 font-semibold focus:outline-none focus:border-emerald-600">
+            <option value="9th">Class 9th</option>
+            <option value="10th">Class 10th</option>
+            <option value="11th">Class 11th</option>
+            <option value="12th">Class 12th</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">All Subjects Notes Drive Link</label>
+          <input type="url" id="link-notes" placeholder="https://drive.google.com/..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-600">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Target Papers Drive Link</label>
+          <input type="url" id="link-target" placeholder="https://drive.google.com/..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-600">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">10 Years Papers Drive Link</label>
+          <input type="url" id="link-tenYears" placeholder="https://drive.google.com/..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-600">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Books Drive Link</label>
+          <input type="url" id="link-books" placeholder="https://drive.google.com/..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-600">
+        </div>
+
+        <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-amber-300 font-bold py-3.5 rounded-xl shadow-md transition-all">
+          Save & Publish Links
+        </button>
+      </form>
+    </div>
+
+  </main>
+
+  <footer class="bg-white border-t border-slate-100 py-4 text-center text-xs text-slate-500">
+    © 2026 Gumnaam Education Admin System
+  </footer>
+
+  <!-- Firebase Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD8-II4YOIt1ZGk6x4VhOMvAIr7xazjhPY",
+      authDomain: "gumnaam-education.firebaseapp.com",
+      projectId: "gumnaam-education",
+      storageBucket: "gumnaam-education.firebasestorage.app",
+      messagingSenderId: "680513198806",
+      appId: "1:680513198806:web:5a96acd811b6ec4b7b8777"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const loginCard = document.getElementById('admin-login-card');
+    const panelCard = document.getElementById('admin-panel-card');
+    const selectClass = document.getElementById('select-class');
+
+    // Load Existing Links for Selected Class
+    async function fetchClassLinks(className) {
+      const docRef = doc(db, "materials", className);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        document.getElementById('link-notes').value = data.notes || '';
+        document.getElementById('link-target').value = data.target || '';
+        document.getElementById('link-tenYears').value = data.tenYears || '';
+        document.getElementById('link-books').value = data.books || '';
+      } else {
+        document.getElementById('link-notes').value = '';
+        document.getElementById('link-target').value = '';
+        document.getElementById('link-tenYears').value = '';
+        document.getElementById('link-books').value = '';
+      }
+    }
+
+    selectClass.addEventListener('change', (e) => fetchClassLinks(e.target.value));
+
+    // Admin Login
+    document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      try {
+        await signInWithEmailAndPassword(
+          auth, 
+          document.getElementById('admin-email').value, 
+          document.getElementById('admin-password').value
+        );
+      } catch (err) {
+        alert("Login Failed: " + err.message);
+      }
+    });
+
+    // Save Links to Firestore
+    document.getElementById('links-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const currentClass = selectClass.value;
+      
+      try {
+        await setDoc(doc(db, "materials", currentClass), {
+          notes: document.getElementById('link-notes').value,
+          target: document.getElementById('link-target').value,
+          tenYears: document.getElementById('link-tenYears').value,
+          books: document.getElementById('link-books').value
+        });
+        alert(`Links for Class ${currentClass} updated successfully!`);
+      } catch (err) {
+        alert("Error saving links: " + err.message);
+      }
+    });
+
+    document.getElementById('admin-logout-btn').addEventListener('click', () => signOut(auth));
+
+    // Auth State Monitor
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        loginCard.classList.add('hidden');
+        panelCard.classList.remove('hidden');
+        fetchClassLinks("9th");
+      } else {
+        loginCard.classList.remove('hidden');
+        panelCard.classList.add('hidden');
+      }
+    });
+  </script>
+</body>
+</html>
