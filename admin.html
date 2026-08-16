@@ -42,50 +42,82 @@
     </div>
 
     <!-- Manager Form (Visible After Login) -->
-    <div id="admin-panel-card" class="hidden bg-white p-8 rounded-3xl shadow-xl border border-emerald-100">
-      <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
-        <div>
-          <h2 class="text-2xl font-bold text-slate-800">Update Drive Links</h2>
-          <p class="text-xs text-slate-500">Select class and update resource links instantly</p>
+    <div id="admin-panel-card" class="hidden space-y-8">
+      
+      <!-- Drive Links Update Section -->
+      <div class="bg-white p-8 rounded-3xl shadow-xl border border-emerald-100">
+        <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
+          <div>
+            <h2 class="text-2xl font-bold text-slate-800">Update Drive Links</h2>
+            <p class="text-xs text-slate-500">Select class and update resource links instantly</p>
+          </div>
+          <button id="admin-logout-btn" class="text-xs bg-red-50 text-red-600 border border-red-200 px-3 py-1.5 rounded-lg font-semibold hover:bg-red-100">Logout</button>
         </div>
-        <button id="admin-logout-btn" class="text-xs bg-red-50 text-red-600 border border-red-200 px-3 py-1.5 rounded-lg font-semibold hover:bg-red-100">Logout</button>
+
+        <form id="links-form" class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Select Class</label>
+            <select id="select-class" class="w-full px-4 py-3 rounded-xl border border-slate-200 font-semibold focus:outline-none focus:border-emerald-600">
+              <option value="9th">Class 9th</option>
+              <option value="10th">Class 10th</option>
+              <option value="11th">Class 11th</option>
+              <option value="12th">Class 12th</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">All Subjects Notes Drive Link</label>
+            <input type="url" id="link-notes" placeholder="https://drive.google.com/..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-600">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Target Papers Drive Link</label>
+            <input type="url" id="link-target" placeholder="https://drive.google.com/..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-600">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">10 Years Papers Drive Link</label>
+            <input type="url" id="link-tenYears" placeholder="https://drive.google.com/..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-600">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Books Drive Link</label>
+            <input type="url" id="link-books" placeholder="https://drive.google.com/..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-600">
+          </div>
+
+          <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-amber-300 font-bold py-3.5 rounded-xl shadow-md transition-all">
+            Save & Publish Links
+          </button>
+        </form>
       </div>
 
-      <form id="links-form" class="space-y-4">
-        <div>
-          <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Select Class</label>
-          <select id="select-class" class="w-full px-4 py-3 rounded-xl border border-slate-200 font-semibold focus:outline-none focus:border-emerald-600">
-            <option value="9th">Class 9th</option>
-            <option value="10th">Class 10th</option>
-            <option value="11th">Class 11th</option>
-            <option value="12th">Class 12th</option>
-          </select>
+      <!-- Registered Users Section -->
+      <div class="bg-white p-6 rounded-2xl shadow-md border border-emerald-100">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold text-slate-800">
+            <i class="fa-solid fa-users text-emerald-700 mr-2"></i> Registered Users
+          </h3>
+          <span id="total-users-count" class="bg-emerald-100 text-emerald-800 font-bold px-3 py-1 rounded-full text-sm">
+            Total Users: 0
+          </span>
         </div>
 
-        <div>
-          <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">All Subjects Notes Drive Link</label>
-          <input type="url" id="link-notes" placeholder="https://drive.google.com/..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-600">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-100 text-slate-700 text-sm">
+                <th class="p-3 rounded-l-lg">Name / ID</th>
+                <th class="p-3">Email Address</th>
+                <th class="p-3 rounded-r-lg">Last Seen</th>
+              </tr>
+            </thead>
+            <tbody id="users-table-body" class="text-sm divide-y divide-slate-100">
+              <!-- Users Dynamic Load Honge -->
+            </tbody>
+          </table>
         </div>
+      </div>
 
-        <div>
-          <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Target Papers Drive Link</label>
-          <input type="url" id="link-target" placeholder="https://drive.google.com/..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-600">
-        </div>
-
-        <div>
-          <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">10 Years Papers Drive Link</label>
-          <input type="url" id="link-tenYears" placeholder="https://drive.google.com/..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-600">
-        </div>
-
-        <div>
-          <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Books Drive Link</label>
-          <input type="url" id="link-books" placeholder="https://drive.google.com/..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-600">
-        </div>
-
-        <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-amber-300 font-bold py-3.5 rounded-xl shadow-md transition-all">
-          Save & Publish Links
-        </button>
-      </form>
     </div>
 
   </main>
@@ -98,7 +130,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyD8-II4YOIt1ZGk6x4VhOMvAIr7xazjhPY",
@@ -134,6 +166,39 @@
         document.getElementById('link-target').value = '';
         document.getElementById('link-tenYears').value = '';
         document.getElementById('link-books').value = '';
+      }
+    }
+
+    // Load Registered Users Function
+    async function loadUsers() {
+      const usersTableBody = document.getElementById('users-table-body');
+      const totalUsersCount = document.getElementById('total-users-count');
+
+      usersTableBody.innerHTML = '<tr><td colspan="3" class="text-center py-4 text-slate-400">Loading users...</td></tr>';
+
+      try {
+        const querySnapshot = await getDocs(collection(db, "users"));
+        usersTableBody.innerHTML = '';
+        
+        totalUsersCount.innerText = `Total Users: ${querySnapshot.size}`;
+
+        querySnapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          const tr = document.createElement('tr');
+          tr.className = "hover:bg-slate-50";
+
+          const lastLoginDate = data.lastLogin ? new Date(data.lastLogin).toLocaleString() : 'N/A';
+
+          tr.innerHTML = `
+            <td class="p-3 font-semibold text-slate-800">${data.displayName || 'N/A'}</td>
+            <td class="p-3 text-slate-600">${data.email || 'N/A'}</td>
+            <td class="p-3 text-xs text-slate-400">${lastLoginDate}</td>
+          `;
+          usersTableBody.appendChild(tr);
+        });
+      } catch (error) {
+        console.error("Error loading users:", error);
+        usersTableBody.innerHTML = '<tr><td colspan="3" class="text-center py-4 text-red-500">Failed to load users. Check Firestore rules.</td></tr>';
       }
     }
 
@@ -183,6 +248,7 @@
         loginCard.classList.add('hidden');
         panelCard.classList.remove('hidden');
         fetchClassLinks("9th");
+        loadUsers();
       } else {
         if (user) {
           alert("Aapka account Admin panel ke liye authorized nahi hai.");
