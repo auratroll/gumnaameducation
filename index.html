@@ -207,7 +207,7 @@
       onAuthStateChanged,
       signOut 
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     // Firebase Configuration
     const firebaseConfig = {
@@ -342,13 +342,26 @@
     });
 
     // Auth State Monitor
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
       if (user) {
         landingSection.classList.add('hidden');
         dashboardSection.classList.remove('hidden');
         userDisplay.classList.remove('hidden');
         userDisplay.innerText = user.displayName || user.email.split('@')[0];
         authActionBtn.innerText = "Sign Out";
+        
+        // User data Database mein save / update karne ke liye
+        try {
+          await setDoc(doc(db, "users", user.uid), {
+            uid: user.uid,
+            email: user.email,
+            displayName: user.displayName || user.email.split('@')[0],
+            lastLogin: new Date().toISOString()
+          }, { merge: true });
+        } catch (e) {
+          console.error("User save error:", e);
+        }
+
         renderMaterials("9th");
       } else {
         landingSection.classList.remove('hidden');
