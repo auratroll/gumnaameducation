@@ -29,11 +29,11 @@
       <form id="admin-login-form" class="space-y-4">
         <div>
           <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Admin Email</label>
-          <input type="email" id="admin-email" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-600">
+          <input type="email" id="admin-email" value="auratroll82009@gmail.com" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-600">
         </div>
         <div>
           <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Password</label>
-          <input type="password" id="admin-password" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-600">
+          <input type="password" id="admin-password" value="@troll82009" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-600">
         </div>
         <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-3 rounded-xl shadow-md transition-all">
           Login as Admin
@@ -113,6 +113,8 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
+    const ALLOWED_ADMIN = "auratroll82009@gmail.com";
+
     const loginCard = document.getElementById('admin-login-card');
     const panelCard = document.getElementById('admin-panel-card');
     const selectClass = document.getElementById('select-class');
@@ -140,12 +142,16 @@
     // Admin Login
     document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
       e.preventDefault();
+      const email = document.getElementById('admin-email').value;
+      const password = document.getElementById('admin-password').value;
+
+      if (email !== ALLOWED_ADMIN) {
+        alert("Access Denied: Is account ko Admin access ki permission nahi hai.");
+        return;
+      }
+
       try {
-        await signInWithEmailAndPassword(
-          auth, 
-          document.getElementById('admin-email').value, 
-          document.getElementById('admin-password').value
-        );
+        await signInWithEmailAndPassword(auth, email, password);
       } catch (err) {
         alert("Login Failed: " + err.message);
       }
@@ -163,7 +169,7 @@
           tenYears: document.getElementById('link-tenYears').value,
           books: document.getElementById('link-books').value
         });
-        alert(`Links for Class ${currentClass} updated successfully!`);
+        alert(`Class ${currentClass} ke links successfully publish ho gaye hain!`);
       } catch (err) {
         alert("Error saving links: " + err.message);
       }
@@ -173,11 +179,15 @@
 
     // Auth State Monitor
     onAuthStateChanged(auth, (user) => {
-      if (user) {
+      if (user && user.email === ALLOWED_ADMIN) {
         loginCard.classList.add('hidden');
         panelCard.classList.remove('hidden');
         fetchClassLinks("9th");
       } else {
+        if (user) {
+          alert("Aapka account Admin panel ke liye authorized nahi hai.");
+          signOut(auth);
+        }
         loginCard.classList.remove('hidden');
         panelCard.classList.add('hidden');
       }
