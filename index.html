@@ -207,6 +207,7 @@
       onAuthStateChanged,
       signOut 
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     // Firebase Configuration
     const firebaseConfig = {
@@ -222,6 +223,7 @@
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
     const auth = getAuth(app);
+    const db = getFirestore(app);
     const googleProvider = new GoogleAuthProvider();
 
     // DOM Elements
@@ -236,38 +238,22 @@
     const userDisplay = document.getElementById('user-display');
     const materialsGrid = document.getElementById('materials-grid');
 
-    // Category Links Data (Insert Google Drive Links here)
-    const categoryLinks = {
-      "9th": {
-        notes: "https://drive.google.com",
-        target: "https://drive.google.com",
-        tenYears: "https://drive.google.com",
-        books: "https://drive.google.com"
-      },
-      "10th": {
-        notes: "https://drive.google.com",
-        target: "https://drive.google.com",
-        tenYears: "https://drive.google.com",
-        books: "https://drive.google.com"
-      },
-      "11th": {
-        notes: "https://drive.google.com",
-        target: "https://drive.google.com",
-        tenYears: "https://drive.google.com",
-        books: "https://drive.google.com"
-      },
-      "12th": {
-        notes: "https://drive.google.com",
-        target: "https://drive.google.com",
-        tenYears: "https://drive.google.com",
-        books: "https://drive.google.com"
+    // Render 4 Main Material Cards Function (Fetching dynamically from Firestore)
+    async function renderMaterials(selectedClass) {
+      materialsGrid.innerHTML = '<p class="col-span-full text-center text-slate-500 py-8"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Loading resources for Class ' + selectedClass + '...</p>';
+      
+      let links = {};
+      try {
+        const docRef = doc(db, "materials", selectedClass);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          links = docSnap.data();
+        }
+      } catch (err) {
+        console.error("Error fetching Firestore links:", err);
       }
-    };
 
-    // Render 4 Main Material Cards Function
-    function renderMaterials(selectedClass) {
       materialsGrid.innerHTML = '';
-      const links = categoryLinks[selectedClass] || {};
 
       const items = [
         { title: "All Subjects Notes", icon: "fa-file-lines", color: "bg-emerald-700 hover:bg-emerald-800 text-white", link: links.notes || "#" },
@@ -279,6 +265,9 @@
       items.forEach(item => {
         const card = document.createElement('div');
         card.className = "bg-white p-6 rounded-2xl shadow-md hover:shadow-xl border border-emerald-100 transition-all flex flex-col justify-between items-center text-center";
+        
+        const isLinkAvailable = item.link && item.link !== "#";
+
         card.innerHTML = `
           <div class="mb-4">
             <div class="w-16 h-16 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 flex items-center justify-center text-2xl shadow-sm mx-auto mb-3">
@@ -288,8 +277,8 @@
             <span class="text-xs text-emerald-700 font-semibold bg-emerald-50 px-2.5 py-1 rounded-md">Class ${selectedClass}</span>
           </div>
           
-          <a href="${item.link}" target="_blank" class="w-full ${item.color} text-sm font-bold py-3 px-4 rounded-xl text-center flex items-center justify-center gap-2 transition-all shadow-md">
-            Open Drive <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+          <a href="${item.link}" target="${isLinkAvailable ? '_blank' : '_self'}" class="w-full ${item.color} text-sm font-bold py-3 px-4 rounded-xl text-center flex items-center justify-center gap-2 transition-all shadow-md ${!isLinkAvailable ? 'opacity-60 cursor-not-allowed' : ''}">
+            ${isLinkAvailable ? 'Open Drive <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>' : 'Coming Soon'}
           </a>
         `;
         materialsGrid.appendChild(card);
