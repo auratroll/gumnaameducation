@@ -12,6 +12,15 @@
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col justify-between">
 
+  <!-- Red Maintenance Screen Overlay -->
+  <div id="maintenance-screen" class="hidden fixed inset-0 bg-red-600 text-white z-[9999] flex flex-col items-center justify-center text-center p-6">
+    <div class="max-w-md">
+      <div class="text-6xl mb-4">⚙️</div>
+      <h1 class="text-3xl font-extrabold mb-3 tracking-wide uppercase">WEBSITE UNDER MAINTENANCE</h1>
+      <p class="text-xl font-medium opacity-90">WE WILL BE BACK SOON</p>
+    </div>
+  </div>
+
   <!-- Navigation Bar -->
   <header class="w-full bg-white shadow-sm border-b border-emerald-100 py-4 px-6 flex justify-between items-center sticky top-0 z-50">
     <div class="flex items-center gap-3">
@@ -207,7 +216,7 @@
       onAuthStateChanged,
       signOut 
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     // Firebase Configuration
     const firebaseConfig = {
@@ -225,6 +234,19 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
     const googleProvider = new GoogleAuthProvider();
+
+    // Maintenance Screen Element & Real-Time Listener
+    const maintenanceScreen = document.getElementById('maintenance-screen');
+
+    onSnapshot(doc(db, "settings", "site_config"), (docSnap) => {
+      if (docSnap.exists() && docSnap.data().maintenance) {
+        maintenanceScreen.classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; // Stop scrolling
+      } else {
+        maintenanceScreen.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+      }
+    });
 
     // DOM Elements
     const authModal = document.getElementById('auth-modal');
