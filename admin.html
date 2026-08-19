@@ -44,6 +44,24 @@
     <!-- Manager Form (Visible After Login) -->
     <div id="admin-panel-card" class="hidden space-y-8">
       
+      <!-- Maintenance Mode Control Box -->
+      <div class="bg-white p-6 rounded-3xl shadow-xl border border-rose-100 flex items-center justify-between">
+        <div>
+          <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+            <i class="fa-solid fa-triangle-exclamation text-amber-500"></i> Maintenance Mode
+          </h2>
+          <p class="text-xs text-slate-500 mt-1">Turn on to block website access for users during updates</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <span id="maintenance-status-text" class="text-xs font-bold px-3 py-1 rounded-full bg-emerald-100 text-emerald-800">
+            OFF
+          </span>
+          <button id="toggle-maintenance-btn" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-4 py-2 rounded-xl shadow transition-all text-sm">
+            Enable Maintenance
+          </button>
+        </div>
+      </div>
+
       <!-- Drive Links Update Section -->
       <div class="bg-white p-8 rounded-3xl shadow-xl border border-emerald-100">
         <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
@@ -130,7 +148,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { getFirestore, doc, setDoc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, getDoc, collection, getDocs, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyD8-II4YOIt1ZGk6x4VhOMvAIr7xazjhPY",
@@ -150,6 +168,39 @@
     const loginCard = document.getElementById('admin-login-card');
     const panelCard = document.getElementById('admin-panel-card');
     const selectClass = document.getElementById('select-class');
+    const toggleMaintenanceBtn = document.getElementById('toggle-maintenance-btn');
+    const maintenanceStatusText = document.getElementById('maintenance-status-text');
+
+    let isMaintenanceActive = false;
+
+    // Listen Maintenance Mode Status
+    onSnapshot(doc(db, "settings", "site_config"), (docSnap) => {
+      if (docSnap.exists() && docSnap.data().maintenance) {
+        isMaintenanceActive = true;
+        maintenanceStatusText.innerText = "ON";
+        maintenanceStatusText.className = "text-xs font-bold px-3 py-1 rounded-full bg-rose-100 text-rose-800";
+        toggleMaintenanceBtn.innerText = "Disable Maintenance";
+        toggleMaintenanceBtn.className = "bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-xl shadow transition-all text-sm";
+      } else {
+        isMaintenanceActive = false;
+        maintenanceStatusText.innerText = "OFF";
+        maintenanceStatusText.className = "text-xs font-bold px-3 py-1 rounded-full bg-emerald-100 text-emerald-800";
+        toggleMaintenanceBtn.innerText = "Enable Maintenance";
+        toggleMaintenanceBtn.className = "bg-rose-600 hover:bg-rose-700 text-white font-bold px-4 py-2 rounded-xl shadow transition-all text-sm";
+      }
+    });
+
+    // Toggle Maintenance Mode Button
+    toggleMaintenanceBtn.addEventListener('click', async () => {
+      try {
+        await setDoc(doc(db, "settings", "site_config"), {
+          maintenance: !isMaintenanceActive
+        }, { merge: true });
+        alert(`Maintenance Mode: ${!isMaintenanceActive ? 'ENABLED' : 'DISABLED'}`);
+      } catch (err) {
+        alert("Error updating maintenance mode: " + err.message);
+      }
+    });
 
     // Load Existing Links for Selected Class
     async function fetchClassLinks(className) {
