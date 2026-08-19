@@ -15,11 +15,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --dark-blue: #0b2545;
-            --bright-red: #e63946;
-            --accent-blue: #134074;
-            --bg-color: #ffffff;
-            --card-shadow: 0 25px 50px -12px rgba(11, 37, 69, 0.18);
+            --emerald-main: #047857;
+            --emerald-dark: #065f46;
+            --amber-accent: #d97706;
+            --bg-color: #f8fafc;
+            --card-shadow: 0 25px 50px -12px rgba(4, 120, 87, 0.15);
             --wa-green: #25D366;
         }
 
@@ -32,10 +32,10 @@
 
         body {
             background-color: var(--bg-color);
-            background-image: radial-gradient(#0b2545 0.75px, transparent 0.75px), radial-gradient(#0b2545 0.75px, #ffffff 0.75px);
+            background-image: radial-gradient(#047857 0.75px, transparent 0.75px), radial-gradient(#047857 0.75px, #f8fafc 0.75px);
             background-size: 30px 30px;
             background-position: 0 0, 15px 15px;
-            color: #2b2d42;
+            color: #1e293b;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -50,7 +50,7 @@
             border-radius: 24px;
             padding: 35px 28px;
             box-shadow: var(--card-shadow);
-            border: 2px solid #eef2f6;
+            border: 2px solid #ecfdf5;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -63,12 +63,12 @@
             left: 0;
             right: 0;
             height: 6px;
-            background: linear-gradient(90deg, var(--dark-blue), var(--bright-red));
+            background: linear-gradient(90deg, var(--emerald-main), var(--amber-accent));
         }
 
         .top-banner {
-            background: #eef2f6;
-            border: 1px solid #cbd5e1;
+            background: #ecfdf5;
+            border: 1px solid #a7f3d0;
             border-radius: 12px;
             padding: 10px 14px;
             margin-bottom: 20px;
@@ -82,7 +82,7 @@
         .top-banner p {
             font-size: 11px;
             font-weight: 600;
-            color: var(--dark-blue);
+            color: var(--emerald-dark);
             line-height: 1.3;
         }
 
@@ -116,8 +116,8 @@
             margin: 0 auto;
             border-radius: 50%;
             padding: 5px;
-            background: linear-gradient(135deg, var(--dark-blue), var(--bright-red));
-            box-shadow: 0 10px 25px rgba(230, 57, 70, 0.25);
+            background: linear-gradient(135deg, var(--emerald-main), var(--amber-accent));
+            box-shadow: 0 10px 25px rgba(4, 120, 87, 0.25);
             animation: float 4s ease-in-out infinite;
             display: flex;
             align-items: center;
@@ -138,7 +138,7 @@
         }
 
         h1 {
-            color: var(--dark-blue);
+            color: var(--emerald-dark);
             font-size: 26px;
             font-weight: 800;
             letter-spacing: -0.5px;
@@ -146,7 +146,7 @@
         }
 
         .subtitle {
-            color: #6c757d;
+            color: #64748b;
             font-size: 13px;
             font-weight: 500;
             margin-bottom: 25px;
@@ -164,34 +164,34 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: var(--dark-blue);
+            color: var(--emerald-dark);
             margin-bottom: 6px;
         }
 
         select, input[type="text"] {
             width: 100%;
             padding: 14px 16px;
-            border: 2px solid #e2e8f0;
+            border: 2px solid #cbd5e1;
             border-radius: 12px;
             font-size: 15px;
             font-weight: 500;
-            color: #1a202c;
+            color: #0f172a;
             outline: none;
             background: #f8fafc;
             transition: all 0.25s ease;
         }
 
         select:focus, input[type="text"]:focus {
-            border-color: var(--dark-blue);
+            border-color: var(--emerald-main);
             background: #ffffff;
-            box-shadow: 0 0 0 4px rgba(11, 37, 69, 0.1);
+            box-shadow: 0 0 0 4px rgba(4, 120, 87, 0.1);
         }
 
         .btn-animated {
             position: relative;
             width: 100%;
-            background: linear-gradient(135deg, #e63946 0%, #b32430 100%);
-            color: white;
+            background: linear-gradient(135deg, var(--emerald-main) 0%, var(--emerald-dark) 100%);
+            color: #fef3c7;
             border: none;
             padding: 16px;
             font-size: 16px;
@@ -201,7 +201,7 @@
             cursor: pointer;
             text-transform: uppercase;
             overflow: hidden;
-            box-shadow: 0 8px 20px rgba(230, 57, 70, 0.35), inset 0 -4px 0 rgba(0,0,0,0.2);
+            box-shadow: 0 8px 20px rgba(4, 120, 87, 0.35), inset 0 -4px 0 rgba(0,0,0,0.2);
             transition: all 0.2s ease;
             margin-top: 8px;
         }
@@ -225,12 +225,12 @@
 
         .btn-animated:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 25px rgba(230, 57, 70, 0.45), inset 0 -4px 0 rgba(0,0,0,0.2);
+            box-shadow: 0 12px 25px rgba(4, 120, 87, 0.45), inset 0 -4px 0 rgba(0,0,0,0.2);
         }
 
         .btn-animated:active {
             transform: translateY(2px);
-            box-shadow: 0 4px 10px rgba(230, 57, 70, 0.3), inset 0 -1px 0 rgba(0,0,0,0.2);
+            box-shadow: 0 4px 10px rgba(4, 120, 87, 0.3), inset 0 -1px 0 rgba(0,0,0,0.2);
         }
 
         .btn-whatsapp {
@@ -273,13 +273,13 @@
 
         .result-box.success {
             background: #ffffff;
-            border: 2px solid var(--dark-blue);
-            box-shadow: 0 10px 30px rgba(11, 37, 69, 0.1);
+            border: 2px solid var(--emerald-main);
+            box-shadow: 0 10px 30px rgba(4, 120, 87, 0.1);
         }
 
         .result-box.error {
             background: #fff5f5;
-            border: 2px solid var(--bright-red);
+            border: 2px solid #e63946;
             color: #9b1c1c;
         }
 
@@ -304,11 +304,11 @@
 
         .result-row span.value {
             font-weight: 700;
-            color: var(--dark-blue);
+            color: var(--emerald-dark);
         }
 
         .badge-grade {
-            background: var(--dark-blue);
+            background: var(--emerald-main);
             color: #ffffff;
             padding: 4px 12px;
             border-radius: 8px;
@@ -397,13 +397,11 @@
         btnSearch.innerText = "SEARCHING...";
 
         try {
-            // Direct streaming fetch for fast reading without freezing
             const response = await fetch('gazette.txt');
             if (!response.ok) throw new Error("File not found");
 
             const textData = await response.text();
 
-            // Flexible regex: Handles 810603(554), 810603 (554), 810603-554, 810603:554
             const regex = new RegExp(rollInput + "\\s*[\(:-]?\\s*(\\d+)", "i");
             const match = textData.match(regex);
 
