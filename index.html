@@ -1,455 +1,401 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gumnaam Education Official</title>
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="style.css">
-  <!-- FontAwesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gumnaam Education Official</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col justify-between">
 
-  <!-- Red Maintenance Screen Overlay -->
-  <div id="maintenance-screen" class="hidden fixed inset-0 bg-red-600 text-white z-[9999] flex flex-col items-center justify-center text-center p-6">
-    <div class="max-w-md">
-      <div class="text-6xl mb-4">⚙️</div>
-      <h1 class="text-3xl font-extrabold mb-3 tracking-wide uppercase">WEBSITE UNDER MAINTENANCE</h1>
-      <p class="text-xl font-medium opacity-90">WE WILL BE BACK SOON</p>
-    </div>
-  </div>
+  <!-- Red Maintenance Screen Overlay -->
+  <div id="maintenance-screen" class="hidden fixed inset-0 bg-red-600 text-white z-[9999] flex flex-col items-center justify-center text-center p-6">
+    <div class="max-w-md">
+      <div class="text-6xl mb-4">⚙️</div>
+      <h1 class="text-3xl font-extrabold mb-3 tracking-wide uppercase">WEBSITE UNDER MAINTENANCE</h1>
+      <p class="text-xl font-medium opacity-90">WE WILL BE BACK SOON</p>
+    </div>
+  </div>
 
-  <!-- Navigation Bar -->
-  <header class="w-full bg-white shadow-sm border-b border-emerald-100 py-4 px-6 flex justify-between items-center sticky top-0 z-50">
-    <div class="flex items-center gap-3">
-      <a href="index.html" class="flex items-center gap-3">
-        <img src="logo.png" alt="Gumnaam Education Logo" class="w-12 h-12 object-contain rounded-lg drop-shadow-md">
-        <span class="font-bold text-xl text-emerald-800 tracking-wide">Gumnaam Education</span>
-      </a>
-    </div>
+  <!-- Navigation Bar -->
+  <header class="w-full bg-white shadow-sm border-b border-emerald-100 py-4 px-6 flex justify-between items-center sticky top-0 z-50">
+    <div class="flex items-center gap-3">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="logo.png" alt="Gumnaam Education Logo" class="w-12 h-12 object-contain rounded-lg drop-shadow-md">
+        <span class="font-bold text-xl text-emerald-800 tracking-wide">Gumnaam Education</span>
+      </a>
+    </div>
 
-    <!-- Navigation Links -->
-    <nav class="hidden md:flex items-center gap-6">
-      <a href="index.html" class="font-semibold text-emerald-700">Home</a>
-      <a href="about.html" class="font-semibold text-slate-700 hover:text-emerald-700 transition-all">About Us</a>
-      <a href="contact.html" class="font-semibold text-slate-700 hover:text-emerald-700 transition-all">Contact Us</a>
-      <a href="result.html" class="font-semibold text-amber-600 hover:text-emerald-700 transition-all flex items-center gap-1">
-        <i class="fa-solid fa-square-poll-vertical"></i> Result Portal
-      </a>
-    </nav>
-    
-    <div class="flex items-center gap-4">
-      <span id="user-display" class="hidden text-sm font-semibold text-emerald-900 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200"></span>
-      <button id="auth-action-btn" class="bg-emerald-700 hover:bg-emerald-800 text-white font-medium px-5 py-2 rounded-full transition-all shadow-md">
-        Sign In
-      </button>
-    </div>
-  </header>
+    <!-- Navigation Links -->
+    <nav class="hidden md:flex items-center gap-6">
+      <a href="index.html" class="font-semibold text-emerald-700 font-bold">Home</a>
+      <a href="about.html" class="font-semibold text-slate-700 hover:text-emerald-700 transition-all">About Us</a>
+      <a href="contact.html" class="font-semibold text-slate-700 hover:text-emerald-700 transition-all">Contact Us</a>
+      <a href="result.html" class="font-semibold text-amber-600 hover:text-emerald-700 transition-all flex items-center gap-1">
+    <i class="fa-solid fa-square-poll-vertical"></i> Result Portal
+  </a>
+    </nav>
+    
+    <div class="flex items-center gap-4">
+      <span id="user-display" class="hidden text-sm font-semibold text-emerald-900 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200"></span>
+      <button id="auth-action-btn" class="bg-emerald-700 hover:bg-emerald-800 text-white font-medium px-5 py-2 rounded-full transition-all shadow-md">
+        Sign In
+      </button>
+    </div>
+  </header>
 
-  <!-- HERO / LANDING SECTION (Visible before Sign In) -->
-  <section id="landing-section" class="flex-grow flex flex-col items-center justify-center text-center px-4 py-12">
-    <div class="logo-3d-card bg-white p-6 rounded-3xl shadow-2xl border border-emerald-100 mb-8 max-w-xs sm:max-w-sm transition-transform duration-500">
-      <img src="logo.png" alt="Gumnaam Education" class="w-64 h-64 object-contain mx-auto pulse-animation">
-    </div>
+  <!-- HERO / LANDING SECTION (Visible before Sign In) -->
+  <section id="landing-section" class="flex-grow flex flex-col items-center justify-center text-center px-4 py-12">
+    <div class="logo-3d-card bg-white p-6 rounded-3xl shadow-2xl border border-emerald-100 mb-8 max-w-xs sm:max-w-sm transition-transform duration-500">
+      <img src="logo.png" alt="Gumnaam Education" class="w-64 h-64 object-contain mx-auto pulse-animation">
+    </div>
 
-    <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">
-      Welcome to <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-800 to-amber-600">Gumnaam Education</span>
-    </h1>
-    <p class="text-slate-600 text-base sm:text-lg max-w-xl mb-8">
-      Pakistan's Premier Educational Portal for Study Materials, Target Papers, Class Notes & Latest News.
-    </p>
+    <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">
+      Welcome to <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-800 to-amber-600">Gumnaam Education</span>
+    </h1>
+    <p class="text-slate-600 text-base sm:text-lg max-w-xl mb-8">
+      Pakistan's Premier Educational Portal for Study Materials, Target Papers, Class Notes & Latest News.
+    </p>
 
-    <button id="cta-signup-btn" class="cta-btn bg-gradient-to-r from-emerald-700 to-emerald-900 hover:from-emerald-800 hover:to-emerald-950 text-amber-300 font-bold text-lg px-8 py-4 rounded-2xl shadow-xl transition-all duration-300 flex items-center gap-3">
-      <i class="fa-solid fa-graduation-cap text-amber-400"></i>
-      Sign Up to Start for Free
-    </button>
-  </section>
+    <button id="cta-signup-btn" class="cta-btn bg-gradient-to-r from-emerald-700 to-emerald-900 hover:from-emerald-800 hover:to-emerald-950 text-amber-300 font-bold text-lg px-8 py-4 rounded-2xl shadow-xl transition-all duration-300 flex items-center gap-3">
+      <i class="fa-solid fa-graduation-cap text-amber-400"></i>
+      Sign Up to Start for Free
+    </button>
+  </section>
 
-  <!-- DASHBOARD SECTION (Visible after Sign In) -->
-  <main id="dashboard-section" class="hidden flex-grow max-w-7xl w-full mx-auto px-4 py-8">
-    
-    <!-- Welcome Banner -->
-    <div class="bg-gradient-to-r from-emerald-800 to-emerald-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl mb-10 flex flex-col md:flex-row items-center justify-between gap-6">
-      <div>
-        <h2 class="text-2xl sm:text-3xl font-extrabold text-amber-300 mb-2">Study Material Portal 📚</h2>
-        <p class="text-emerald-100 max-w-xl">Select your class below to access all subjects material directly via Google Drive.</p>
-      </div>
-      <img src="logo.png" class="w-24 h-24 object-contain drop-shadow-lg hidden md:block" alt="Logo">
-    </div>
+  <!-- DASHBOARD SECTION (Visible after Sign In) -->
+  <main id="dashboard-section" class="hidden flex-grow max-w-7xl w-full mx-auto px-4 py-8">
+    
+    <!-- Welcome Banner -->
+    <div class="bg-gradient-to-r from-emerald-800 to-emerald-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl mb-10 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-amber-300 mb-2">Study Material Portal 📚</h2>
+        <p class="text-emerald-100 max-w-xl">Select your class below to access all subjects material directly via Google Drive.</p>
+      </div>
+      <img src="logo.png" class="w-24 h-24 object-contain drop-shadow-lg hidden md:block" alt="Logo">
+    </div>
 
-    <!-- Class Selection Tabs -->
-    <div class="flex flex-wrap gap-2 sm:gap-4 justify-center mb-10">
-      <button class="class-tab active-tab bg-emerald-700 text-white font-semibold px-6 py-2.5 rounded-xl border border-emerald-700 shadow-md transition-all" data-class="9th">Class 9th</button>
-      <button class="class-tab bg-white text-slate-700 font-semibold px-6 py-2.5 rounded-xl border border-slate-200 hover:bg-emerald-50 transition-all" data-class="10th">Class 10th</button>
-      <button class="class-tab bg-white text-slate-700 font-semibold px-6 py-2.5 rounded-xl border border-slate-200 hover:bg-emerald-50 transition-all" data-class="11th">Class 11th</button>
-      <button class="class-tab bg-white text-slate-700 font-semibold px-6 py-2.5 rounded-xl border border-slate-200 hover:bg-emerald-50 transition-all" data-class="12th">Class 12th</button>
-    </div>
+    <!-- Class Selection Tabs -->
+    <div class="flex flex-wrap gap-2 sm:gap-4 justify-center mb-10">
+      <button class="class-tab active-tab bg-emerald-700 text-white font-semibold px-6 py-2.5 rounded-xl border border-emerald-700 shadow-md transition-all" data-class="9th">Class 9th</button>
+      <button class="class-tab bg-white text-slate-700 font-semibold px-6 py-2.5 rounded-xl border border-slate-200 hover:bg-emerald-50 transition-all" data-class="10th">Class 10th</button>
+      <button class="class-tab bg-white text-slate-700 font-semibold px-6 py-2.5 rounded-xl border border-slate-200 hover:bg-emerald-50 transition-all" data-class="11th">Class 11th</button>
+      <button class="class-tab bg-white text-slate-700 font-semibold px-6 py-2.5 rounded-xl border border-slate-200 hover:bg-emerald-50 transition-all" data-class="12th">Class 12th</button>
+    </div>
 
-    <!-- Main Materials Cards Grid -->
-    <div id="materials-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-      <!-- Dynamic Material Cards Rendered via JS -->
-    </div>
+    <!-- Main Materials Cards Grid -->
+    <div id="materials-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+      <!-- Dynamic Material Cards Rendered via JS -->
+    </div>
 
-    <!-- Official WhatsApp Channels Hub -->
-    <div class="bg-white rounded-3xl p-8 border border-emerald-100 shadow-xl text-center mb-12">
-      <h3 class="text-2xl font-bold text-slate-800 mb-2">Join Our Official WhatsApp Channels</h3>
-      <p class="text-slate-500 mb-6 text-sm">Stay connected for instant updates, notifications, and PDF alerts.</p>
-      
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
-        <a href="https://whatsapp.com/channel/0029Vam5DGJBPzjSPNeP7N1s" target="_blank" class="flex items-center gap-3 bg-emerald-50 border border-emerald-200 hover:bg-emerald-600 hover:text-white text-emerald-800 font-bold p-4 rounded-2xl transition-all shadow-sm group">
-          <i class="fa-brands fa-whatsapp text-3xl text-emerald-600 group-hover:text-white"></i>
-          <div class="text-left">
-            <div class="text-sm font-bold">Main WhatsApp Channel</div>
-            <div class="text-xs font-normal opacity-80">Gumnaam Education</div>
-          </div>
-        </a>
+    <!-- Official WhatsApp Channels Hub -->
+    <div class="bg-white rounded-3xl p-8 border border-emerald-100 shadow-xl text-center mb-12">
+      <h3 class="text-2xl font-bold text-slate-800 mb-2">Join Our Official WhatsApp Channels</h3>
+      <p class="text-slate-500 mb-6 text-sm">Stay connected for instant updates, notifications, and PDF alerts.</p>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
+        
+        <!-- Main Channel -->
+        <a href="https://whatsapp.com/channel/0029Vam5DGJBPzjSPNeP7N1s" target="_blank" class="flex items-center gap-3 bg-emerald-50 border border-emerald-200 hover:bg-emerald-600 hover:text-white text-emerald-800 font-bold p-4 rounded-2xl transition-all shadow-sm group">
+          <i class="fa-brands fa-whatsapp text-3xl text-emerald-600 group-hover:text-white"></i>
+          <div class="text-left">
+            <div class="text-sm font-bold">Main WhatsApp Channel</div>
+            <div class="text-xs font-normal opacity-80">Gumnaam Education</div>
+          </div>
+        </a>
 
-        <a href="https://whatsapp.com/channel/0029Vb6nwLdADTOFsKJ6gc1W" target="_blank" class="flex items-center gap-3 bg-emerald-50 border border-emerald-200 hover:bg-emerald-600 hover:text-white text-emerald-800 font-bold p-4 rounded-2xl transition-all shadow-sm group">
-          <i class="fa-brands fa-whatsapp text-3xl text-emerald-600 group-hover:text-white"></i>
-          <div class="text-left">
-            <div class="text-sm font-bold">SSC WhatsApp Channel</div>
-            <div class="text-xs font-normal opacity-80">Class 9th & 10th</div>
-          </div>
-        </a>
+        <!-- SSC Channel -->
+        <a href="https://whatsapp.com/channel/0029Vb6nwLdADTOFsKJ6gc1W" target="_blank" class="flex items-center gap-3 bg-emerald-50 border border-emerald-200 hover:bg-emerald-600 hover:text-white text-emerald-800 font-bold p-4 rounded-2xl transition-all shadow-sm group">
+          <i class="fa-brands fa-whatsapp text-3xl text-emerald-600 group-hover:text-white"></i>
+          <div class="text-left">
+            <div class="text-sm font-bold">SSC WhatsApp Channel</div>
+            <div class="text-xs font-normal opacity-80">Class 9th & 10th</div>
+          </div>
+        </a>
 
-        <a href="https://whatsapp.com/channel/0029VaqCt0W6hENi4mLHP90u" target="_blank" class="flex items-center gap-3 bg-emerald-50 border border-emerald-200 hover:bg-emerald-600 hover:text-white text-emerald-800 font-bold p-4 rounded-2xl transition-all shadow-sm group">
-          <i class="fa-brands fa-whatsapp text-3xl text-emerald-600 group-hover:text-white"></i>
-          <div class="text-left">
-            <div class="text-sm font-bold">HSC WhatsApp Channel</div>
-            <div class="text-xs font-normal opacity-80">Class 11th & 12th</div>
-          </div>
-        </a>
+        <!-- HSC Channel -->
+        <a href="https://whatsapp.com/channel/0029VaqCt0W6hENi4mLHP90u" target="_blank" class="flex items-center gap-3 bg-emerald-50 border border-emerald-200 hover:bg-emerald-600 hover:text-white text-emerald-800 font-bold p-4 rounded-2xl transition-all shadow-sm group">
+          <i class="fa-brands fa-whatsapp text-3xl text-emerald-600 group-hover:text-white"></i>
+          <div class="text-left">
+            <div class="text-sm font-bold">HSC WhatsApp Channel</div>
+            <div class="text-xs font-normal opacity-80">Class 11th & 12th</div>
+          </div>
+        </a>
 
-        <a href="https://whatsapp.com/channel/0029Vb6xS9pHwXb3177k391g" target="_blank" class="flex items-center gap-3 bg-emerald-50 border border-emerald-200 hover:bg-emerald-600 hover:text-white text-emerald-800 font-bold p-4 rounded-2xl transition-all shadow-sm group">
-          <i class="fa-brands fa-whatsapp text-3xl text-emerald-600 group-hover:text-white"></i>
-          <div class="text-left">
-            <div class="text-sm font-bold">Karachi University</div>
-            <div class="text-xs font-normal opacity-80">KU Admission & Info</div>
-          </div>
-        </a>
+        <!-- Karachi University Channel -->
+        <a href="https://whatsapp.com/channel/0029Vb6xS9pHwXb3177k391g" target="_blank" class="flex items-center gap-3 bg-emerald-50 border border-emerald-200 hover:bg-emerald-600 hover:text-white text-emerald-800 font-bold p-4 rounded-2xl transition-all shadow-sm group">
+          <i class="fa-brands fa-whatsapp text-3xl text-emerald-600 group-hover:text-white"></i>
+          <div class="text-left">
+            <div class="text-sm font-bold">Karachi University</div>
+            <div class="text-xs font-normal opacity-80">KU Admission & Info</div>
+          </div>
+        </a>
 
-        <a href="https://whatsapp.com/channel/0029VbB8BeVJJhzcoRu5j724" target="_blank" class="flex items-center gap-3 bg-emerald-50 border border-emerald-200 hover:bg-emerald-600 hover:text-white text-emerald-800 font-bold p-4 rounded-2xl transition-all shadow-sm group">
-          <i class="fa-brands fa-whatsapp text-3xl text-emerald-600 group-hover:text-white"></i>
-          <div class="text-left">
-            <div class="text-sm font-bold">DAE/D.COM WhatsApp Channel</div>
-            <div class="text-xs font-normal opacity-80">Diploma Engineering</div>
-          </div>
-        </a>
+        <!-- DAE Channel -->
+        <a href="https://whatsapp.com/channel/0029VbB8BeVJJhzcoRu5j724" target="_blank" class="flex items-center gap-3 bg-emerald-50 border border-emerald-200 hover:bg-emerald-600 hover:text-white text-emerald-800 font-bold p-4 rounded-2xl transition-all shadow-sm group">
+          <i class="fa-brands fa-whatsapp text-3xl text-emerald-600 group-hover:text-white"></i>
+          <div class="text-left">
+            <div class="text-sm font-bold">DAE/D.COM WhatsApp Channel</div>
+            <div class="text-xs font-normal opacity-80">Diploma Engineering</div>
+          </div>
+        </a>
 
-        <a href="https://whatsapp.com/channel/0029Vb6kyN1DuMRgo4Ycte3g" target="_blank" class="flex items-center gap-3 bg-emerald-50 border border-emerald-200 hover:bg-emerald-600 hover:text-white text-emerald-800 font-bold p-4 rounded-2xl transition-all shadow-sm group">
-          <i class="fa-brands fa-whatsapp text-3xl text-emerald-600 group-hover:text-white"></i>
-          <div class="text-left">
-            <div class="text-sm font-bold">Ziauddin Board Channel</div>
-            <div class="text-xs font-normal opacity-80">Updates & Info</div>
-          </div>
-        </a>
-      </div>
-    </div>
-  </main>
+        <!-- Ziauddin Board Channel -->
+        <a href="https://whatsapp.com/channel/0029Vb6kyN1DuMRgo4Ycte3g" target="_blank" class="flex items-center gap-3 bg-emerald-50 border border-emerald-200 hover:bg-emerald-600 hover:text-white text-emerald-800 font-bold p-4 rounded-2xl transition-all shadow-sm group">
+          <i class="fa-brands fa-whatsapp text-3xl text-emerald-600 group-hover:text-white"></i>
+          <div class="text-left">
+            <div class="text-sm font-bold">Ziauddin Board Channel</div>
+            <div class="text-xs font-normal opacity-80">Updates & Info</div>
+          </div>
+        </a>
 
-  <!-- Auth Popup Modal -->
-  <div id="auth-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center hidden z-50 p-4">
-    <div class="bg-white w-full max-w-md p-8 rounded-3xl shadow-2xl border border-emerald-100 relative">
-      <button id="close-modal" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
-        <i class="fa-solid fa-xmark text-xl"></i>
-      </button>
+      </div>
+    </div>
 
-      <div class="text-center mb-6">
-        <img src="logo.png" alt="Gumnaam Education" class="w-16 h-16 mx-auto mb-2 drop-shadow-md">
-        <h2 class="text-2xl font-bold text-slate-800">Welcome Back</h2>
-        <p class="text-sm text-slate-500">Sign in to access all study materials</p>
-      </div>
+  </main>
 
-      <button id="google-btn" class="w-full bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold py-3 px-4 rounded-xl shadow-sm flex items-center justify-center gap-3 transition-all mb-4">
-        <i class="fa-brands fa-google text-red-500 text-lg"></i>
-        Continue with Google
-      </button>
+  <!-- Auth Popup Modal -->
+  <div id="auth-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center hidden z-50 p-4">
+    <div class="bg-white w-full max-w-md p-8 rounded-3xl shadow-2xl border border-emerald-100 relative">
+      
+      <button id="close-modal" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+        <i class="fa-solid fa-xmark text-xl"></i>
+      </button>
 
-      <div class="flex items-center my-4">
-        <div class="flex-grow border-t border-slate-200"></div>
-        <span class="px-3 text-xs text-slate-400 uppercase font-semibold">Or with Email</span>
-        <div class="flex-grow border-t border-slate-200"></div>
-      </div>
+      <div class="text-center mb-6">
+        <img src="logo.png" alt="Gumnaam Education" class="w-16 h-16 mx-auto mb-2 drop-shadow-md">
+        <h2 class="text-2xl font-bold text-slate-800">Welcome Back</h2>
+        <p class="text-sm text-slate-500">Sign in to access all study materials</p>
+      </div>
 
-      <form id="auth-form" class="space-y-4">
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Email Address</label>
-          <input type="email" id="auth-email" required placeholder="student@gmail.com" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-600">
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Password</label>
-          <input type="password" id="auth-password" required placeholder="••••••••" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-600">
-        </div>
+      <button id="google-btn" class="w-full bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold py-3 px-4 rounded-xl shadow-sm flex items-center justify-center gap-3 transition-all mb-4">
+        <i class="fa-brands fa-google text-red-500 text-lg"></i>
+        Continue with Google
+      </button>
 
-        <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-amber-300 font-bold py-3 rounded-xl shadow-md transition-all">
-          Sign Up / Sign In
-        </button>
-      </form>
-    </div>
-  </div>
+      <div class="flex items-center my-4">
+        <div class="flex-grow border-t border-slate-200"></div>
+        <span class="px-3 text-xs text-slate-400 uppercase font-semibold">Or with Email</span>
+        <div class="flex-grow border-t border-slate-200"></div>
+      </div>
 
-  <!-- Footer -->
-  <footer class="bg-white border-t border-slate-100 py-6 text-center text-sm text-slate-500">
-    © 2026 Gumnaam Education Official Pakistan [News & Info]. All Rights Reserved.
-  </footer>
+      <form id="auth-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Email Address</label>
+          <input type="email" id="auth-email" required placeholder="student@gmail.com" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-600">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Password</label>
+          <input type="password" id="auth-password" required placeholder="••••••••" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-600">
+        </div>
 
-  <!-- Gazette & Dynamic Config Handling Script -->
-  <script>
-    let currentGazetteFile = "gazette.txt";
+        <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-amber-300 font-bold py-3 rounded-xl shadow-md transition-all">
+          Sign Up / Sign In
+        </button>
+      </form>
 
-    window.addEventListener('DOMContentLoaded', async () => {
-      try {
-        const res = await fetch('config.json');
-        if(res.ok) {
-          const data = await res.json();
-          const classSelect = document.getElementById("classSelect");
-          if(classSelect) classSelect.innerHTML = `<option value="${data.classValue}">${data.className}</option>`;
+    </div>
+  </div>
 
-          const facultySelect = document.getElementById("facultySelect");
-          if(facultySelect) facultySelect.innerHTML = `<option value="${data.facultyValue}">${data.facultyName}</option>`;
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-100 py-6 text-center text-sm text-slate-500">
+    © 2026 Gumnaam Education Official Pakistan [News & Info]. All Rights Reserved.
+  </footer>
 
-          currentGazetteFile = data.gazetteFile || currentGazetteFile;
-        }
-      } catch (e) {
-        console.log("Config load nahi ho sakha, fallback defaults use ho rahe hain.");
-      }
-    });
+  <!-- Firebase & App Script Integration -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+    import { 
+      getAuth, 
+      signInWithPopup, 
+      GoogleAuthProvider, 
+      createUserWithEmailAndPassword, 
+      signInWithEmailAndPassword,
+      onAuthStateChanged,
+      signOut 
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    async function checkResult() {
-      const rollInput = document.getElementById("rollNo")?.value.trim();
-      const resultDiv = document.getElementById("resultBox");
-      const btnSearch = document.getElementById("btnSearch");
-      const selectedClass = document.getElementById("classSelect")?.value || "";
-      const selectedFaculty = document.getElementById("facultySelect")?.value || "";
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyD8-II4YOIt1ZGk6x4VhOMvAIr7xazjhPY",
+      authDomain: "gumnaam-education.firebaseapp.com",
+      projectId: "gumnaam-education",
+      storageBucket: "gumnaam-education.firebasestorage.app",
+      messagingSenderId: "680513198806",
+      appId: "1:680513198806:web:5a96acd811b6ec4b7b8777",
+      measurementId: "G-H35HFVKMHL"
+    };
 
-      if (!rollInput) return alert("Lutfan Roll Number enter karen!");
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const googleProvider = new GoogleAuthProvider();
 
-      btnSearch.disabled = true;
-      btnSearch.innerText = "SEARCHING...";
+    // Maintenance Screen Element & Real-Time Listener
+    const maintenanceScreen = document.getElementById('maintenance-screen');
 
-      try {
-        const response = await fetch(currentGazetteFile);
-        if (!response.ok) throw new Error("File not found");
+    onSnapshot(doc(db, "settings", "site_config"), (docSnap) => {
+      if (docSnap.exists() && docSnap.data().maintenance) {
+        maintenanceScreen.classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; // Stop scrolling
+      } else {
+        maintenanceScreen.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+      }
+    });
 
-        const textData = await response.text();
-        const match = textData.match(new RegExp(rollInput + "\\s*[\(:-]?\\s*(\\d+)", "i"));
+    // DOM Elements
+    const authModal = document.getElementById('auth-modal');
+    const ctaBtn = document.getElementById('cta-signup-btn');
+    const authActionBtn = document.getElementById('auth-action-btn');
+    const closeModalBtn = document.getElementById('close-modal');
+    const googleBtn = document.getElementById('google-btn');
+    const authForm = document.getElementById('auth-form');
+    const landingSection = document.getElementById('landing-section');
+    const dashboardSection = document.getElementById('dashboard-section');
+    const userDisplay = document.getElementById('user-display');
+    const materialsGrid = document.getElementById('materials-grid');
 
-        if (match) {
-          const marks = parseInt(match[1]);
-          const TOTAL = 1100;
-          const pct = ((marks / TOTAL) * 100).toFixed(2);
-          
-          let grade = "FAIL";
-          if (pct >= 80) grade = "A-1 Grade";
-          else if (pct >= 70) grade = "A Grade";
-          else if (pct >= 60) grade = "B Grade";
-          else if (pct >= 50) grade = "C Grade";
-          else if (pct >= 40) grade = "D Grade";
-          else if (pct >= 33) grade = "E Grade";
+    // Render 4 Main Material Cards Function (Fetching dynamically from Firestore)
+    async function renderMaterials(selectedClass) {
+      materialsGrid.innerHTML = '<p class="col-span-full text-center text-slate-500 py-8"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Loading resources for Class ' + selectedClass + '...</p>';
+      
+      let links = {};
+      try {
+        const docRef = doc(db, "materials", selectedClass);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          links = docSnap.data();
+        }
+      } catch (err) {
+        console.error("Error fetching Firestore links:", err);
+      }
 
-          resultDiv.className = "result-box success";
-          resultDiv.style.display = "block";
-          resultDiv.innerHTML = `
-            <div class="result-row"><span class="label">Roll Number</span><span class="value">${rollInput}</span></div>
-            <div class="result-row"><span class="label">Class</span><span class="value">Class ${selectedClass}</span></div>
-            <div class="result-row"><span class="label">Faculty</span><span class="value">${selectedFaculty}</span></div>
-            <div class="result-row"><span class="label">Marks</span><span class="value">${marks} / ${TOTAL}</span></div>
-            <div class="result-row"><span class="label">Percentage</span><span class="value">${pct}%</span></div>
-            <div class="result-row"><span class="label">Grade</span><span class="badge-grade">${grade}</span></div>`;
-        } else {
-          resultDiv.className = "result-box error";
-          resultDiv.style.display = "block";
-          resultDiv.innerHTML = `<p style="font-size:13px; text-align:center;"><strong>Result Not Found:</strong> Roll Number ${rollInput} gazette mein nahi mila ya candidate Fail/Absent hai.</p>`;
-        }
-      } catch (err) {
-        alert("Gazette file load nahi ho saki! Check karein file sahi se uploaded hai.");
-        console.error(err);
-      } finally {
-        btnSearch.disabled = false;
-        btnSearch.innerText = "SEARCH RESULT";
-      }
-    }
-  </script>
+      materialsGrid.innerHTML = '';
 
-  <!-- Firebase & App Script Integration -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
-    import { 
-      getAuth, 
-      signInWithPopup, 
-      GoogleAuthProvider, 
-      createUserWithEmailAndPassword, 
-      signInWithEmailAndPassword,
-      onAuthStateChanged,
-      signOut 
-    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+      const items = [
+        { title: "All Subjects Notes", icon: "fa-file-lines", color: "bg-emerald-700 hover:bg-emerald-800 text-white", link: links.notes || "#" },
+        { title: "All Subjects Target Papers", icon: "fa-bullseye", color: "bg-amber-500 hover:bg-amber-600 text-slate-900", link: links.target || "#" },
+        { title: "All Subjects 10 Years", icon: "fa-clock-rotate-left", color: "bg-sky-600 hover:bg-sky-700 text-white", link: links.tenYears || "#" },
+        { title: "All Subjects Books", icon: "fa-book", color: "bg-slate-700 hover:bg-slate-800 text-white", link: links.books || "#" }
+      ];
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyD8-II4YOIt1ZGk6x4VhOMvAIr7xazjhPY",
-      authDomain: "gumnaam-education.firebaseapp.com",
-      projectId: "gumnaam-education",
-      storageBucket: "gumnaam-education.firebasestorage.app",
-      messagingSenderId: "680513198806",
-      appId: "1:680513198806:web:5a96acd811b6ec4b7b8777",
-      measurementId: "G-H35HFVKMHL"
-    };
+      items.forEach(item => {
+        const card = document.createElement('div');
+        card.className = "bg-white p-6 rounded-2xl shadow-md hover:shadow-xl border border-emerald-100 transition-all flex flex-col justify-between items-center text-center";
+        
+        const isLinkAvailable = item.link && item.link !== "#";
 
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const googleProvider = new GoogleAuthProvider();
+        card.innerHTML = `
+          <div class="mb-4">
+            <div class="w-16 h-16 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 flex items-center justify-center text-2xl shadow-sm mx-auto mb-3">
+              <i class="fa-solid ${item.icon}"></i>
+            </div>
+            <h4 class="font-bold text-lg text-slate-800 mb-1">${item.title}</h4>
+            <span class="text-xs text-emerald-700 font-semibold bg-emerald-50 px-2.5 py-1 rounded-md">Class ${selectedClass}</span>
+          </div>
+          
+          <a href="${item.link}" target="${isLinkAvailable ? '_blank' : '_self'}" class="w-full ${item.color} text-sm font-bold py-3 px-4 rounded-xl text-center flex items-center justify-center gap-2 transition-all shadow-md ${!isLinkAvailable ? 'opacity-60 cursor-not-allowed' : ''}">
+            ${isLinkAvailable ? 'Open Drive <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>' : 'Coming Soon'}
+          </a>
+        `;
+        materialsGrid.appendChild(card);
+      });
+    }
 
-    const maintenanceScreen = document.getElementById('maintenance-screen');
+    // Class Tab Event Listeners
+    document.querySelectorAll('.class-tab').forEach(tab => {
+      tab.addEventListener('click', (e) => {
+        document.querySelectorAll('.class-tab').forEach(t => {
+          t.className = "class-tab bg-white text-slate-700 font-semibold px-6 py-2.5 rounded-xl border border-slate-200 hover:bg-emerald-50 transition-all";
+        });
+        e.target.className = "class-tab active-tab bg-emerald-700 text-white font-semibold px-6 py-2.5 rounded-xl border border-emerald-700 shadow-md transition-all";
+        renderMaterials(e.target.dataset.class);
+      });
+    });
 
-    onSnapshot(doc(db, "settings", "site_config"), (docSnap) => {
-      if (docSnap.exists() && docSnap.data().maintenance) {
-        maintenanceScreen.classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
-      } else {
-        maintenanceScreen.classList.add('hidden');
-        document.body.style.overflow = 'auto';
-      }
-    });
+    // Auth Modal Handlers
+    ctaBtn?.addEventListener('click', () => authModal.classList.remove('hidden'));
+    closeModalBtn?.addEventListener('click', () => authModal.classList.add('hidden'));
 
-    const authModal = document.getElementById('auth-modal');
-    const ctaBtn = document.getElementById('cta-signup-btn');
-    const authActionBtn = document.getElementById('auth-action-btn');
-    const closeModalBtn = document.getElementById('close-modal');
-    const googleBtn = document.getElementById('google-btn');
-    const authForm = document.getElementById('auth-form');
-    const landingSection = document.getElementById('landing-section');
-    const dashboardSection = document.getElementById('dashboard-section');
-    const userDisplay = document.getElementById('user-display');
-    const materialsGrid = document.getElementById('materials-grid');
+    authActionBtn?.addEventListener('click', () => {
+      if (auth.currentUser) {
+        signOut(auth);
+      } else {
+        authModal.classList.remove('hidden');
+      }
+    });
 
-    async function renderMaterials(selectedClass) {
-      materialsGrid.innerHTML = '<p class="col-span-full text-center text-slate-500 py-8"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Loading resources for Class ' + selectedClass + '...</p>';
-      
-      let links = {};
-      try {
-        const docRef = doc(db, "materials", selectedClass);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) links = docSnap.data();
-      } catch (err) {
-        console.error("Error fetching Firestore links:", err);
-      }
+    // Google Login
+    googleBtn?.addEventListener('click', async () => {
+      try {
+        await signInWithPopup(auth, googleProvider);
+        authModal.classList.add('hidden');
+      } catch (error) {
+        alert("Google Error: " + error.message);
+      }
+    });
 
-      materialsGrid.innerHTML = '';
+    // Email/Password Login
+    authForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('auth-email').value;
+      const password = document.getElementById('auth-password').value;
 
-      const items = [
-        { title: "All Subjects Notes", icon: "fa-file-lines", color: "bg-emerald-700 hover:bg-emerald-800 text-white", link: links.notes || "#" },
-        { title: "All Subjects Target Papers", icon: "fa-bullseye", color: "bg-amber-500 hover:bg-amber-600 text-slate-900", link: links.target || "#" },
-        { title: "All Subjects 10 Years", icon: "fa-clock-rotate-left", color: "bg-sky-600 hover:bg-sky-700 text-white", link: links.tenYears || "#" },
-        { title: "All Subjects Books", icon: "fa-book", color: "bg-slate-700 hover:bg-slate-800 text-white", link: links.books || "#" }
-      ];
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        authModal.classList.add('hidden');
+      } catch (error) {
+        if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found') {
+          try {
+            await createUserWithEmailAndPassword(auth, email, password);
+            authModal.classList.add('hidden');
+          } catch (signUpErr) {
+            alert("Sign Up Error: " + signUpErr.message);
+          }
+        } else {
+          alert("Login Error: " + error.message);
+        }
+      }
+    });
 
-      items.forEach(item => {
-        const card = document.createElement('div');
-        card.className = "bg-white p-6 rounded-2xl shadow-md hover:shadow-xl border border-emerald-100 transition-all flex flex-col justify-between items-center text-center";
-        
-        const isLinkAvailable = item.link && item.link !== "#";
+    // Auth State Monitor
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        landingSection.classList.add('hidden');
+        dashboardSection.classList.remove('hidden');
+        userDisplay.classList.remove('hidden');
+        userDisplay.innerText = user.displayName || user.email.split('@')[0];
+        authActionBtn.innerText = "Sign Out";
+        
+        // User data Database mein save / update karne ke liye
+        try {
+          await setDoc(doc(db, "users", user.uid), {
+            uid: user.uid,
+            email: user.email,
+            displayName: user.displayName || user.email.split('@')[0],
+            lastLogin: new Date().toISOString()
+          }, { merge: true });
+        } catch (e) {
+          console.error("User save error:", e);
+        }
 
-        card.innerHTML = `
-          <div class="mb-4">
-            <div class="w-16 h-16 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 flex items-center justify-center text-2xl shadow-sm mx-auto mb-3">
-              <i class="fa-solid ${item.icon}"></i>
-            </div>
-            <h4 class="font-bold text-lg text-slate-800 mb-1">${item.title}</h4>
-            <span class="text-xs text-emerald-700 font-semibold bg-emerald-50 px-2.5 py-1 rounded-md">Class ${selectedClass}</span>
-          </div>
-          <a href="${item.link}" target="${isLinkAvailable ? '_blank' : '_self'}" class="w-full ${item.color} text-sm font-bold py-3 px-4 rounded-xl text-center flex items-center justify-center gap-2 transition-all shadow-md ${!isLinkAvailable ? 'opacity-60 cursor-not-allowed' : ''}">
-            ${isLinkAvailable ? 'Open Drive <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>' : 'Coming Soon'}
-          </a>
-        `;
-        materialsGrid.appendChild(card);
-      });
-    }
-
-    document.querySelectorAll('.class-tab').forEach(tab => {
-      tab.addEventListener('click', (e) => {
-        document.querySelectorAll('.class-tab').forEach(t => {
-          t.className = "class-tab bg-white text-slate-700 font-semibold px-6 py-2.5 rounded-xl border border-slate-200 hover:bg-emerald-50 transition-all";
-        });
-        e.target.className = "class-tab active-tab bg-emerald-700 text-white font-semibold px-6 py-2.5 rounded-xl border border-emerald-700 shadow-md transition-all";
-        renderMaterials(e.target.dataset.class);
-      });
-    });
-
-    ctaBtn?.addEventListener('click', () => authModal.classList.remove('hidden'));
-    closeModalBtn?.addEventListener('click', () => authModal.classList.add('hidden'));
-
-    authActionBtn?.addEventListener('click', () => {
-      if (auth.currentUser) {
-        signOut(auth);
-      } else {
-        authModal.classList.remove('hidden');
-      }
-    });
-
-    googleBtn?.addEventListener('click', async () => {
-      try {
-        await signInWithPopup(auth, googleProvider);
-        authModal.classList.add('hidden');
-      } catch (error) {
-        alert("Google Error: " + error.message);
-      }
-    });
-
-    authForm?.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email = document.getElementById('auth-email').value;
-      const password = document.getElementById('auth-password').value;
-
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
-        authModal.classList.add('hidden');
-      } catch (error) {
-        if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found') {
-          try {
-            await createUserWithEmailAndPassword(auth, email, password);
-            authModal.classList.add('hidden');
-          } catch (signUpErr) {
-            alert("Sign Up Error: " + signUpErr.message);
-          }
-        } else {
-          alert("Login Error: " + error.message);
-        }
-      }
-    });
-
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        landingSection.classList.add('hidden');
-        dashboardSection.classList.remove('hidden');
-        userDisplay.classList.remove('hidden');
-        userDisplay.innerText = user.displayName || user.email.split('@')[0];
-        authActionBtn.innerText = "Sign Out";
-        
-        try {
-          await setDoc(doc(db, "users", user.uid), {
-            uid: user.uid,
-            email: user.email,
-            displayName: user.displayName || user.email.split('@')[0],
-            lastLogin: new Date().toISOString()
-          }, { merge: true });
-        } catch (e) {
-          console.error("User save error:", e);
-        }
-
-        renderMaterials("9th");
-      } else {
-        landingSection.classList.remove('hidden');
-        dashboardSection.classList.add('hidden');
-        userDisplay.classList.add('hidden');
-        authActionBtn.innerText = "Sign In";
-      }
-    });
-  </script>
+        renderMaterials("9th");
+      } else {
+        landingSection.classList.remove('hidden');
+        dashboardSection.classList.add('hidden');
+        userDisplay.classList.add('hidden');
+        authActionBtn.innerText = "Sign In";
+      }
+    });
+  </script>
 
 </body>
 </html>
