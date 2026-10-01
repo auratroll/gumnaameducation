@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Supplymentry Material - Gumnaam Education</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    /* Custom Scrollbar to hide it horizontally */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-white text-slate-800 min-h-screen flex flex-col justify-between overflow-x-hidden" style="font-family: 'Times New Roman', Times, serif;">
+
+  <!-- WhatsApp Mandatory Follow Popup -->
+  <div id="whatsapp-popup" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md flex items-center justify-center z-[9999] p-4 transition-opacity duration-500">
+    <div class="bg-white p-8 rounded-3xl shadow-2xl border-4 border-[#F1EDD4] max-w-md text-center transform transition-all scale-100">
+      <div class="w-20 h-20 bg-[#F1EDD4]/40 rounded-full flex items-center justify-center mx-auto mb-4 border border-[#A6C665]">
+        <i class="fa-brands fa-whatsapp text-5xl text-[#A6C665]"></i>
+      </div>
+      <h2 class="text-2xl font-extrabold text-[#1B3625] mb-2 uppercase tracking-wide">Mandatory Step</h2>
+      <p class="text-slate-600 mb-8 font-bold text-sm leading-relaxed">
+        Follow our official channel to access material for supplymentry 9 to 12
+      </p>
+      <a href="https://whatsapp.com/channel/0029Vam5DGJBPzjSPNeP7N1s" target="_blank" id="follow-now-btn" class="inline-block w-full bg-[#1B3625] hover:bg-[#122519] text-[#F1EDD4] font-bold text-lg py-4 rounded-xl shadow-lg transition-all border border-[#1B3625]">
+        <i class="fa-solid fa-bell mr-2 text-[#A6C665]"></i> Follow Now
+      </a>
+    </div>
+  </div>
+
+  <!-- Welcome Toast Notification -->
+  <div id="welcome-toast" class="fixed top-24 left-1/2 transform -translate-x-1/2 -translate-y-full opacity-0 bg-[#A6C665] text-[#1B3625] border-2 border-[#1B3625] px-6 py-3 rounded-full font-bold shadow-2xl z-50 transition-all duration-500 flex items-center gap-2">
+    <i class="fa-solid fa-circle-check"></i> Welcome to Supply Portal!
+  </div>
+
+  <!-- Navigation Bar -->
+  <header class="w-full bg-white shadow-sm border-b border-[#F1EDD4] py-3 px-4 sm:px-6 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="flex items-center gap-2 sm:gap-3">
+          <img src="logo.png" alt="Gumnaam Education Logo" class="w-10 h-10 sm:w-12 sm:h-12 object-contain rounded-lg drop-shadow-md">
+          <span class="font-bold text-lg sm:text-xl text-[#1B3625] tracking-wide">Gumnaam Education</span>
+        </a>
+      </div>
+      <a href="index.html" class="font-bold text-[#A6C665] hover:text-[#1B3625] transition-all text-sm sm:text-base border border-[#F1EDD4] px-4 py-2 rounded-lg bg-[#F1EDD4]/20">
+        <i class="fa-solid fa-house mr-1"></i> Back to Home
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Content (Hidden until Followed) -->
+  <main id="main-content" class="opacity-0 pointer-events-none transition-opacity duration-1000 flex-grow max-w-7xl w-full mx-auto px-4 py-8">
+    
+    <!-- Header Banner -->
+    <div class="bg-gradient-to-r from-[#1B3625] to-[#122519] rounded-3xl p-6 sm:p-8 text-white shadow-xl mb-10 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left border-2 border-[#A6C665]">
+      <div>
+        <span class="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-3 inline-block animate-pulse">Special Edition</span>
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-[#F1EDD4] mb-2 uppercase">Supplymentry Portal</h2>
+        <p class="text-white/80 text-sm sm:text-base max-w-xl font-semibold">Complete study material, target papers, and notes for Supply Exams Class 9th to 12th.</p>
+      </div>
+      <i class="fa-solid fa-file-signature text-7xl text-[#A6C665] opacity-80 hidden md:block drop-shadow-lg"></i>
+    </div>
+
+    <!-- Class Selection Tabs -->
+    <div class="flex overflow-x-auto no-scrollbar gap-3 sm:gap-4 justify-start sm:justify-center mb-8 pb-2">
+      <button class="supply-tab active-tab flex-shrink-0 bg-[#1B3625] text-[#F1EDD4] font-bold px-6 py-3 rounded-xl border-2 border-[#A6C665] shadow-lg transition-all text-sm sm:text-base" data-class="9th">Class 9th</button>
+      <button class="supply-tab flex-shrink-0 bg-white text-[#1B3625] font-bold px-6 py-3 rounded-xl border border-[#F1EDD4] hover:bg-[#F1EDD4]/50 transition-all text-sm sm:text-base shadow-sm" data-class="10th">Class 10th</button>
+      <button class="supply-tab flex-shrink-0 bg-white text-[#1B3625] font-bold px-6 py-3 rounded-xl border border-[#F1EDD4] hover:bg-[#F1EDD4]/50 transition-all text-sm sm:text-base shadow-sm" data-class="11th">Class 11th</button>
+      <button class="supply-tab flex-shrink-0 bg-white text-[#1B3625] font-bold px-6 py-3 rounded-xl border border-[#F1EDD4] hover:bg-[#F1EDD4]/50 transition-all text-sm sm:text-base shadow-sm" data-class="12th">Class 12th</button>
+    </div>
+
+    <!-- Supply Materials Grid -->
+    <div id="supply-materials-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12">
+      <!-- Cards will be injected by JavaScript -->
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-[#F1EDD4] py-6 text-center text-xs sm:text-sm font-bold text-slate-500">
+    © 2026 Gumnaam Education Official. All Rights Reserved.
+  </footer>
+
+  <!-- Script for Popup & Tabs Logic -->
+  <script>
+    // Elements
+    const whatsappPopup = document.getElementById('whatsapp-popup');
+    const followNowBtn = document.getElementById('follow-now-btn');
+    const mainContent = document.getElementById('main-content');
+    const welcomeToast = document.getElementById('welcome-toast');
+    const supplyGrid = document.getElementById('supply-materials-grid');
+    const supplyTabs = document.querySelectorAll('.supply-tab');
+
+    // Handle Follow Button Click
+    followNowBtn.addEventListener('click', () => {
+      // Fade out popup
+      whatsappPopup.style.opacity = '0';
+      
+      setTimeout(() => {
+        whatsappPopup.classList.add('hidden'); // Remove from DOM after fade out
+        
+        // Show Welcome Toast
+        welcomeToast.classList.remove('-translate-y-full', 'opacity-0');
+        welcomeToast.classList.add('translate-y-0', 'opacity-100');
+        
+        // Fade in Main Content
+        mainContent.classList.remove('opacity-0', 'pointer-events-none');
+        mainContent.classList.add('opacity-100');
+
+        // Hide Toast after 3.5 seconds
+        setTimeout(() => {
+          welcomeToast.classList.remove('translate-y-0', 'opacity-100');
+          welcomeToast.classList.add('-translate-y-full', 'opacity-0');
+        }, 3500);
+        
+      }, 500); // Wait for transition
+    });
+
+    // Render Supply Materials Function
+    function renderSupplyMaterials(selectedClass) {
+      supplyGrid.innerHTML = ''; // Clear grid
+
+      const supplyItems = [
+        { title: "NOTES", icon: "fa-file-lines", color: "bg-[#1B3625] hover:bg-[#122519] text-[#F1EDD4]", link: "#" },
+        { title: "10 YEARS", icon: "fa-clock-rotate-left", color: "bg-[#F1EDD4] hover:bg-[#E2DBBC] text-[#1B3625]", link: "#" },
+        { title: "SUPPLY TARGET PAPERS", icon: "fa-bullseye", color: "bg-[#A6C665] hover:bg-[#96BA50] text-[#1B3625]", link: "#" },
+        { title: "BOOKS", icon: "fa-book", color: "bg-slate-800 hover:bg-slate-900 text-[#F1EDD4]", link: "#" }
+      ];
+
+      supplyItems.forEach(item => {
+        const card = document.createElement('div');
+        card.className = "bg-white p-6 rounded-2xl shadow-md hover:shadow-xl border-2 border-[#F1EDD4] transition-all flex flex-col justify-between items-center text-center transform hover:-translate-y-1";
+        
+        card.innerHTML = `
+          <div class="mb-5 w-full border-b border-[#F1EDD4] pb-4">
+            <div class="w-16 h-16 rounded-full bg-[#F1EDD4]/30 border-2 border-[#1B3625] text-[#1B3625] flex items-center justify-center text-2xl shadow-sm mx-auto mb-4">
+              <i class="fa-solid ${item.icon}"></i>
+            </div>
+            <h4 class="font-extrabold text-lg text-[#1B3625] tracking-wide">${item.title}</h4>
+            <span class="inline-block mt-2 text-[10px] sm:text-xs text-[#1B3625] font-bold bg-[#A6C665]/20 px-3 py-1 rounded-full border border-[#A6C665]">Class ${selectedClass} Supply</span>
+          </div>
+          
+          <a href="${item.link}" class="w-full ${item.color} text-sm font-bold py-3.5 px-4 rounded-xl text-center flex items-center justify-center gap-2 transition-all shadow-md">
+            <i class="fa-solid fa-download"></i> View & Download
+          </a>
+        `;
+        supplyGrid.appendChild(card);
+      });
+    }
+
+    // Initialize Default Render (Class 9th)
+    renderSupplyMaterials("9th");
+
+    // Tab Click Logic
+    supplyTabs.forEach(tab => {
+      tab.addEventListener('click', (e) => {
+        // Reset all tabs
+        supplyTabs.forEach(t => {
+          t.className = "supply-tab flex-shrink-0 bg-white text-[#1B3625] font-bold px-6 py-3 rounded-xl border border-[#F1EDD4] hover:bg-[#F1EDD4]/50 transition-all text-sm sm:text-base shadow-sm";
+        });
+        
+        // Activate clicked tab
+        e.target.className = "supply-tab active-tab flex-shrink-0 bg-[#1B3625] text-[#F1EDD4] font-bold px-6 py-3 rounded-xl border-2 border-[#A6C665] shadow-lg transition-all text-sm sm:text-base";
+        
+        // Render content for selected class
+        renderSupplyMaterials(e.target.dataset.class);
+      });
+    });
+  </script>
+
+</body>
+</html>
