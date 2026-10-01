@@ -82,11 +82,11 @@
         </div>
       </div>
 
-      <!-- Drive Links Update Section -->
+      <!-- Main Drive Links Update Section (Regular) -->
       <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-xl border border-[#F1EDD4]">
         <div class="flex justify-between items-center mb-6 border-b border-[#F1EDD4] pb-4">
           <div>
-            <h2 class="text-xl sm:text-2xl font-bold text-[#1B3625]"><i class="fa-brands fa-google-drive text-[#A6C665] mr-2"></i>Update Drive Links</h2>
+            <h2 class="text-xl sm:text-2xl font-bold text-[#1B3625]"><i class="fa-brands fa-google-drive text-[#A6C665] mr-2"></i>Update Drive Links (Regular)</h2>
             <p class="text-xs text-slate-500 font-semibold mt-1">Links will update securely without data loss</p>
           </div>
           <button id="admin-logout-btn" class="text-xs bg-rose-50 text-rose-600 border border-rose-200 px-4 py-2 rounded-xl font-bold hover:bg-rose-100 transition-all">Logout</button>
@@ -126,7 +126,56 @@
           </div>
 
           <button type="submit" class="w-full bg-[#A6C665] hover:bg-[#96BA50] text-[#1B3625] font-extrabold tracking-wide py-3.5 rounded-xl shadow-md transition-all mt-4 border border-[#96BA50]">
-            <i class="fa-solid fa-cloud-arrow-up mr-2"></i> Save & Publish Changes
+            <i class="fa-solid fa-cloud-arrow-up mr-2"></i> Save & Publish Regular Links
+          </button>
+        </form>
+      </div>
+
+      <!-- SUPPLY PORTAL STUFF (New Section) -->
+      <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-xl border border-[#F1EDD4] relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1.5 bg-[#A6C665]"></div>
+        <div class="flex justify-between items-center mb-6 border-b border-[#F1EDD4] pb-4">
+          <div>
+            <h2 class="text-xl sm:text-2xl font-bold text-[#1B3625]"><i class="fa-solid fa-file-circle-exclamation text-[#A6C665] mr-2"></i>SUPPLY PORTAL STUFF</h2>
+            <p class="text-xs text-slate-500 font-semibold mt-1">Manage links exclusively for the Supplymentry Portal</p>
+          </div>
+        </div>
+
+        <form id="supply-links-form" class="space-y-5">
+          <div>
+            <label class="block text-xs font-bold uppercase text-[#1B3625] mb-1">Select Supply Class</label>
+            <select id="supply-select-class" class="w-full px-4 py-3 rounded-xl border border-[#1B3625] font-bold text-[#1B3625] focus:outline-none focus:border-[#A6C665] focus:ring-1 focus:ring-[#A6C665] bg-[#F1EDD4]/10 appearance-none">
+              <option value="9th">📘 Class 9th Supply</option>
+              <option value="10th">📙 Class 10th Supply</option>
+              <option value="11th">📗 Class 11th Supply</option>
+              <option value="12th">📕 Class 12th Supply</option>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label class="block text-[11px] font-bold uppercase text-slate-600 mb-1"><i class="fa-solid fa-file-lines mr-1 text-[#1B3625]"></i> Supply Notes</label>
+              <input type="url" id="supply-link-notes" placeholder="https://drive.google.com/..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-[#1B3625] text-sm">
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-bold uppercase text-slate-600 mb-1"><i class="fa-solid fa-bullseye mr-1 text-[#A6C665]"></i> Supply Target Papers</label>
+              <input type="url" id="supply-link-target" placeholder="https://drive.google.com/..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-[#1B3625] text-sm">
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-bold uppercase text-slate-600 mb-1"><i class="fa-solid fa-clock-rotate-left mr-1 text-sky-600"></i> Supply 10 Years</label>
+              <input type="url" id="supply-link-tenYears" placeholder="https://drive.google.com/..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-[#1B3625] text-sm">
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-bold uppercase text-slate-600 mb-1"><i class="fa-solid fa-book mr-1 text-slate-700"></i> Supply Books</label>
+              <input type="url" id="supply-link-books" placeholder="https://drive.google.com/..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-[#1B3625] text-sm">
+            </div>
+          </div>
+
+          <button type="submit" class="w-full bg-[#1B3625] hover:bg-[#122519] text-[#F1EDD4] font-extrabold tracking-wide py-3.5 rounded-xl shadow-md transition-all mt-4 border border-[#1B3625]">
+            <i class="fa-solid fa-cloud-arrow-up mr-2"></i> Save Supply Links
           </button>
         </form>
       </div>
@@ -197,7 +246,12 @@
 
     const loginCard = document.getElementById('admin-login-card');
     const panelCard = document.getElementById('admin-panel-card');
+    
+    // Regular Links Elements
     const selectClass = document.getElementById('select-class');
+    // Supply Links Elements
+    const supplySelectClass = document.getElementById('supply-select-class');
+
     const toggleMaintenanceBtn = document.getElementById('toggle-maintenance-btn');
     const maintenanceStatusText = document.getElementById('maintenance-status-text');
 
@@ -225,18 +279,19 @@
       try {
         await setDoc(doc(db, "settings", "site_config"), {
           maintenance: !isMaintenanceActive
-        }, { merge: true }); // Security Fix: merge true used here as well
+        }, { merge: true });
       } catch (err) {
         alert("Error updating maintenance mode: " + err.message);
       }
     });
 
-    // Load Existing Links for Selected Class
+    // ============================================
+    // 1. REGULAR LINKS LOGIC
+    // ============================================
     async function fetchClassLinks(className) {
       const docRef = doc(db, "materials", className);
       const docSnap = await getDoc(docRef);
       
-      // Clear inputs first
       document.getElementById('link-notes').value = '';
       document.getElementById('link-target').value = '';
       document.getElementById('link-tenYears').value = '';
@@ -251,7 +306,104 @@
       }
     }
 
-    // Load Registered Users & Calculate Live Users
+    selectClass.addEventListener('change', (e) => fetchClassLinks(e.target.value));
+
+    document.getElementById('links-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const currentClass = selectClass.value;
+      const newLinksData = {};
+      
+      const notesLink = document.getElementById('link-notes').value;
+      const targetLink = document.getElementById('link-target').value;
+      const tenYearsLink = document.getElementById('link-tenYears').value;
+      const booksLink = document.getElementById('link-books').value;
+
+      if(notesLink) newLinksData.notes = notesLink;
+      if(targetLink) newLinksData.target = targetLink;
+      if(tenYearsLink) newLinksData.tenYears = tenYearsLink;
+      if(booksLink) newLinksData.books = booksLink;
+      
+      try {
+        await setDoc(doc(db, "materials", currentClass), newLinksData, { merge: true });
+        
+        const btn = e.target.querySelector('button[type="submit"]');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check mr-2"></i> Successfully Updated!';
+        btn.classList.replace('bg-[#A6C665]', 'bg-[#1B3625]');
+        btn.classList.replace('text-[#1B3625]', 'text-[#A6C665]');
+        
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.classList.replace('bg-[#1B3625]', 'bg-[#A6C665]');
+          btn.classList.replace('text-[#A6C665]', 'text-[#1B3625]');
+        }, 2500);
+
+      } catch (err) {
+        alert("Error saving regular links: " + err.message);
+      }
+    });
+
+    // ============================================
+    // 2. SUPPLY LINKS LOGIC (NEW)
+    // ============================================
+    async function fetchSupplyClassLinks(className) {
+      const docRef = doc(db, "supply_materials", className); // New Collection
+      const docSnap = await getDoc(docRef);
+      
+      document.getElementById('supply-link-notes').value = '';
+      document.getElementById('supply-link-target').value = '';
+      document.getElementById('supply-link-tenYears').value = '';
+      document.getElementById('supply-link-books').value = '';
+
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        if(data.notes) document.getElementById('supply-link-notes').value = data.notes;
+        if(data.target) document.getElementById('supply-link-target').value = data.target;
+        if(data.tenYears) document.getElementById('supply-link-tenYears').value = data.tenYears;
+        if(data.books) document.getElementById('supply-link-books').value = data.books;
+      }
+    }
+
+    supplySelectClass.addEventListener('change', (e) => fetchSupplyClassLinks(e.target.value));
+
+    document.getElementById('supply-links-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const currentClass = supplySelectClass.value;
+      const newLinksData = {};
+      
+      const notesLink = document.getElementById('supply-link-notes').value;
+      const targetLink = document.getElementById('supply-link-target').value;
+      const tenYearsLink = document.getElementById('supply-link-tenYears').value;
+      const booksLink = document.getElementById('supply-link-books').value;
+
+      if(notesLink) newLinksData.notes = notesLink;
+      if(targetLink) newLinksData.target = targetLink;
+      if(tenYearsLink) newLinksData.tenYears = tenYearsLink;
+      if(booksLink) newLinksData.books = booksLink;
+      
+      try {
+        await setDoc(doc(db, "supply_materials", currentClass), newLinksData, { merge: true });
+        
+        const btn = e.target.querySelector('button[type="submit"]');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check mr-2"></i> Supply Links Saved!';
+        btn.classList.replace('bg-[#1B3625]', 'bg-[#A6C665]');
+        btn.classList.replace('text-[#F1EDD4]', 'text-[#1B3625]');
+        
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.classList.replace('bg-[#A6C665]', 'bg-[#1B3625]');
+          btn.classList.replace('text-[#1B3625]', 'text-[#F1EDD4]');
+        }, 2500);
+
+      } catch (err) {
+        alert("Error saving supply links: " + err.message);
+      }
+    });
+
+    // ============================================
+    // 3. USERS LOGIC
+    // ============================================
     async function loadUsers() {
       const usersTableBody = document.getElementById('users-table-body');
       const statTotal = document.getElementById('stat-total');
@@ -284,7 +436,6 @@
             const lastLoginDate = new Date(data.lastLogin);
             lastLoginDisplay = lastLoginDate.toLocaleString();
             
-            // Check if active in the last 30 minutes (Live User Logic)
             const diffMinutes = (currentTime - lastLoginDate) / (1000 * 60);
             if (diffMinutes <= 30) {
               liveUsersCount++;
@@ -300,7 +451,6 @@
           usersTableBody.appendChild(tr);
         });
 
-        // Update Live Counters
         statLive.innerText = liveUsersCount;
         liveBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-red-600 animate-pulse shadow-[0_0_5px_red]"></span> Live: ${liveUsersCount}`;
 
@@ -310,21 +460,19 @@
       }
     }
 
-    selectClass.addEventListener('change', (e) => fetchClassLinks(e.target.value));
-
-    // CUSTOM ADMIN LOGIN WITH EXTRA SECURITY LAYER
+    // ============================================
+    // 4. AUTHENTICATION LOGIC
+    // ============================================
     document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const usernameInput = document.getElementById('admin-username').value;
       const passwordInput = document.getElementById('admin-password').value;
 
-      // Strict Frontend Check
       if (usernameInput !== REQUIRED_USERNAME || passwordInput !== REQUIRED_PASSWORD) {
         alert("SECURITY ALERT: Invalid Admin Credentials! Access Denied.");
         return;
       }
 
-      // If checks pass, authenticate via Firebase
       try {
         await signInWithEmailAndPassword(auth, FIREBASE_ADMIN_EMAIL, passwordInput);
       } catch (err) {
@@ -332,53 +480,17 @@
       }
     });
 
-    // Save Links to Firestore (WITH SECURITY FIX: merge true)
-    document.getElementById('links-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const currentClass = selectClass.value;
-      
-      const newLinksData = {};
-      
-      const notesLink = document.getElementById('link-notes').value;
-      const targetLink = document.getElementById('link-target').value;
-      const tenYearsLink = document.getElementById('link-tenYears').value;
-      const booksLink = document.getElementById('link-books').value;
-
-      if(notesLink) newLinksData.notes = notesLink;
-      if(targetLink) newLinksData.target = targetLink;
-      if(tenYearsLink) newLinksData.tenYears = tenYearsLink;
-      if(booksLink) newLinksData.books = booksLink;
-      
-      try {
-        // SECURITY UPDATE: Using { merge: true } so empty fields don't delete existing links
-        await setDoc(doc(db, "materials", currentClass), newLinksData, { merge: true });
-        
-        // Show success animation on button
-        const btn = e.target.querySelector('button[type="submit"]');
-        const originalText = btn.innerHTML;
-        btn.innerHTML = '<i class="fa-solid fa-check mr-2"></i> Successfully Updated!';
-        btn.classList.replace('bg-[#A6C665]', 'bg-[#1B3625]');
-        btn.classList.replace('text-[#1B3625]', 'text-[#A6C665]');
-        
-        setTimeout(() => {
-          btn.innerHTML = originalText;
-          btn.classList.replace('bg-[#1B3625]', 'bg-[#A6C665]');
-          btn.classList.replace('text-[#A6C665]', 'text-[#1B3625]');
-        }, 2500);
-
-      } catch (err) {
-        alert("Error saving links: " + err.message);
-      }
-    });
-
     document.getElementById('admin-logout-btn').addEventListener('click', () => signOut(auth));
 
-    // Auth State Monitor
     onAuthStateChanged(auth, (user) => {
       if (user && user.email === FIREBASE_ADMIN_EMAIL) {
         loginCard.classList.add('hidden');
         panelCard.classList.remove('hidden');
+        
+        // Load data for both Regular and Supply links on login
         fetchClassLinks("9th");
+        fetchSupplyClassLinks("9th"); 
+        
         loadUsers();
       } else {
         if (user) {
