@@ -7,36 +7,39 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col justify-between">
+<body class="bg-white text-slate-800 min-h-screen flex flex-col justify-between" style="font-family: 'Times New Roman', Times, serif;">
 
   <!-- Header -->
-  <header class="bg-white border-b border-emerald-100 py-4 px-6 flex justify-between items-center shadow-sm">
+  <header class="bg-white border-b border-[#F1EDD4] py-4 px-6 flex justify-between items-center shadow-sm sticky top-0 z-50">
     <div class="flex items-center gap-3">
-      <img src="logo.png" alt="Logo" class="w-10 h-10 object-contain">
-      <span class="font-bold text-lg text-emerald-800">Gumnaam Admin Panel</span>
+      <img src="logo.png" alt="Logo" class="w-10 h-10 object-contain drop-shadow-md">
+      <span class="font-bold text-lg text-[#1B3625] tracking-wide">Gumnaam Admin Panel</span>
     </div>
-    <a href="index.html" class="text-sm font-semibold text-emerald-700 hover:underline">Go to Website</a>
+    <a href="index.html" class="text-sm font-bold text-[#A6C665] hover:text-[#1B3625] transition-all"><i class="fa-solid fa-arrow-left mr-1"></i> Go to Website</a>
   </header>
 
   <!-- Main Admin Section -->
-  <main class="max-w-3xl mx-auto px-4 py-8 w-full flex-grow">
+  <main class="max-w-4xl mx-auto px-4 py-8 w-full flex-grow">
     
     <!-- Login Card (If Not Admin) -->
-    <div id="admin-login-card" class="bg-white p-8 rounded-3xl shadow-xl border border-emerald-100 max-w-md mx-auto">
-      <h2 class="text-2xl font-bold text-center text-slate-800 mb-2">Admin Login</h2>
-      <p class="text-xs text-center text-slate-500 mb-6">Sign in with authorized admin account</p>
+    <div id="admin-login-card" class="bg-white p-8 rounded-3xl shadow-2xl border border-[#F1EDD4] max-w-md mx-auto transform transition-all mt-10">
+      <div class="text-center mb-6">
+        <i class="fa-solid fa-shield-halved text-4xl text-[#1B3625] mb-3"></i>
+        <h2 class="text-2xl font-bold text-[#1B3625] mb-1">Admin Secure Login</h2>
+        <p class="text-xs text-slate-500 font-semibold uppercase tracking-widest">Authorized Access Only</p>
+      </div>
       
-      <form id="admin-login-form" class="space-y-4">
+      <form id="admin-login-form" class="space-y-5">
         <div>
-          <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Admin Email</label>
-          <input type="email" id="admin-email" placeholder="admin@example.com" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-600">
+          <label class="block text-xs font-bold uppercase text-[#1B3625] mb-1">Admin Username</label>
+          <input type="text" id="admin-username" placeholder="Enter username" required class="w-full px-4 py-3 rounded-xl border border-[#F1EDD4] focus:outline-none focus:border-[#1B3625] focus:ring-1 focus:ring-[#1B3625] bg-[#F1EDD4]/10">
         </div>
         <div>
-          <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Password</label>
-          <input type="password" id="admin-password" placeholder="••••••••" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-600">
+          <label class="block text-xs font-bold uppercase text-[#1B3625] mb-1">Password</label>
+          <input type="password" id="admin-password" placeholder="••••••••" required class="w-full px-4 py-3 rounded-xl border border-[#F1EDD4] focus:outline-none focus:border-[#1B3625] focus:ring-1 focus:ring-[#1B3625] bg-[#F1EDD4]/10">
         </div>
-        <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-3 rounded-xl shadow-md transition-all">
-          Login as Admin
+        <button type="submit" class="w-full bg-[#1B3625] hover:bg-[#122519] text-[#F1EDD4] font-bold py-3.5 rounded-xl shadow-lg transition-all text-sm sm:text-base tracking-wide flex justify-center items-center gap-2">
+          <i class="fa-solid fa-right-to-bracket text-[#A6C665]"></i> Login as Admin
         </button>
       </form>
     </div>
@@ -44,89 +47,113 @@
     <!-- Manager Form (Visible After Login) -->
     <div id="admin-panel-card" class="hidden space-y-8">
       
-      <!-- Maintenance Mode Control Box -->
-      <div class="bg-white p-6 rounded-3xl shadow-xl border border-rose-100 flex items-center justify-between">
-        <div>
-          <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
-            <i class="fa-solid fa-triangle-exclamation text-amber-500"></i> Maintenance Mode
-          </h2>
-          <p class="text-xs text-slate-500 mt-1">Turn on to block website access for users during updates</p>
-        </div>
-        <div class="flex items-center gap-3">
-          <span id="maintenance-status-text" class="text-xs font-bold px-3 py-1 rounded-full bg-emerald-100 text-emerald-800">
-            OFF
-          </span>
-          <button id="toggle-maintenance-btn" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-4 py-2 rounded-xl shadow transition-all text-sm">
+      <!-- Top Stats Overview -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <!-- Maintenance Mode Control Box -->
+        <div class="bg-white p-6 rounded-3xl shadow-lg border border-[#F1EDD4] flex flex-col justify-center">
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <h2 class="text-lg font-bold text-[#1B3625] flex items-center gap-2">
+                <i class="fa-solid fa-triangle-exclamation text-amber-500"></i> Maintenance Mode
+              </h2>
+              <p class="text-[10px] sm:text-xs text-slate-500 mt-1 font-semibold">Block website access during updates</p>
+            </div>
+            <span id="maintenance-status-text" class="text-xs font-bold px-3 py-1 rounded-full bg-[#F1EDD4] text-[#1B3625]">OFF</span>
+          </div>
+          <button id="toggle-maintenance-btn" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold px-4 py-2.5 rounded-xl shadow transition-all text-sm">
             Enable Maintenance
           </button>
+        </div>
+
+        <!-- Quick Stats Box -->
+        <div class="bg-gradient-to-br from-[#1B3625] to-[#122519] p-6 rounded-3xl shadow-lg border border-[#A6C665]/20 flex flex-col justify-center relative overflow-hidden">
+          <i class="fa-solid fa-chart-line absolute -bottom-4 -right-4 text-7xl text-white/5"></i>
+          <h2 class="text-lg font-bold text-[#F1EDD4] mb-4">System Overview</h2>
+          <div class="flex justify-between items-center bg-white/10 p-3 rounded-xl border border-white/10 mb-2 backdrop-blur-sm">
+            <span class="text-xs sm:text-sm text-[#F1EDD4] font-semibold">Total Students</span>
+            <span id="stat-total" class="font-bold text-[#A6C665] text-lg">0</span>
+          </div>
+          <div class="flex justify-between items-center bg-white/10 p-3 rounded-xl border border-white/10 backdrop-blur-sm">
+            <span class="text-xs sm:text-sm text-[#F1EDD4] font-semibold flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.8)]"></span> Live Right Now
+            </span>
+            <span id="stat-live" class="font-bold text-white text-lg">0</span>
+          </div>
         </div>
       </div>
 
       <!-- Drive Links Update Section -->
-      <div class="bg-white p-8 rounded-3xl shadow-xl border border-emerald-100">
-        <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
+      <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-xl border border-[#F1EDD4]">
+        <div class="flex justify-between items-center mb-6 border-b border-[#F1EDD4] pb-4">
           <div>
-            <h2 class="text-2xl font-bold text-slate-800">Update Drive Links</h2>
-            <p class="text-xs text-slate-500">Select class and update resource links instantly</p>
+            <h2 class="text-xl sm:text-2xl font-bold text-[#1B3625]"><i class="fa-brands fa-google-drive text-[#A6C665] mr-2"></i>Update Drive Links</h2>
+            <p class="text-xs text-slate-500 font-semibold mt-1">Links will update securely without data loss</p>
           </div>
-          <button id="admin-logout-btn" class="text-xs bg-red-50 text-red-600 border border-red-200 px-3 py-1.5 rounded-lg font-semibold hover:bg-red-100">Logout</button>
+          <button id="admin-logout-btn" class="text-xs bg-rose-50 text-rose-600 border border-rose-200 px-4 py-2 rounded-xl font-bold hover:bg-rose-100 transition-all">Logout</button>
         </div>
 
-        <form id="links-form" class="space-y-4">
+        <form id="links-form" class="space-y-5">
           <div>
-            <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Select Class</label>
-            <select id="select-class" class="w-full px-4 py-3 rounded-xl border border-slate-200 font-semibold focus:outline-none focus:border-emerald-600">
-              <option value="9th">Class 9th</option>
-              <option value="10th">Class 10th</option>
-              <option value="11th">Class 11th</option>
-              <option value="12th">Class 12th</option>
+            <label class="block text-xs font-bold uppercase text-[#1B3625] mb-1">Select Class To Edit</label>
+            <select id="select-class" class="w-full px-4 py-3 rounded-xl border border-[#1B3625] font-bold text-[#1B3625] focus:outline-none focus:border-[#A6C665] focus:ring-1 focus:ring-[#A6C665] bg-[#F1EDD4]/20 appearance-none">
+              <option value="9th">📘 Class 9th Material</option>
+              <option value="10th">📙 Class 10th Material</option>
+              <option value="11th">📗 Class 11th Material</option>
+              <option value="12th">📕 Class 12th Material</option>
             </select>
           </div>
 
-          <div>
-            <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">All Subjects Notes Drive Link</label>
-            <input type="url" id="link-notes" placeholder="https://drive.google.com/..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-600">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label class="block text-[11px] font-bold uppercase text-slate-600 mb-1"><i class="fa-solid fa-file-lines mr-1 text-[#1B3625]"></i> All Subjects Notes</label>
+              <input type="url" id="link-notes" placeholder="https://drive.google.com/..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-[#1B3625] text-sm">
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-bold uppercase text-slate-600 mb-1"><i class="fa-solid fa-bullseye mr-1 text-[#A6C665]"></i> Target Papers</label>
+              <input type="url" id="link-target" placeholder="https://drive.google.com/..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-[#1B3625] text-sm">
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-bold uppercase text-slate-600 mb-1"><i class="fa-solid fa-clock-rotate-left mr-1 text-sky-600"></i> 10 Years Papers</label>
+              <input type="url" id="link-tenYears" placeholder="https://drive.google.com/..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-[#1B3625] text-sm">
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-bold uppercase text-slate-600 mb-1"><i class="fa-solid fa-book mr-1 text-slate-700"></i> Subjects Books</label>
+              <input type="url" id="link-books" placeholder="https://drive.google.com/..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-[#1B3625] text-sm">
+            </div>
           </div>
 
-          <div>
-            <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Target Papers Drive Link</label>
-            <input type="url" id="link-target" placeholder="https://drive.google.com/..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-600">
-          </div>
-
-          <div>
-            <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">10 Years Papers Drive Link</label>
-            <input type="url" id="link-tenYears" placeholder="https://drive.google.com/..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-600">
-          </div>
-
-          <div>
-            <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Books Drive Link</label>
-            <input type="url" id="link-books" placeholder="https://drive.google.com/..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-emerald-600">
-          </div>
-
-          <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-amber-300 font-bold py-3.5 rounded-xl shadow-md transition-all">
-            Save & Publish Links
+          <button type="submit" class="w-full bg-[#A6C665] hover:bg-[#96BA50] text-[#1B3625] font-extrabold tracking-wide py-3.5 rounded-xl shadow-md transition-all mt-4 border border-[#96BA50]">
+            <i class="fa-solid fa-cloud-arrow-up mr-2"></i> Save & Publish Changes
           </button>
         </form>
       </div>
 
-      <!-- Registered Users Section -->
-      <div class="bg-white p-6 rounded-2xl shadow-md border border-emerald-100">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-xl font-bold text-slate-800">
-            <i class="fa-solid fa-users text-emerald-700 mr-2"></i> Registered Users
+      <!-- Registered Users Data Table -->
+      <div class="bg-white p-6 rounded-3xl shadow-xl border border-[#F1EDD4]">
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
+          <h3 class="text-xl font-bold text-[#1B3625]">
+            <i class="fa-solid fa-users-gear text-[#A6C665] mr-2"></i> Student Database
           </h3>
-          <span id="total-users-count" class="bg-emerald-100 text-emerald-800 font-bold px-3 py-1 rounded-full text-sm">
-            Total Users: 0
-          </span>
+          <div class="flex gap-2">
+            <span id="total-users-badge" class="bg-[#1B3625] text-[#F1EDD4] font-bold px-3 py-1.5 rounded-lg text-xs shadow-sm">
+              Total: 0
+            </span>
+            <span id="live-users-badge" class="bg-[#F1EDD4] text-[#1B3625] border border-[#1B3625] font-bold px-3 py-1.5 rounded-lg text-xs shadow-sm flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span> Live: 0
+            </span>
+          </div>
         </div>
 
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto rounded-xl border border-slate-100">
           <table class="w-full text-left border-collapse">
             <thead>
-              <tr class="bg-slate-100 text-slate-700 text-sm">
-                <th class="p-3 rounded-l-lg">Name / ID</th>
-                <th class="p-3">Email Address</th>
-                <th class="p-3 rounded-r-lg">Last Seen</th>
+              <tr class="bg-[#F1EDD4]/50 text-[#1B3625] text-sm uppercase tracking-wide border-b border-[#F1EDD4]">
+                <th class="p-4 font-bold">Name / User ID</th>
+                <th class="p-4 font-bold">Email Address</th>
+                <th class="p-4 font-bold">Last Active Status</th>
               </tr>
             </thead>
             <tbody id="users-table-body" class="text-sm divide-y divide-slate-100">
@@ -140,8 +167,8 @@
 
   </main>
 
-  <footer class="bg-white border-t border-slate-100 py-4 text-center text-xs text-slate-500">
-    © 2026 Gumnaam Education Admin System
+  <footer class="bg-white border-t border-[#F1EDD4] py-4 text-center text-xs font-semibold text-slate-500">
+    © 2026 Gumnaam Education Admin System | Secured Portal
   </footer>
 
   <!-- Firebase Logic -->
@@ -163,7 +190,10 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    const ALLOWED_ADMIN = "auratroll82009@gmail.com";
+    // Hardcoded Security Credentials
+    const REQUIRED_USERNAME = "auratroll82009";
+    const REQUIRED_PASSWORD = "@troll82009";
+    const FIREBASE_ADMIN_EMAIL = "auratroll82009@gmail.com";
 
     const loginCard = document.getElementById('admin-login-card');
     const panelCard = document.getElementById('admin-panel-card');
@@ -177,16 +207,16 @@
     onSnapshot(doc(db, "settings", "site_config"), (docSnap) => {
       if (docSnap.exists() && docSnap.data().maintenance) {
         isMaintenanceActive = true;
-        maintenanceStatusText.innerText = "ON";
-        maintenanceStatusText.className = "text-xs font-bold px-3 py-1 rounded-full bg-rose-100 text-rose-800";
-        toggleMaintenanceBtn.innerText = "Disable Maintenance";
-        toggleMaintenanceBtn.className = "bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-xl shadow transition-all text-sm";
+        maintenanceStatusText.innerText = "MAINTENANCE ON";
+        maintenanceStatusText.className = "text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full bg-rose-100 text-rose-800 border border-rose-200";
+        toggleMaintenanceBtn.innerText = "Turn OFF Maintenance";
+        toggleMaintenanceBtn.className = "w-full bg-[#1B3625] hover:bg-[#122519] text-[#F1EDD4] font-bold px-4 py-2.5 rounded-xl shadow transition-all text-sm";
       } else {
         isMaintenanceActive = false;
-        maintenanceStatusText.innerText = "OFF";
-        maintenanceStatusText.className = "text-xs font-bold px-3 py-1 rounded-full bg-emerald-100 text-emerald-800";
-        toggleMaintenanceBtn.innerText = "Enable Maintenance";
-        toggleMaintenanceBtn.className = "bg-rose-600 hover:bg-rose-700 text-white font-bold px-4 py-2 rounded-xl shadow transition-all text-sm";
+        maintenanceStatusText.innerText = "SYSTEM NORMAL";
+        maintenanceStatusText.className = "text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full bg-[#F1EDD4] text-[#1B3625] border border-[#A6C665]";
+        toggleMaintenanceBtn.innerText = "Turn ON Maintenance";
+        toggleMaintenanceBtn.className = "w-full bg-rose-600 hover:bg-rose-700 text-white font-bold px-4 py-2.5 rounded-xl shadow transition-all text-sm";
       }
     });
 
@@ -195,8 +225,7 @@
       try {
         await setDoc(doc(db, "settings", "site_config"), {
           maintenance: !isMaintenanceActive
-        }, { merge: true });
-        alert(`Maintenance Mode: ${!isMaintenanceActive ? 'ENABLED' : 'DISABLED'}`);
+        }, { merge: true }); // Security Fix: merge true used here as well
       } catch (err) {
         alert("Error updating maintenance mode: " + err.message);
       }
@@ -206,86 +235,137 @@
     async function fetchClassLinks(className) {
       const docRef = doc(db, "materials", className);
       const docSnap = await getDoc(docRef);
+      
+      // Clear inputs first
+      document.getElementById('link-notes').value = '';
+      document.getElementById('link-target').value = '';
+      document.getElementById('link-tenYears').value = '';
+      document.getElementById('link-books').value = '';
+
       if (docSnap.exists()) {
         const data = docSnap.data();
-        document.getElementById('link-notes').value = data.notes || '';
-        document.getElementById('link-target').value = data.target || '';
-        document.getElementById('link-tenYears').value = data.tenYears || '';
-        document.getElementById('link-books').value = data.books || '';
-      } else {
-        document.getElementById('link-notes').value = '';
-        document.getElementById('link-target').value = '';
-        document.getElementById('link-tenYears').value = '';
-        document.getElementById('link-books').value = '';
+        if(data.notes) document.getElementById('link-notes').value = data.notes;
+        if(data.target) document.getElementById('link-target').value = data.target;
+        if(data.tenYears) document.getElementById('link-tenYears').value = data.tenYears;
+        if(data.books) document.getElementById('link-books').value = data.books;
       }
     }
 
-    // Load Registered Users Function
+    // Load Registered Users & Calculate Live Users
     async function loadUsers() {
       const usersTableBody = document.getElementById('users-table-body');
-      const totalUsersCount = document.getElementById('total-users-count');
+      const statTotal = document.getElementById('stat-total');
+      const statLive = document.getElementById('stat-live');
+      const totalBadge = document.getElementById('total-users-badge');
+      const liveBadge = document.getElementById('live-users-badge');
 
-      usersTableBody.innerHTML = '<tr><td colspan="3" class="text-center py-4 text-slate-400">Loading users...</td></tr>';
+      usersTableBody.innerHTML = '<tr><td colspan="3" class="text-center py-6 text-slate-400 font-bold"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Fetching Student Data...</td></tr>';
 
       try {
         const querySnapshot = await getDocs(collection(db, "users"));
         usersTableBody.innerHTML = '';
         
-        totalUsersCount.innerText = `Total Users: ${querySnapshot.size}`;
+        let totalUsers = querySnapshot.size;
+        let liveUsersCount = 0;
+        const currentTime = new Date();
+
+        statTotal.innerText = totalUsers;
+        totalBadge.innerText = `Total: ${totalUsers}`;
 
         querySnapshot.forEach((docSnap) => {
           const data = docSnap.data();
           const tr = document.createElement('tr');
-          tr.className = "hover:bg-slate-50";
+          tr.className = "hover:bg-slate-50 transition-colors";
 
-          const lastLoginDate = data.lastLogin ? new Date(data.lastLogin).toLocaleString() : 'N/A';
+          let lastLoginDisplay = 'N/A';
+          let statusIndicator = '<span class="w-2 h-2 rounded-full bg-slate-300 inline-block mr-2"></span>';
+
+          if (data.lastLogin) {
+            const lastLoginDate = new Date(data.lastLogin);
+            lastLoginDisplay = lastLoginDate.toLocaleString();
+            
+            // Check if active in the last 30 minutes (Live User Logic)
+            const diffMinutes = (currentTime - lastLoginDate) / (1000 * 60);
+            if (diffMinutes <= 30) {
+              liveUsersCount++;
+              statusIndicator = '<span class="w-2 h-2 rounded-full bg-red-500 animate-pulse shadow-[0_0_5px_red] inline-block mr-2"></span><span class="text-[#1B3625] font-bold">Online Now</span><br>';
+            }
+          }
 
           tr.innerHTML = `
-            <td class="p-3 font-semibold text-slate-800">${data.displayName || 'N/A'}</td>
-            <td class="p-3 text-slate-600">${data.email || 'N/A'}</td>
-            <td class="p-3 text-xs text-slate-400">${lastLoginDate}</td>
+            <td class="p-4 font-bold text-[#1B3625]">${data.displayName || 'Unknown User'}</td>
+            <td class="p-4 text-slate-600 font-medium">${data.email || 'N/A'}</td>
+            <td class="p-4 text-xs text-slate-500">${statusIndicator}${lastLoginDisplay}</td>
           `;
           usersTableBody.appendChild(tr);
         });
+
+        // Update Live Counters
+        statLive.innerText = liveUsersCount;
+        liveBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-red-600 animate-pulse shadow-[0_0_5px_red]"></span> Live: ${liveUsersCount}`;
+
       } catch (error) {
         console.error("Error loading users:", error);
-        usersTableBody.innerHTML = '<tr><td colspan="3" class="text-center py-4 text-red-500">Failed to load users. Check Firestore rules.</td></tr>';
+        usersTableBody.innerHTML = '<tr><td colspan="3" class="text-center py-4 text-rose-500 font-bold">Failed to load users. Check database connection.</td></tr>';
       }
     }
 
     selectClass.addEventListener('change', (e) => fetchClassLinks(e.target.value));
 
-    // Admin Login
+    // CUSTOM ADMIN LOGIN WITH EXTRA SECURITY LAYER
     document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const email = document.getElementById('admin-email').value;
-      const password = document.getElementById('admin-password').value;
+      const usernameInput = document.getElementById('admin-username').value;
+      const passwordInput = document.getElementById('admin-password').value;
 
-      if (email !== ALLOWED_ADMIN) {
-        alert("Access Denied: Is account ko Admin access ki permission nahi hai.");
+      // Strict Frontend Check
+      if (usernameInput !== REQUIRED_USERNAME || passwordInput !== REQUIRED_PASSWORD) {
+        alert("SECURITY ALERT: Invalid Admin Credentials! Access Denied.");
         return;
       }
 
+      // If checks pass, authenticate via Firebase
       try {
-        await signInWithEmailAndPassword(auth, email, password);
+        await signInWithEmailAndPassword(auth, FIREBASE_ADMIN_EMAIL, passwordInput);
       } catch (err) {
-        alert("Login Failed: " + err.message);
+        alert("System Login Failed: " + err.message);
       }
     });
 
-    // Save Links to Firestore
+    // Save Links to Firestore (WITH SECURITY FIX: merge true)
     document.getElementById('links-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const currentClass = selectClass.value;
       
+      const newLinksData = {};
+      
+      const notesLink = document.getElementById('link-notes').value;
+      const targetLink = document.getElementById('link-target').value;
+      const tenYearsLink = document.getElementById('link-tenYears').value;
+      const booksLink = document.getElementById('link-books').value;
+
+      if(notesLink) newLinksData.notes = notesLink;
+      if(targetLink) newLinksData.target = targetLink;
+      if(tenYearsLink) newLinksData.tenYears = tenYearsLink;
+      if(booksLink) newLinksData.books = booksLink;
+      
       try {
-        await setDoc(doc(db, "materials", currentClass), {
-          notes: document.getElementById('link-notes').value,
-          target: document.getElementById('link-target').value,
-          tenYears: document.getElementById('link-tenYears').value,
-          books: document.getElementById('link-books').value
-        });
-        alert(`Class ${currentClass} ke links successfully publish ho gaye hain!`);
+        // SECURITY UPDATE: Using { merge: true } so empty fields don't delete existing links
+        await setDoc(doc(db, "materials", currentClass), newLinksData, { merge: true });
+        
+        // Show success animation on button
+        const btn = e.target.querySelector('button[type="submit"]');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check mr-2"></i> Successfully Updated!';
+        btn.classList.replace('bg-[#A6C665]', 'bg-[#1B3625]');
+        btn.classList.replace('text-[#1B3625]', 'text-[#A6C665]');
+        
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.classList.replace('bg-[#1B3625]', 'bg-[#A6C665]');
+          btn.classList.replace('text-[#A6C665]', 'text-[#1B3625]');
+        }, 2500);
+
       } catch (err) {
         alert("Error saving links: " + err.message);
       }
@@ -295,18 +375,19 @@
 
     // Auth State Monitor
     onAuthStateChanged(auth, (user) => {
-      if (user && user.email === ALLOWED_ADMIN) {
+      if (user && user.email === FIREBASE_ADMIN_EMAIL) {
         loginCard.classList.add('hidden');
         panelCard.classList.remove('hidden');
         fetchClassLinks("9th");
         loadUsers();
       } else {
         if (user) {
-          alert("Aapka account Admin panel ke liye authorized nahi hai.");
+          alert("SECURITY ALERT: This account is not authorized for the Admin Panel.");
           signOut(auth);
         }
         loginCard.classList.remove('hidden');
         panelCard.classList.add('hidden');
+        document.getElementById('admin-login-form').reset();
       }
     });
   </script>
