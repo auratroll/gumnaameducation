@@ -12,29 +12,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gumnaam Results - BIEK Karachi</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         :root {
-            --emerald-main: #047857;
-            --emerald-dark: #065f46;
-            --amber-accent: #d97706;
-            --bg-color: #f8fafc;
-            --card-shadow: 0 25px 50px -12px rgba(4, 120, 87, 0.15);
+            /* Theme Colors from Logo */
+            --main-dark: #1B3625;
+            --main-light: #A6C665;
+            --cream-bg: #F1EDD4;
+            --bg-color: #ffffff;
             --wa-green: #25D366;
+            --card-shadow: 0 25px 50px -12px rgba(27, 54, 37, 0.15);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Poppins', sans-serif;
+            /* Times New Roman Font Applied */
+            font-family: 'Times New Roman', Times, serif; 
         }
 
         body {
-            background-color: var(--bg-color);
-            background-image: radial-gradient(#047857 0.75px, transparent 0.75px), radial-gradient(#047857 0.75px, #f8fafc 0.75px);
-            background-size: 30px 30px;
-            background-position: 0 0, 15px 15px;
+            background-color: var(--bg-color); /* Pure White Background */
             color: #1e293b;
             display: flex;
             justify-content: center;
@@ -50,7 +51,7 @@
             border-radius: 24px;
             padding: 35px 28px;
             box-shadow: var(--card-shadow);
-            border: 2px solid #ecfdf5;
+            border: 2px solid var(--cream-bg);
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -63,12 +64,12 @@
             left: 0;
             right: 0;
             height: 6px;
-            background: linear-gradient(90deg, var(--emerald-main), var(--amber-accent));
+            background: linear-gradient(90deg, var(--main-dark), var(--main-light));
         }
 
         .top-banner {
-            background: #ecfdf5;
-            border: 1px solid #a7f3d0;
+            background: var(--cream-bg);
+            border: 1px solid var(--main-light);
             border-radius: 12px;
             padding: 10px 14px;
             margin-bottom: 20px;
@@ -80,28 +81,28 @@
         }
 
         .top-banner p {
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--emerald-dark);
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--main-dark);
             line-height: 1.3;
         }
 
         .btn-banner {
-            background: var(--wa-green);
-            color: white;
+            background: var(--main-dark);
+            color: var(--cream-bg);
             text-decoration: none;
             font-size: 11px;
-            font-weight: 700;
-            padding: 6px 12px;
+            font-weight: bold;
+            padding: 8px 12px;
             border-radius: 8px;
             white-space: nowrap;
-            box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+            box-shadow: 0 4px 10px rgba(27, 54, 37, 0.2);
             transition: all 0.2s ease;
         }
 
         .btn-banner:hover {
             transform: scale(1.05);
-            background: #20ba5a;
+            background: #122519;
         }
 
         .logo-wrapper {
@@ -116,8 +117,8 @@
             margin: 0 auto;
             border-radius: 50%;
             padding: 5px;
-            background: linear-gradient(135deg, var(--emerald-main), var(--amber-accent));
-            box-shadow: 0 10px 25px rgba(4, 120, 87, 0.25);
+            background: linear-gradient(135deg, var(--main-dark), var(--main-light));
+            box-shadow: 0 10px 25px rgba(27, 54, 37, 0.25);
             animation: float 4s ease-in-out infinite;
             display: flex;
             align-items: center;
@@ -127,7 +128,7 @@
         .logo-container img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
             border-radius: 50%;
             background: #ffffff;
         }
@@ -138,17 +139,18 @@
         }
 
         h1 {
-            color: var(--emerald-dark);
+            color: var(--main-dark);
             font-size: 26px;
             font-weight: 800;
-            letter-spacing: -0.5px;
+            letter-spacing: 0.5px;
             margin-bottom: 4px;
+            text-transform: uppercase;
         }
 
         .subtitle {
             color: #64748b;
             font-size: 13px;
-            font-weight: 500;
+            font-weight: bold;
             margin-bottom: 25px;
             line-height: 1.4;
         }
@@ -161,47 +163,47 @@
         label {
             display: block;
             font-size: 12px;
-            font-weight: 700;
+            font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: var(--emerald-dark);
+            color: var(--main-dark);
             margin-bottom: 6px;
         }
 
         select, input[type="text"] {
             width: 100%;
             padding: 14px 16px;
-            border: 2px solid #cbd5e1;
+            border: 2px solid var(--cream-bg);
             border-radius: 12px;
             font-size: 15px;
-            font-weight: 500;
-            color: #0f172a;
+            font-weight: bold;
+            color: var(--main-dark);
             outline: none;
             background: #f8fafc;
             transition: all 0.25s ease;
         }
 
         select:focus, input[type="text"]:focus {
-            border-color: var(--emerald-main);
+            border-color: var(--main-light);
             background: #ffffff;
-            box-shadow: 0 0 0 4px rgba(4, 120, 87, 0.1);
+            box-shadow: 0 0 0 4px rgba(166, 198, 101, 0.2);
         }
 
         .btn-animated {
             position: relative;
             width: 100%;
-            background: linear-gradient(135deg, var(--emerald-main) 0%, var(--emerald-dark) 100%);
-            color: #fef3c7;
+            background: linear-gradient(135deg, var(--main-dark) 0%, #122519 100%);
+            color: var(--cream-bg);
             border: none;
             padding: 16px;
             font-size: 16px;
-            font-weight: 800;
+            font-weight: bold;
             letter-spacing: 1px;
             border-radius: 12px;
             cursor: pointer;
             text-transform: uppercase;
             overflow: hidden;
-            box-shadow: 0 8px 20px rgba(4, 120, 87, 0.35), inset 0 -4px 0 rgba(0,0,0,0.2);
+            box-shadow: 0 8px 20px rgba(27, 54, 37, 0.35), inset 0 -4px 0 rgba(0,0,0,0.2);
             transition: all 0.2s ease;
             margin-top: 8px;
         }
@@ -213,7 +215,7 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(60deg, transparent, rgba(255,255,255,0.25), transparent);
+            background: linear-gradient(60deg, transparent, rgba(255,255,255,0.15), transparent);
             transform: rotate(30deg);
             animation: shimmer 3s infinite;
         }
@@ -225,12 +227,7 @@
 
         .btn-animated:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 25px rgba(4, 120, 87, 0.45), inset 0 -4px 0 rgba(0,0,0,0.2);
-        }
-
-        .btn-animated:active {
-            transform: translateY(2px);
-            box-shadow: 0 4px 10px rgba(4, 120, 87, 0.3), inset 0 -1px 0 rgba(0,0,0,0.2);
+            box-shadow: 0 12px 25px rgba(27, 54, 37, 0.45), inset 0 -4px 0 rgba(0,0,0,0.2);
         }
 
         .btn-whatsapp {
@@ -244,7 +241,7 @@
             text-decoration: none;
             padding: 14px;
             font-size: 14px;
-            font-weight: 700;
+            font-weight: bold;
             border-radius: 12px;
             margin-top: 12px;
             box-shadow: 0 6px 18px rgba(37, 211, 102, 0.3);
@@ -257,6 +254,7 @@
             box-shadow: 0 8px 22px rgba(37, 211, 102, 0.4);
         }
 
+        /* Result Box Styling (Completed) */
         .result-box {
             margin-top: 24px;
             padding: 20px;
@@ -273,178 +271,161 @@
 
         .result-box.success {
             background: #ffffff;
-            border: 2px solid var(--emerald-main);
-            box-shadow: 0 10px 30px rgba(4, 120, 87, 0.1);
+            border: 2px solid var(--main-light);
+            box-shadow: 0 10px 30px rgba(166, 198, 101, 0.2);
         }
 
         .result-box.error {
             background: #fff5f5;
-            border: 2px solid #e63946;
-            color: #9b1c1c;
+            border: 2px solid #ef4444;
+            box-shadow: 0 10px 30px rgba(239, 68, 68, 0.2);
         }
 
-        .result-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px dashed #e2e8f0;
-            font-size: 14px;
-        }
-
-        .result-row:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
-        }
-
-        .result-row span.label {
-            color: #64748b;
-            font-weight: 600;
-        }
-
-        .result-row span.value {
-            font-weight: 700;
-            color: var(--emerald-dark);
-        }
-
-        .badge-grade {
-            background: var(--emerald-main);
-            color: #ffffff;
-            padding: 4px 12px;
-            border-radius: 8px;
-            font-weight: 800;
-            font-size: 13px;
-        }
-
-        .footer-credit {
+        .back-link {
+            display: inline-block;
             margin-top: 25px;
-            font-size: 11px;
-            font-weight: 600;
-            color: #94a3b8;
-            letter-spacing: 0.5px;
+            font-size: 14px;
+            font-weight: bold;
+            color: var(--main-dark);
+            text-decoration: none;
+            border-bottom: 2px solid var(--main-light);
+            padding-bottom: 2px;
+            transition: all 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: var(--main-light);
+            border-bottom-color: var(--main-dark);
         }
     </style>
 </head>
 <body>
 
-<div class="portal-card">
-
-    <div class="top-banner">
-        <p>Follow Gumnaam Education channel for more updates</p>
-        <a href="https://whatsapp.com/channel/0029Vam5DGJBPzjSPNeP7N1s" target="_blank" class="btn-banner">FOLLOW</a>
-    </div>
-
-    <div class="logo-wrapper">
-        <div class="logo-container">
-            <img src="logo.png" alt="Gumnaam Logo" id="brandLogo">
+    <div class="portal-card">
+        
+        <!-- Top Banner -->
+        <div class="top-banner">
+            <p>Latest educational updates &<br>result announcements.</p>
+            <a href="https://whatsapp.com/channel/0029Vam5DGJBPzjSPNeP7N1s" target="_blank" class="btn-banner">Join WhatsApp</a>
         </div>
+
+        <!-- Logo -->
+        <div class="logo-wrapper">
+            <div class="logo-container">
+                <img src="logo.png" alt="Logo">
+            </div>
+        </div>
+
+        <h1>Result Portal</h1>
+        <p class="subtitle">Check your BIEK Karachi board results instantly.</p>
+
+        <!-- Search Form -->
+        <form id="result-form">
+            <div class="form-group">
+                <label for="group">Select Group</label>
+                <select id="group" required>
+                    <option value="" disabled selected>Choose your group</option>
+                    <option value="Pre-Engineering">Pre-Engineering</option>
+                    <option value="Pre-Medical">Pre-Medical</option>
+                    <option value="Computer Science">Computer Science</option>
+                    <option value="Commerce">Commerce</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="roll-no">Roll Number</label>
+                <input type="text" id="roll-no" placeholder="Enter your 6-digit roll number" required pattern="[0-9]{1,10}">
+            </div>
+
+            <button type="submit" class="btn-animated" id="submit-btn">
+                <i class="fa-solid fa-magnifying-glass"></i> Check Result
+            </button>
+        </form>
+
+        <a href="https://whatsapp.com/channel/0029Vam5DGJBPzjSPNeP7N1s" target="_blank" class="btn-whatsapp">
+            <i class="fa-brands fa-whatsapp text-xl"></i> Get Results on WhatsApp
+        </a>
+
+        <!-- Result Display Area -->
+        <div id="result-box" class="result-box">
+            <div id="result-content"></div>
+        </div>
+
+        <a href="index.html" class="back-link"><i class="fa-solid fa-house mr-1"></i> Back to Homepage</a>
+
     </div>
 
-    <h1>Gumnaam Results</h1>
-    <p class="subtitle">BIEK Karachi Class 12 (HSC Part-II) Annual Examination Results</p>
+    <!-- JavaScript Logic to Fetch gazette.txt -->
+    <script>
+        document.getElementById('result-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const rollNo = document.getElementById('roll-no').value.trim();
+            const resultBox = document.getElementById('result-box');
+            const resultContent = document.getElementById('result-content');
+            const btn = document.getElementById('submit-btn');
 
-    <div class="form-group">
-        <label>Select Class</label>
-        <select id="classSelect">
-            <option value="12">Class 12 (HSC Part-II)</option>
-        </select>
-    </div>
+            if (!rollNo) return;
 
-    <div class="form-group">
-        <label>Select Faculty / Group</label>
-        <select id="facultySelect">
-            <option value="XII COMMERCE REGULAR">Commerce - XII COMMERCE REGULAR</option>
-        </select>
-    </div>
+            // Show loading UI
+            resultBox.style.display = 'block';
+            resultBox.className = 'result-box'; // Reset classes
+            resultContent.innerHTML = '<div style="text-align: center; color: var(--main-dark); font-weight: bold;"><i class="fa-solid fa-spinner fa-spin text-2xl mb-2"></i><br>Fetching gazette data...</div>';
+            
+            const originalBtnHtml = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Checking...';
+            btn.disabled = true;
 
-    <div class="form-group">
-        <label>Roll Number</label>
-        <input type="text" id="rollNo" placeholder="Enter Roll No (e.g. 811363)" maxlength="8">
-    </div>
-
-    <button class="btn-animated" id="btnSearch" onclick="checkResult()">SEARCH RESULT</button>
-
-    <a href="https://whatsapp.com/channel/0029Vam5DGJBPzjSPNeP7N1s" target="_blank" class="btn-whatsapp">
-        📢 Join Official WhatsApp Channel
-    </a>
-
-    <div id="resultBox" class="result-box"></div>
-
-    <div class="footer-credit">GUMNAAM EDUCATIONAL PORTAL</div>
-</div>
-
-<script>
-    const logoImg = document.getElementById('brandLogo');
-    logoImg.onerror = function() {
-        this.style.display = 'none';
-        const container = this.parentElement;
-        container.innerHTML = '<span style="color:#fff; font-weight:800; font-size:28px;">G</span>';
-    };
-
-    async function checkResult() {
-        const rollInput = document.getElementById("rollNo").value.trim();
-        const resultDiv = document.getElementById("resultBox");
-        const btnSearch = document.getElementById("btnSearch");
-        const selectedClass = document.getElementById("classSelect").value;
-        const selectedFaculty = document.getElementById("facultySelect").value;
-
-        if (!rollInput) {
-            alert("Lutfan Roll Number enter karen!");
-            return;
-        }
-
-        btnSearch.disabled = true;
-        btnSearch.innerText = "SEARCHING...";
-
-        try {
-            const response = await fetch('gazette.txt');
-            if (!response.ok) throw new Error("File not found");
-
-            const textData = await response.text();
-
-            const regex = new RegExp(rollInput + "\\s*[\(:-]?\\s*(\\d+)", "i");
-            const match = textData.match(regex);
-
-            if (match) {
-                const marks = parseInt(match[1]);
-                const TOTAL_MARKS = 1100;
-                const percentageVal = (marks / TOTAL_MARKS) * 100;
-                const percentage = percentageVal.toFixed(2);
+            try {
+                // Fetching the gazette.txt file from the server
+                const response = await fetch('gazette.txt');
                 
-                let grade = "";
-                if (percentageVal >= 80) grade = "A-1 Grade";
-                else if (percentageVal >= 70) grade = "A Grade";
-                else if (percentageVal >= 60) grade = "B Grade";
-                else if (percentageVal >= 50) grade = "C Grade";
-                else if (percentageVal >= 40) grade = "D Grade";
-                else if (percentageVal >= 33) grade = "E Grade";
-                else grade = "FAIL";
-
-                resultDiv.className = "result-box success";
-                resultDiv.style.display = "block";
-                resultDiv.innerHTML = `
-                    <div class="result-row"><span class="label">Roll Number</span><span class="value">${rollInput}</span></div>
-                    <div class="result-row"><span class="label">Class</span><span class="value">Class ${selectedClass}</span></div>
-                    <div class="result-row"><span class="label">Faculty</span><span class="value">${selectedFaculty}</span></div>
-                    <div class="result-row"><span class="label">Marks</span><span class="value">${marks} / ${TOTAL_MARKS}</span></div>
-                    <div class="result-row"><span class="label">Percentage</span><span class="value">${percentage}%</span></div>
-                    <div class="result-row"><span class="label">Grade</span><span class="badge-grade">${grade}</span></div>
+                if (!response.ok) {
+                    throw new Error('Gazette file is not available right now. Please try again later.');
+                }
+                
+                const textData = await response.text();
+                
+                // Checking if the roll number is present inside the gazette text
+                if (textData.includes(rollNo)) {
+                    resultBox.classList.add('success');
+                    resultContent.innerHTML = `
+                        <h3 style="color: var(--main-dark); font-weight: 800; font-size: 18px; margin-bottom: 8px; text-transform: uppercase;">
+                            <i class="fa-solid fa-circle-check" style="color: var(--main-light);"></i> Result Found!
+                        </h3>
+                        <p style="color: #333; font-size: 14px; font-weight: bold;">
+                            Roll Number: <span style="color: var(--main-dark);">${rollNo}</span>
+                        </p>
+                        <p style="color: var(--main-dark); font-size: 13px; margin-top: 5px; font-weight: bold;">
+                            Congratulations! Your roll number is present in the passing gazette.
+                        </p>
+                    `;
+                } else {
+                    resultBox.classList.add('error');
+                    resultContent.innerHTML = `
+                        <h3 style="color: #ef4444; font-weight: 800; font-size: 18px; margin-bottom: 8px; text-transform: uppercase;">
+                            <i class="fa-solid fa-circle-xmark"></i> Not Found
+                        </h3>
+                        <p style="color: #333; font-size: 14px; font-weight: bold;">
+                            Roll Number: <span style="color: #ef4444;">${rollNo}</span>
+                        </p>
+                        <p style="color: #ef4444; font-size: 13px; margin-top: 5px; font-weight: bold;">
+                            Sorry, your roll number was not found in the gazette list.
+                        </p>
+                    `;
+                }
+            } catch (error) {
+                resultBox.classList.add('error');
+                resultContent.innerHTML = `
+                    <h3 style="color: #ef4444; font-weight: 800; font-size: 16px; margin-bottom: 5px;">Error</h3>
+                    <p style="color: #ef4444; font-size: 13px; font-weight: bold;">${error.message}</p>
                 `;
-            } else {
-                resultDiv.className = "result-box error";
-                resultDiv.style.display = "block";
-                resultDiv.innerHTML = `<p style="font-size:13px; text-align:center;"><strong>Result Not Found:</strong> Roll Number ${rollInput} gazette mein nahi mila ya candidate Fail/Absent hai.</p>`;
+            } finally {
+                // Restore button state
+                btn.innerHTML = originalBtnHtml;
+                btn.disabled = false;
             }
-        } catch (err) {
-            alert("Gazette file load nahi ho saki! Check karein 'gazette.txt' exact name se uploaded hai.");
-            console.error(err);
-        } finally {
-            btnSearch.disabled = false;
-            btnSearch.innerText = "SEARCH RESULT";
-        }
-    }
-</script>
-
+        });
+    </script>
 </body>
-        </html>
-    
+</html>
