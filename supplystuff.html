@@ -91,8 +91,25 @@
     © 2026 Gumnaam Education Official. All Rights Reserved.
   </footer>
 
-  <!-- Script for Popup & Tabs Logic -->
-  <script>
+  <!-- Firebase & Logic Integration -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyD8-II4YOIt1ZGk6x4VhOMvAIr7xazjhPY",
+      authDomain: "gumnaam-education.firebaseapp.com",
+      projectId: "gumnaam-education",
+      storageBucket: "gumnaam-education.firebasestorage.app",
+      messagingSenderId: "680513198806",
+      appId: "1:680513198806:web:5a96acd811b6ec4b7b8777",
+      measurementId: "G-H35HFVKMHL"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
     // Elements
     const whatsappPopup = document.getElementById('whatsapp-popup');
     const followNowBtn = document.getElementById('follow-now-btn');
@@ -103,44 +120,55 @@
 
     // Handle Follow Button Click
     followNowBtn.addEventListener('click', () => {
-      // Fade out popup
       whatsappPopup.style.opacity = '0';
       
       setTimeout(() => {
-        whatsappPopup.classList.add('hidden'); // Remove from DOM after fade out
+        whatsappPopup.classList.add('hidden'); 
         
-        // Show Welcome Toast
         welcomeToast.classList.remove('-translate-y-full', 'opacity-0');
         welcomeToast.classList.add('translate-y-0', 'opacity-100');
         
-        // Fade in Main Content
         mainContent.classList.remove('opacity-0', 'pointer-events-none');
         mainContent.classList.add('opacity-100');
 
-        // Hide Toast after 3.5 seconds
         setTimeout(() => {
           welcomeToast.classList.remove('translate-y-0', 'opacity-100');
           welcomeToast.classList.add('-translate-y-full', 'opacity-0');
         }, 3500);
         
-      }, 500); // Wait for transition
+      }, 500);
     });
 
-    // Render Supply Materials Function
-    function renderSupplyMaterials(selectedClass) {
-      supplyGrid.innerHTML = ''; // Clear grid
+    // Fetch and Render Supply Materials
+    async function renderSupplyMaterials(selectedClass) {
+      supplyGrid.innerHTML = '<p class="col-span-full text-center text-slate-500 py-8 font-bold"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Loading resources for Supply Class ' + selectedClass + '...</p>';
+
+      let links = {};
+      try {
+        const docRef = doc(db, "supply_materials", selectedClass);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          links = docSnap.data();
+        }
+      } catch (err) {
+        console.error("Error fetching Firestore links:", err);
+      }
+
+      supplyGrid.innerHTML = '';
 
       const supplyItems = [
-        { title: "NOTES", icon: "fa-file-lines", color: "bg-[#1B3625] hover:bg-[#122519] text-[#F1EDD4]", link: "#" },
-        { title: "10 YEARS", icon: "fa-clock-rotate-left", color: "bg-[#F1EDD4] hover:bg-[#E2DBBC] text-[#1B3625]", link: "#" },
-        { title: "SUPPLY TARGET PAPERS", icon: "fa-bullseye", color: "bg-[#A6C665] hover:bg-[#96BA50] text-[#1B3625]", link: "#" },
-        { title: "BOOKS", icon: "fa-book", color: "bg-slate-800 hover:bg-slate-900 text-[#F1EDD4]", link: "#" }
+        { title: "NOTES", icon: "fa-file-lines", color: "bg-[#1B3625] hover:bg-[#122519] text-[#F1EDD4]", link: links.notes || "#" },
+        { title: "10 YEARS", icon: "fa-clock-rotate-left", color: "bg-[#F1EDD4] hover:bg-[#E2DBBC] text-[#1B3625]", link: links.tenYears || "#" },
+        { title: "SUPPLY TARGET PAPERS", icon: "fa-bullseye", color: "bg-[#A6C665] hover:bg-[#96BA50] text-[#1B3625]", link: links.target || "#" },
+        { title: "BOOKS", icon: "fa-book", color: "bg-slate-800 hover:bg-slate-900 text-[#F1EDD4]", link: links.books || "#" }
       ];
 
       supplyItems.forEach(item => {
         const card = document.createElement('div');
         card.className = "bg-white p-6 rounded-2xl shadow-md hover:shadow-xl border-2 border-[#F1EDD4] transition-all flex flex-col justify-between items-center text-center transform hover:-translate-y-1";
         
+        const isLinkAvailable = item.link && item.link !== "#";
+
         card.innerHTML = `
           <div class="mb-5 w-full border-b border-[#F1EDD4] pb-4">
             <div class="w-16 h-16 rounded-full bg-[#F1EDD4]/30 border-2 border-[#1B3625] text-[#1B3625] flex items-center justify-center text-2xl shadow-sm mx-auto mb-4">
@@ -150,8 +178,8 @@
             <span class="inline-block mt-2 text-[10px] sm:text-xs text-[#1B3625] font-bold bg-[#A6C665]/20 px-3 py-1 rounded-full border border-[#A6C665]">Class ${selectedClass} Supply</span>
           </div>
           
-          <a href="${item.link}" class="w-full ${item.color} text-sm font-bold py-3.5 px-4 rounded-xl text-center flex items-center justify-center gap-2 transition-all shadow-md">
-            <i class="fa-solid fa-download"></i> View & Download
+          <a href="${item.link}" target="${isLinkAvailable ? '_blank' : '_self'}" class="w-full ${item.color} text-sm font-bold py-3.5 px-4 rounded-xl text-center flex items-center justify-center gap-2 transition-all shadow-md ${!isLinkAvailable ? 'opacity-60 cursor-not-allowed' : ''}">
+            ${isLinkAvailable ? '<i class="fa-solid fa-download"></i> View & Download' : 'Coming Soon'}
           </a>
         `;
         supplyGrid.appendChild(card);
@@ -164,15 +192,10 @@
     // Tab Click Logic
     supplyTabs.forEach(tab => {
       tab.addEventListener('click', (e) => {
-        // Reset all tabs
         supplyTabs.forEach(t => {
           t.className = "supply-tab flex-shrink-0 bg-white text-[#1B3625] font-bold px-6 py-3 rounded-xl border border-[#F1EDD4] hover:bg-[#F1EDD4]/50 transition-all text-sm sm:text-base shadow-sm";
         });
-        
-        // Activate clicked tab
         e.target.className = "supply-tab active-tab flex-shrink-0 bg-[#1B3625] text-[#F1EDD4] font-bold px-6 py-3 rounded-xl border-2 border-[#A6C665] shadow-lg transition-all text-sm sm:text-base";
-        
-        // Render content for selected class
         renderSupplyMaterials(e.target.dataset.class);
       });
     });
