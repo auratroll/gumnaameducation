@@ -12,7 +12,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gumnaam Results - BIEK Karachi</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         :root {
             --emerald-main: #047857;
@@ -27,20 +31,13 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Poppins', sans-serif;
+            /* Changed to VIP Theme Font */
+            font-family: 'Times New Roman', Times, serif; 
         }
 
+        /* Removed flex from body to allow header/footer to sit properly */
         body {
-            background-color: var(--bg-color);
-            background-image: radial-gradient(#047857 0.75px, transparent 0.75px), radial-gradient(#047857 0.75px, #f8fafc 0.75px);
-            background-size: 30px 30px;
-            background-position: 0 0, 15px 15px;
             color: #1e293b;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 25px 15px;
         }
 
         .portal-card {
@@ -335,157 +332,52 @@
         }
     </style>
 </head>
-<body>
+<body class="bg-white min-h-screen flex flex-col justify-between overflow-x-hidden">
 
-<div class="portal-card">
+  <!-- VIP Navigation Bar -->
+  <header class="w-full bg-white shadow-sm border-b border-[#F1EDD4] py-3 px-4 sm:px-6 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="flex items-center gap-2 sm:gap-3">
+          <img src="logo.png" alt="Gumnaam Education Logo" class="w-10 h-10 sm:w-12 sm:h-12 object-contain rounded-lg drop-shadow-md">
+          <span class="font-bold text-lg sm:text-xl text-[#1B3625] tracking-wide uppercase">Gumnaam Education</span>
+        </a>
+      </div>
 
-    <div class="top-banner">
-        <p>Follow Gumnaam Education channel for more updates</p>
-        <a href="https://whatsapp.com/channel/0029Vam5DGJBPzjSPNeP7N1s" target="_blank" class="btn-banner">FOLLOW</a>
+      <!-- Desktop Navigation Links -->
+      <nav class="hidden md:flex items-center gap-6">
+        <a href="index.html" class="font-bold text-slate-700 hover:text-[#A6C665] transition-all">Home</a>
+        <a href="about.html" class="font-bold text-slate-700 hover:text-[#A6C665] transition-all">About Us</a>
+        <a href="contact.html" class="font-bold text-slate-700 hover:text-[#A6C665] transition-all">Contact Us</a>
+        <a href="result.html" class="font-bold text-[#A6C665] hover:text-[#1B3625] transition-all border-b-2 border-[#A6C665] flex items-center gap-1">
+          <i class="fa-solid fa-square-poll-vertical"></i> Result Portal
+        </a>
+        <!-- VIP Supply Portal Button for Desktop -->
+        <a href="supplystuff.html" class="font-bold text-white bg-red-600 hover:bg-red-700 px-4 py-1.5 rounded-lg transition-all flex items-center gap-2 shadow-md animate-pulse">
+          <i class="fa-solid fa-file-circle-exclamation"></i> Supply Portal
+        </a>
+      </nav>
+      
+      <div class="flex items-center gap-2 sm:gap-4">
+        <!-- Mobile Menu Toggle Button (3 Dots) -->
+        <button id="mobile-menu-btn" class="md:hidden text-[#1B3625] hover:text-[#A6C665] p-2 focus:outline-none">
+          <i class="fa-solid fa-ellipsis-vertical text-2xl px-2"></i>
+        </button>
+      </div>
     </div>
 
-    <div class="logo-wrapper">
-        <div class="logo-container">
-            <img src="logo.png" alt="Gumnaam Logo" id="brandLogo">
-        </div>
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-[#F1EDD4] mt-3 pt-3 pb-2 flex flex-col gap-3 px-4">
+      <a href="index.html" class="font-bold text-slate-700 py-2 px-3 rounded-lg hover:bg-[#F1EDD4]/30"><i class="fa-solid fa-house mr-2 w-4"></i> Home</a>
+      <a href="about.html" class="font-bold text-slate-700 py-2 px-3 rounded-lg hover:bg-[#F1EDD4]/30"><i class="fa-solid fa-circle-info mr-2 w-4"></i> About Us</a>
+      <a href="contact.html" class="font-bold text-slate-700 py-2 px-3 rounded-lg hover:bg-[#F1EDD4]/30"><i class="fa-solid fa-envelope mr-2 w-4"></i> Contact Us</a>
+      <a href="result.html" class="font-bold text-[#1B3625] py-2 px-3 rounded-lg bg-[#F1EDD4]/50 border border-[#F1EDD4]"><i class="fa-solid fa-square-poll-vertical mr-2 w-4 text-[#A6C665]"></i> Result Portal</a>
+      <div class="border-t border-[#F1EDD4] my-1"></div>
+      <a href="supplystuff.html" class="font-bold text-red-600 bg-red-50 py-2 px-3 rounded-lg hover:bg-red-100 flex items-center gap-2">
+        <i class="fa-solid fa-file-circle-exclamation w-4"></i> Supply Portal
+      </a>
     </div>
+  </header>
 
-    <h1>Gumnaam Results</h1>
-    <p class="subtitle">BIEK Karachi 1st Year Annual Examination Results</p>
-
-    <div class="form-group">
-        <label>Select Class</label>
-        <select id="classSelect">
-            <option value="1st Year">1st Year</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label>Select Faculty / Group</label>
-        <select id="facultySelect">
-            <option value="Pre-Engineering">Pre-Engineering</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label>Roll Number</label>
-        <input type="text" id="rollNo" placeholder="Enter Roll No (e.g. 787051)" maxlength="8">
-    </div>
-
-    <button class="btn-animated" id="btnSearch" onclick="checkResult()">SEARCH RESULT</button>
-
-    <a href="https://whatsapp.com/channel/0029Vam5DGJBPzjSPNeP7N1s" target="_blank" class="btn-whatsapp">
-        📢 Join Official WhatsApp Channel
-    </a>
-
-    <div id="resultBox" class="result-box"></div>
-
-    <div class="footer-credit">GUMNAAM EDUCATIONAL PORTAL</div>
-</div>
-
-<script>
-    const logoImg = document.getElementById('brandLogo');
-    logoImg.onerror = function() {
-        this.style.display = 'none';
-        const container = this.parentElement;
-        container.innerHTML = '<span style="color:#fff; font-weight:800; font-size:28px;">G</span>';
-    };
-
-    // Helper function for numbering like 1st, 2nd, 3rd, 4th
-    function getOrdinalSuffix(i) {
-        let j = i % 10, k = i % 100;
-        if (j == 1 && k != 11) return i + "st";
-        if (j == 2 && k != 12) return i + "nd";
-        if (j == 3 && k != 13) return i + "rd";
-        return i + "th";
-    }
-
-    async function checkResult() {
-        const rollInput = document.getElementById("rollNo").value.trim();
-        const resultDiv = document.getElementById("resultBox");
-        const btnSearch = document.getElementById("btnSearch");
-        const selectedClass = document.getElementById("classSelect").value;
-        const selectedFaculty = document.getElementById("facultySelect").value;
-
-        if (!rollInput) {
-            alert("Lutfan Roll Number enter karen!");
-            return;
-        }
-
-        btnSearch.disabled = true;
-        btnSearch.innerText = "SEARCHING...";
-
-        try {
-            const response = await fetch('result.txt');
-            if (!response.ok) throw new Error("File not found");
-
-            const textData = await response.text();
-
-            // Match Roll number and marks inside brackets
-            const regex = new RegExp(rollInput + "\\s*\\(\\s*(\\d+)\\s*\\)", "i");
-            const match = textData.match(regex);
-
-            if (match) {
-                const marks = parseInt(match[1]);
-                
-                // --- RANK CALCULATION LOGIC ---
-                // Finding all marks in the file to calculate ranking
-                const allMarksRegex = /\\b\\d+\\s*\\(\\s*(\\d+)\\s*\\)/g;
-                let matchArr;
-                const allMarks = [];
-                // Backup simple regex to match format like 787051(370) globally
-                const globalRegex = new RegExp("\\b\\d+\\s*\\(\\s*(\\d+)\\s*\\)", "g");
-                
-                while ((matchArr = globalRegex.exec(textData)) !== null) {
-                    allMarks.push(parseInt(matchArr[1]));
-                }
-                
-                // Sort array in descending order to get the highest marks on top
-                allMarks.sort((a, b) => b - a);
-                
-                // Find student's position
-                const rankIndex = allMarks.indexOf(marks) + 1;
-                const studentRank = rankIndex > 0 ? getOrdinalSuffix(rankIndex) : "N/A";
-                // ------------------------------
-
-                const TOTAL_MARKS = 550;
-                const percentageVal = (marks / TOTAL_MARKS) * 100;
-                const percentage = percentageVal.toFixed(2);
-                
-                let grade = "";
-                if (percentageVal >= 80) grade = "A-1 Grade";
-                else if (percentageVal >= 70) grade = "A Grade";
-                else if (percentageVal >= 60) grade = "B Grade";
-                else if (percentageVal >= 50) grade = "C Grade";
-                else if (percentageVal >= 40) grade = "D Grade";
-                else if (percentageVal >= 33) grade = "E Grade";
-                else grade = "FAIL";
-
-                resultDiv.className = "result-box success";
-                resultDiv.style.display = "block";
-                resultDiv.innerHTML = `
-                    <div class="result-row"><span class="label">Roll Number</span><span class="value">${rollInput}</span></div>
-                    <div class="result-row"><span class="label">Class</span><span class="value">${selectedClass}</span></div>
-                    <div class="result-row"><span class="label">Faculty</span><span class="value">${selectedFaculty}</span></div>
-                    <div class="result-row"><span class="label">Marks</span><span class="value">${marks} / ${TOTAL_MARKS}</span></div>
-                    <div class="result-row"><span class="label">Percentage</span><span class="value">${percentage}%</span></div>
-                    <div class="result-row"><span class="label">Karachi Rank</span><span class="badge-rank">${studentRank}</span></div>
-                    <div class="result-row"><span class="label">Grade</span><span class="badge-grade" style="${grade === 'FAIL' ? 'background: #e63946;' : ''}">${grade}</span></div>
-                `;
-            } else {
-                resultDiv.className = "result-box error";
-                resultDiv.style.display = "block";
-                resultDiv.innerHTML = `<p style="font-size:13px; text-align:center;"><strong>Result Not Found:</strong> Roll Number ${rollInput} data mein nahi mila ya candidate Fail/Absent hai.</p>`;
-            }
-        } catch (err) {
-            alert("Result file load nahi ho saki! Check karein 'result.txt' exact name se uploaded hai.");
-            console.error(err);
-        } finally {
-            btnSearch.disabled = false;
-            btnSearch.innerText = "SEARCH RESULT";
-        }
-    }
-</script>
-
-</body>
-</html>
+  <!-- Original Body Content wrapper inside main to preserve styling -->
+  <main class="flex-grow flex items-center justify-center w-full py-1
