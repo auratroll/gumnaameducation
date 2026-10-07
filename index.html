@@ -9,8 +9,33 @@
   <link rel="stylesheet" href="style.css">
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom Styles for Ticker & Animations -->
+  <style>
+    .ticker-wrap {
+      width: 100%;
+      overflow: hidden;
+      background-color: #1B3625;
+      border-top: 4px solid #A6C665;
+      border-bottom: 1px solid #122519;
+      padding: 8px 0;
+      position: relative;
+    }
+    .ticker-move {
+      display: inline-block;
+      white-space: nowrap;
+      animation: ticker-animation 20s linear infinite;
+    }
+    .ticker-move:hover {
+      animation-play-state: paused;
+    }
+    @keyframes ticker-animation {
+      0% { transform: translateX(100vw); }
+      100% { transform: translateX(-100%); }
+    }
+  </style>
 </head>
-<body class="bg-white text-slate-800 font-sans min-h-screen flex flex-col justify-between overflow-x-hidden">
+<body class="bg-white text-slate-800 min-h-screen flex flex-col justify-between overflow-x-hidden" style="font-family: 'Times New Roman', Times, serif;">
 
   <!-- Red Maintenance Screen Overlay -->
   <div id="maintenance-screen" class="hidden fixed inset-0 bg-red-600 text-white z-[9999] flex flex-col items-center justify-center text-center p-6">
@@ -33,52 +58,71 @@
 
       <!-- Desktop Navigation Links -->
       <nav class="hidden md:flex items-center gap-6">
-        <a href="index.html" class="font-bold text-[#1B3625]">Home</a>
-        <a href="about.html" class="font-semibold text-slate-700 hover:text-[#A6C665] transition-all">About Us</a>
-        <a href="contact.html" class="font-semibold text-slate-700 hover:text-[#A6C665] transition-all">Contact Us</a>
-        <a href="result.html" class="font-semibold text-[#A6C665] hover:text-[#1B3625] transition-all flex items-center gap-1">
+        <a href="index.html" class="font-bold text-[#1B3625] hover:text-[#A6C665] transition-all">Home</a>
+        <a href="about.html" class="font-bold text-slate-700 hover:text-[#A6C665] transition-all">About Us</a>
+        <a href="contact.html" class="font-bold text-slate-700 hover:text-[#A6C665] transition-all">Contact Us</a>
+        <a href="result.html" class="font-bold text-[#A6C665] hover:text-[#1B3625] transition-all flex items-center gap-1">
           <i class="fa-solid fa-square-poll-vertical"></i> Result Portal
+        </a>
+        <!-- VIP Supply Portal Button for Desktop -->
+        <a href="supplystuff.html" class="font-bold text-white bg-red-600 hover:bg-red-700 px-4 py-1.5 rounded-lg transition-all flex items-center gap-2 shadow-md animate-pulse">
+          <i class="fa-solid fa-file-circle-exclamation"></i> Supply Portal
         </a>
       </nav>
       
       <div class="flex items-center gap-2 sm:gap-4">
-        <span id="user-display" class="hidden text-xs sm:text-sm font-semibold text-[#1B3625] bg-[#F1EDD4]/50 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border border-[#F1EDD4]"></span>
-        <button id="auth-action-btn" class="bg-[#1B3625] hover:bg-[#122519] text-[#F1EDD4] font-medium text-sm sm:text-base px-4 py-1.5 sm:px-5 sm:py-2 rounded-full transition-all shadow-md">
+        <span id="user-display" class="hidden text-xs sm:text-sm font-bold text-[#1B3625] bg-[#F1EDD4]/50 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border border-[#F1EDD4]"></span>
+        <button id="auth-action-btn" class="bg-[#1B3625] hover:bg-[#122519] text-[#F1EDD4] font-bold text-sm sm:text-base px-4 py-1.5 sm:px-5 sm:py-2 rounded-full transition-all shadow-md">
           Sign In
         </button>
 
-        <!-- Mobile Menu Toggle Button -->
-        <button id="mobile-menu-btn" class="md:hidden text-slate-700 hover:text-[#1B3625] p-2 focus:outline-none">
-          <i class="fa-solid fa-bars text-2xl"></i>
+        <!-- Mobile Menu Toggle Button (3 Dots) -->
+        <button id="mobile-menu-btn" class="md:hidden text-[#1B3625] hover:text-[#A6C665] p-2 focus:outline-none">
+          <i class="fa-solid fa-ellipsis-vertical text-2xl px-2"></i>
         </button>
       </div>
     </div>
 
     <!-- Mobile Dropdown Menu -->
     <div id="mobile-menu" class="hidden md:hidden border-t border-slate-100 mt-3 pt-3 pb-2 flex flex-col gap-3">
-      <a href="index.html" class="font-bold text-[#1B3625] py-1 px-2 rounded hover:bg-[#F1EDD4]/30">Home</a>
-      <a href="about.html" class="font-semibold text-slate-700 py-1 px-2 rounded hover:bg-[#F1EDD4]/30">About Us</a>
-      <a href="contact.html" class="font-semibold text-slate-700 py-1 px-2 rounded hover:bg-[#F1EDD4]/30">Contact Us</a>
-      <a href="result.html" class="font-semibold text-[#A6C665] py-1 px-2 rounded hover:bg-[#F1EDD4]/30 flex items-center gap-2">
-        <i class="fa-solid fa-square-poll-vertical"></i> Result Portal
+      <a href="index.html" class="font-bold text-[#1B3625] py-2 px-3 rounded-lg hover:bg-[#F1EDD4]/30"><i class="fa-solid fa-house mr-2 w-4"></i> Home</a>
+      <a href="about.html" class="font-bold text-slate-700 py-2 px-3 rounded-lg hover:bg-[#F1EDD4]/30"><i class="fa-solid fa-circle-info mr-2 w-4"></i> About Us</a>
+      <a href="contact.html" class="font-bold text-slate-700 py-2 px-3 rounded-lg hover:bg-[#F1EDD4]/30"><i class="fa-solid fa-envelope mr-2 w-4"></i> Contact Us</a>
+      <a href="result.html" class="font-bold text-[#A6C665] py-2 px-3 rounded-lg hover:bg-[#F1EDD4]/30"><i class="fa-solid fa-square-poll-vertical mr-2 w-4"></i> Result Portal</a>
+      <div class="border-t border-slate-100 my-1"></div>
+      <a href="supplystuff.html" class="font-bold text-red-600 bg-red-50 py-2 px-3 rounded-lg hover:bg-red-100 flex items-center gap-2">
+        <i class="fa-solid fa-file-circle-exclamation w-4"></i> Supply Portal
       </a>
     </div>
   </header>
 
+  <!-- LATEST EDUCATIONAL UPDATES TICKER -->
+  <div class="ticker-wrap shadow-md z-40">
+    <div class="ticker-move">
+      <span class="text-[#F1EDD4] font-bold text-sm sm:text-base uppercase tracking-widest flex items-center gap-4">
+        <i class="fa-solid fa-bell text-[#A6C665]"></i>
+        WELCOME TO THE LATEST EDUCATIONAL UPDATES PORTAL 
+        <i class="fa-solid fa-star text-[#A6C665]"></i>
+        GET YOUR TARGET PAPERS, NOTES AND GUESS PAPERS HERE
+        <i class="fa-solid fa-bell text-[#A6C665]"></i>
+      </span>
+    </div>
+  </div>
+
   <!-- HERO / LANDING SECTION (Visible before Sign In) -->
   <section id="landing-section" class="flex-grow flex flex-col items-center justify-center text-center px-4 py-8 sm:py-12">
-    <div class="logo-3d-card bg-white p-4 sm:p-6 rounded-3xl shadow-2xl border border-[#F1EDD4] mb-6 sm:mb-8 max-w-[240px] sm:max-w-sm transition-transform duration-500">
-      <img src="logo.png" alt="Gumnaam Education" class="w-48 h-48 sm:w-64 sm:h-64 object-contain mx-auto pulse-animation">
+    <div class="logo-3d-card bg-white p-4 sm:p-6 rounded-3xl shadow-2xl border border-[#F1EDD4] mb-6 sm:mb-8 max-w-[240px] sm:max-w-sm transition-transform duration-500 hover:scale-105">
+      <img src="logo.png" alt="Gumnaam Education" class="w-48 h-48 sm:w-64 sm:h-64 object-contain mx-auto">
     </div>
 
-    <h1 class="text-2xl sm:text-5xl font-extrabold text-slate-900 mb-3 sm:mb-4 tracking-tight px-2">
+    <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 mb-3 sm:mb-4 tracking-tight px-2 uppercase">
       Welcome to <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#1B3625] to-[#A6C665]">Gumnaam Education</span>
     </h1>
-    <p class="text-slate-600 text-sm sm:text-lg max-w-xl mb-6 sm:mb-8 px-4">
+    <p class="text-slate-600 text-sm sm:text-lg max-w-xl mb-6 sm:mb-8 px-4 font-bold">
       Pakistan's Premier Educational Portal for Study Materials, Target Papers, Class Notes & Latest News.
     </p>
 
-    <button id="cta-signup-btn" class="cta-btn bg-gradient-to-r from-[#1B3625] to-[#122519] hover:opacity-90 text-[#F1EDD4] font-bold text-base sm:text-lg px-6 py-3 sm:px-8 sm:py-4 rounded-2xl shadow-xl transition-all duration-300 flex items-center gap-3">
+    <button id="cta-signup-btn" class="cta-btn bg-gradient-to-r from-[#1B3625] to-[#122519] hover:opacity-90 text-[#F1EDD4] font-bold text-base sm:text-lg px-6 py-3 sm:px-8 sm:py-4 rounded-2xl shadow-xl transition-all duration-300 flex items-center gap-3 border border-[#1B3625]">
       <i class="fa-solid fa-graduation-cap text-[#A6C665] text-xl"></i>
       Sign Up to Start for Free
     </button>
@@ -88,20 +132,23 @@
   <main id="dashboard-section" class="hidden flex-grow max-w-7xl w-full mx-auto px-4 py-6 sm:py-8">
     
     <!-- Welcome Banner -->
-    <div class="bg-gradient-to-r from-[#1B3625] to-[#122519] rounded-3xl p-6 sm:p-8 text-white shadow-xl mb-8 sm:mb-10 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left border border-[#A6C665]/20">
-      <div>
-        <h2 class="text-2xl sm:text-3xl font-extrabold text-[#F1EDD4] mb-2">Study Material Portal 📚</h2>
-        <p class="text-white/80 text-sm sm:text-base max-w-xl">Select your class below to access all subjects material directly via Google Drive.</p>
+    <div class="bg-gradient-to-r from-[#1B3625] to-[#122519] rounded-3xl p-6 sm:p-8 text-white shadow-xl mb-8 sm:mb-10 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left border border-[#A6C665]/20 relative overflow-hidden">
+      <div class="absolute -right-10 -bottom-10 opacity-10">
+        <i class="fa-solid fa-book-open-reader text-9xl text-[#A6C665]"></i>
       </div>
-      <img src="logo.png" class="w-20 h-20 sm:w-24 sm:h-24 object-contain drop-shadow-lg hidden md:block" alt="Logo">
+      <div class="relative z-10">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-[#F1EDD4] mb-2 uppercase">Study Material Portal 📚</h2>
+        <p class="text-white/80 text-sm sm:text-base max-w-xl font-bold">Select your class below to access all subjects material directly via Google Drive.</p>
+      </div>
+      <img src="logo.png" class="relative z-10 w-20 h-20 sm:w-24 sm:h-24 object-contain drop-shadow-lg hidden md:block border-2 border-[#A6C665] rounded-full bg-white p-1" alt="Logo">
     </div>
 
     <!-- Class Selection Tabs (Horizontal Scroll for Mobile) -->
     <div class="flex overflow-x-auto no-scrollbar gap-2 sm:gap-4 justify-start sm:justify-center mb-8 pb-2">
-      <button class="class-tab active-tab flex-shrink-0 bg-[#1B3625] text-[#F1EDD4] font-semibold px-5 py-2.5 rounded-xl border border-[#1B3625] shadow-md transition-all text-sm sm:text-base" data-class="9th">Class 9th</button>
-      <button class="class-tab flex-shrink-0 bg-white text-[#1B3625] font-semibold px-5 py-2.5 rounded-xl border border-[#F1EDD4] hover:bg-[#F1EDD4]/50 transition-all text-sm sm:text-base" data-class="10th">Class 10th</button>
-      <button class="class-tab flex-shrink-0 bg-white text-[#1B3625] font-semibold px-6 py-2.5 rounded-xl border border-[#F1EDD4] hover:bg-[#F1EDD4]/50 transition-all text-sm sm:text-base" data-class="11th">Class 11th</button>
-      <button class="class-tab flex-shrink-0 bg-white text-[#1B3625] font-semibold px-5 py-2.5 rounded-xl border border-[#F1EDD4] hover:bg-[#F1EDD4]/50 transition-all text-sm sm:text-base" data-class="12th">Class 12th</button>
+      <button class="class-tab active-tab flex-shrink-0 bg-[#1B3625] text-[#F1EDD4] font-bold px-6 py-3 rounded-xl border border-[#1B3625] shadow-md transition-all text-sm sm:text-base" data-class="9th">Class 9th</button>
+      <button class="class-tab flex-shrink-0 bg-white text-[#1B3625] font-bold px-6 py-3 rounded-xl border border-[#F1EDD4] hover:bg-[#F1EDD4]/50 transition-all text-sm sm:text-base" data-class="10th">Class 10th</button>
+      <button class="class-tab flex-shrink-0 bg-white text-[#1B3625] font-bold px-6 py-3 rounded-xl border border-[#F1EDD4] hover:bg-[#F1EDD4]/50 transition-all text-sm sm:text-base" data-class="11th">Class 11th</button>
+      <button class="class-tab flex-shrink-0 bg-white text-[#1B3625] font-bold px-6 py-3 rounded-xl border border-[#F1EDD4] hover:bg-[#F1EDD4]/50 transition-all text-sm sm:text-base" data-class="12th">Class 12th</button>
     </div>
 
     <!-- Main Materials Cards Grid -->
@@ -110,66 +157,87 @@
     </div>
 
     <!-- Official WhatsApp Channels Hub -->
-    <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#F1EDD4] shadow-xl text-center mb-8 sm:mb-12">
-      <h3 class="text-xl sm:text-2xl font-bold text-[#1B3625] mb-2">Join Our Official WhatsApp Channels</h3>
-      <p class="text-slate-500 mb-6 text-xs sm:text-sm">Stay connected for instant updates, notifications, and PDF alerts.</p>
+    <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#F1EDD4] shadow-xl text-center mb-8 sm:mb-12 relative overflow-hidden">
+      <h3 class="text-xl sm:text-2xl font-bold text-[#1B3625] mb-2 uppercase">Join Our Official WhatsApp Channels</h3>
+      <p class="text-slate-500 mb-6 text-xs sm:text-sm font-bold">Stay connected for instant updates, notifications, and PDF alerts.</p>
       
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 max-w-5xl mx-auto">
-        
         <!-- Main Channel -->
         <a href="https://whatsapp.com/channel/0029Vam5DGJBPzjSPNeP7N1s" target="_blank" class="flex items-center gap-3 bg-[#F1EDD4]/20 border border-[#F1EDD4] hover:bg-[#1B3625] hover:text-[#F1EDD4] text-[#1B3625] font-bold p-3.5 sm:p-4 rounded-2xl transition-all shadow-sm group">
-          <i class="fa-brands fa-whatsapp text-2xl sm:text-3xl text-[#A6C665] group-hover:text-[#A6C665]"></i>
+          <i class="fa-brands fa-whatsapp text-3xl sm:text-4xl text-[#25D366] group-hover:text-[#A6C665]"></i>
           <div class="text-left">
-            <div class="text-xs sm:text-sm font-bold">Main WhatsApp Channel</div>
-            <div class="text-[10px] sm:text-xs font-normal opacity-80">Gumnaam Education</div>
+            <div class="text-xs sm:text-sm font-extrabold uppercase">Main Channel</div>
+            <div class="text-[10px] sm:text-xs font-bold opacity-80">Gumnaam Education</div>
           </div>
         </a>
 
         <!-- SSC Channel -->
         <a href="https://whatsapp.com/channel/0029Vb6nwLdADTOFsKJ6gc1W" target="_blank" class="flex items-center gap-3 bg-[#F1EDD4]/20 border border-[#F1EDD4] hover:bg-[#1B3625] hover:text-[#F1EDD4] text-[#1B3625] font-bold p-3.5 sm:p-4 rounded-2xl transition-all shadow-sm group">
-          <i class="fa-brands fa-whatsapp text-2xl sm:text-3xl text-[#A6C665] group-hover:text-[#A6C665]"></i>
+          <i class="fa-brands fa-whatsapp text-3xl sm:text-4xl text-[#25D366] group-hover:text-[#A6C665]"></i>
           <div class="text-left">
-            <div class="text-xs sm:text-sm font-bold">SSC WhatsApp Channel</div>
-            <div class="text-[10px] sm:text-xs font-normal opacity-80">Class 9th & 10th</div>
+            <div class="text-xs sm:text-sm font-extrabold uppercase">SSC WhatsApp</div>
+            <div class="text-[10px] sm:text-xs font-bold opacity-80">Class 9th & 10th</div>
           </div>
         </a>
 
         <!-- HSC Channel -->
         <a href="https://whatsapp.com/channel/0029VaqCt0W6hENi4mLHP90u" target="_blank" class="flex items-center gap-3 bg-[#F1EDD4]/20 border border-[#F1EDD4] hover:bg-[#1B3625] hover:text-[#F1EDD4] text-[#1B3625] font-bold p-3.5 sm:p-4 rounded-2xl transition-all shadow-sm group">
-          <i class="fa-brands fa-whatsapp text-2xl sm:text-3xl text-[#A6C665] group-hover:text-[#A6C665]"></i>
+          <i class="fa-brands fa-whatsapp text-3xl sm:text-4xl text-[#25D366] group-hover:text-[#A6C665]"></i>
           <div class="text-left">
-            <div class="text-xs sm:text-sm font-bold">HSC WhatsApp Channel</div>
-            <div class="text-[10px] sm:text-xs font-normal opacity-80">Class 11th & 12th</div>
+            <div class="text-xs sm:text-sm font-extrabold uppercase">HSC WhatsApp</div>
+            <div class="text-[10px] sm:text-xs font-bold opacity-80">Class 11th & 12th</div>
           </div>
         </a>
 
         <!-- Karachi University Channel -->
         <a href="https://whatsapp.com/channel/0029Vb6xS9pHwXb3177k391g" target="_blank" class="flex items-center gap-3 bg-[#F1EDD4]/20 border border-[#F1EDD4] hover:bg-[#1B3625] hover:text-[#F1EDD4] text-[#1B3625] font-bold p-3.5 sm:p-4 rounded-2xl transition-all shadow-sm group">
-          <i class="fa-brands fa-whatsapp text-2xl sm:text-3xl text-[#A6C665] group-hover:text-[#A6C665]"></i>
+          <i class="fa-brands fa-whatsapp text-3xl sm:text-4xl text-[#25D366] group-hover:text-[#A6C665]"></i>
           <div class="text-left">
-            <div class="text-xs sm:text-sm font-bold">Karachi University</div>
-            <div class="text-[10px] sm:text-xs font-normal opacity-80">KU Admission & Info</div>
+            <div class="text-xs sm:text-sm font-extrabold uppercase">Karachi Uni</div>
+            <div class="text-[10px] sm:text-xs font-bold opacity-80">KU Admission & Info</div>
           </div>
         </a>
 
         <!-- DAE Channel -->
         <a href="https://whatsapp.com/channel/0029VbB8BeVJJhzcoRu5j724" target="_blank" class="flex items-center gap-3 bg-[#F1EDD4]/20 border border-[#F1EDD4] hover:bg-[#1B3625] hover:text-[#F1EDD4] text-[#1B3625] font-bold p-3.5 sm:p-4 rounded-2xl transition-all shadow-sm group">
-          <i class="fa-brands fa-whatsapp text-2xl sm:text-3xl text-[#A6C665] group-hover:text-[#A6C665]"></i>
+          <i class="fa-brands fa-whatsapp text-3xl sm:text-4xl text-[#25D366] group-hover:text-[#A6C665]"></i>
           <div class="text-left">
-            <div class="text-xs sm:text-sm font-bold">DAE/D.COM WhatsApp Channel</div>
-            <div class="text-[10px] sm:text-xs font-normal opacity-80">Diploma Engineering</div>
+            <div class="text-xs sm:text-sm font-extrabold uppercase">DAE / D.COM</div>
+            <div class="text-[10px] sm:text-xs font-bold opacity-80">Diploma Engineering</div>
           </div>
         </a>
 
         <!-- Ziauddin Board Channel -->
         <a href="https://whatsapp.com/channel/0029Vb6kyN1DuMRgo4Ycte3g" target="_blank" class="flex items-center gap-3 bg-[#F1EDD4]/20 border border-[#F1EDD4] hover:bg-[#1B3625] hover:text-[#F1EDD4] text-[#1B3625] font-bold p-3.5 sm:p-4 rounded-2xl transition-all shadow-sm group">
-          <i class="fa-brands fa-whatsapp text-2xl sm:text-3xl text-[#A6C665] group-hover:text-[#A6C665]"></i>
+          <i class="fa-brands fa-whatsapp text-3xl sm:text-4xl text-[#25D366] group-hover:text-[#A6C665]"></i>
           <div class="text-left">
-            <div class="text-xs sm:text-sm font-bold">Ziauddin Board Channel</div>
-            <div class="text-[10px] sm:text-xs font-normal opacity-80">Updates & Info</div>
+            <div class="text-xs sm:text-sm font-extrabold uppercase">Ziauddin Board</div>
+            <div class="text-[10px] sm:text-xs font-bold opacity-80">Updates & Info</div>
           </div>
         </a>
+      </div>
+    </div>
 
+    <!-- Educational Importance / Catchy Paragraph Section -->
+    <div class="bg-white rounded-3xl p-6 sm:p-10 border border-[#F1EDD4] shadow-xl mb-8 relative overflow-hidden">
+      <!-- Decorative element -->
+      <div class="absolute top-0 right-0 w-32 h-32 bg-[#A6C665] opacity-10 rounded-bl-full"></div>
+      <div class="absolute bottom-0 left-0 w-24 h-24 bg-[#1B3625] opacity-5 rounded-tr-full"></div>
+      
+      <h3 class="text-2xl sm:text-3xl font-extrabold text-[#1B3625] mb-5 text-center sm:text-left uppercase border-b border-[#F1EDD4] pb-3">
+        <i class="fa-solid fa-book-open-reader text-[#A6C665] mr-2"></i> Empowering Your Educational Journey
+      </h3>
+      
+      <div class="space-y-4 text-slate-700 text-sm sm:text-base text-justify font-bold leading-relaxed relative z-10">
+        <p>
+          <span class="text-[#1B3625] font-extrabold text-lg">Gumnaam Education</span> is dedicated to revolutionizing the way students prepare for their board examinations in Pakistan. Our platform serves as a central hub for all crucial academic resources, meticulously organized to help you achieve academic excellence. We believe that every student deserves access to high-quality study materials, regardless of their background or location.
+        </p>
+        <p>
+          Preparation is the ultimate key to success. Our expertly crafted <span class="text-[#1B3625] border-b-2 border-[#A6C665] font-extrabold">Target Papers</span>, comprehensive <span class="text-[#1B3625] border-b-2 border-[#A6C665] font-extrabold">Class Notes</span>, and authenticated <span class="text-[#1B3625] border-b-2 border-[#A6C665] font-extrabold">10 Years Past Papers</span> are designed by experienced educators who understand the exact pattern of the BIEK and other regional boards. By utilizing these resources, students can quickly identify critical topics, manage their study time effectively, and boost their confidence before stepping into the examination hall.
+        </p>
+        <p>
+          In today's fast-paced digital world, staying updated is just as important as studying hard. That is why our active WhatsApp channels ensure that you never miss a breaking news update, result announcement, or sudden date sheet change. Join our growing community of thousands of successful students and let <span class="text-[#1B3625] font-extrabold uppercase">Gumnaam Education</span> be the stepping stone to your bright future.
+        </p>
       </div>
     </div>
 
@@ -180,37 +248,37 @@
     <div class="bg-white w-full max-w-md p-6 sm:p-8 rounded-3xl shadow-2xl border border-[#F1EDD4] relative">
       
       <button id="close-modal" class="absolute top-4 right-4 text-slate-400 hover:text-[#1B3625] transition-colors">
-        <i class="fa-solid fa-xmark text-xl"></i>
+        <i class="fa-solid fa-xmark text-2xl"></i>
       </button>
 
       <div class="text-center mb-6">
-        <img src="logo.png" alt="Gumnaam Education" class="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-2 drop-shadow-md">
-        <h2 class="text-xl sm:text-2xl font-bold text-[#1B3625]">Welcome Back</h2>
-        <p class="text-xs sm:text-sm text-slate-500">Sign in to access all study materials</p>
+        <img src="logo.png" alt="Gumnaam Education" class="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-2 drop-shadow-md border-2 border-[#A6C665] rounded-full p-1">
+        <h2 class="text-xl sm:text-2xl font-extrabold text-[#1B3625] uppercase">Welcome Back</h2>
+        <p class="text-xs sm:text-sm text-slate-500 font-bold">Sign in to access all study materials</p>
       </div>
 
-      <button id="google-btn" class="w-full bg-white border border-[#F1EDD4] hover:bg-[#F1EDD4]/30 text-[#1B3625] font-semibold py-2.5 sm:py-3 px-4 rounded-xl shadow-sm flex items-center justify-center gap-3 transition-all mb-4 text-sm sm:text-base">
-        <i class="fa-brands fa-google text-red-500 text-lg"></i>
+      <button id="google-btn" class="w-full bg-white border-2 border-[#F1EDD4] hover:bg-[#F1EDD4]/30 text-[#1B3625] font-bold py-2.5 sm:py-3 px-4 rounded-xl shadow-sm flex items-center justify-center gap-3 transition-all mb-4 text-sm sm:text-base">
+        <i class="fa-brands fa-google text-red-500 text-xl"></i>
         Continue with Google
       </button>
 
       <div class="flex items-center my-4">
-        <div class="flex-grow border-t border-[#F1EDD4]"></div>
-        <span class="px-3 text-xs text-slate-400 uppercase font-semibold">Or with Email</span>
-        <div class="flex-grow border-t border-[#F1EDD4]"></div>
+        <div class="flex-grow border-t-2 border-[#F1EDD4]"></div>
+        <span class="px-3 text-xs text-slate-400 uppercase font-bold">Or with Email</span>
+        <div class="flex-grow border-t-2 border-[#F1EDD4]"></div>
       </div>
 
       <form id="auth-form" class="space-y-4">
         <div>
-          <label class="block text-xs font-semibold text-[#1B3625] uppercase mb-1">Email Address</label>
-          <input type="email" id="auth-email" required placeholder="student@gmail.com" class="w-full px-4 py-2.5 sm:py-3 text-sm rounded-xl border border-slate-200 focus:outline-none focus:border-[#1B3625] focus:ring-1 focus:ring-[#1B3625]">
+          <label class="block text-xs font-bold text-[#1B3625] uppercase mb-1">Email Address</label>
+          <input type="email" id="auth-email" required placeholder="student@gmail.com" class="w-full px-4 py-2.5 sm:py-3 text-sm font-bold rounded-xl border-2 border-slate-200 focus:outline-none focus:border-[#1B3625] focus:ring-1 focus:ring-[#1B3625]">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-[#1B3625] uppercase mb-1">Password</label>
-          <input type="password" id="auth-password" required placeholder="••••••••" class="w-full px-4 py-2.5 sm:py-3 text-sm rounded-xl border border-slate-200 focus:outline-none focus:border-[#1B3625] focus:ring-1 focus:ring-[#1B3625]">
+          <label class="block text-xs font-bold text-[#1B3625] uppercase mb-1">Password</label>
+          <input type="password" id="auth-password" required placeholder="••••••••" class="w-full px-4 py-2.5 sm:py-3 text-sm font-bold rounded-xl border-2 border-slate-200 focus:outline-none focus:border-[#1B3625] focus:ring-1 focus:ring-[#1B3625]">
         </div>
 
-        <button type="submit" class="w-full bg-[#1B3625] hover:bg-[#122519] text-[#F1EDD4] font-bold py-2.5 sm:py-3 rounded-xl shadow-md transition-all text-sm sm:text-base">
+        <button type="submit" class="w-full bg-[#1B3625] hover:bg-[#122519] text-[#F1EDD4] font-bold py-3 sm:py-3.5 rounded-xl shadow-md transition-all text-sm sm:text-base tracking-wide">
           Sign Up / Sign In
         </button>
       </form>
@@ -218,12 +286,63 @@
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer class="bg-white border-t border-[#F1EDD4] py-4 sm:py-6 text-center text-xs sm:text-sm text-slate-500 px-4">
-    © 2026 Gumnaam Education Official Pakistan [News & Info]. All Rights Reserved.
+  <!-- VIP Professional Footer -->
+  <footer class="bg-[#1B3625] text-[#F1EDD4] pt-12 pb-6 border-t-4 border-[#A6C665]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        
+        <!-- Brand Info -->
+        <div class="col-span-1 md:col-span-2">
+          <div class="flex items-center gap-3 mb-4">
+            <img src="logo.png" alt="Gumnaam Education" class="w-14 h-14 object-contain bg-white rounded-full p-1.5 border-2 border-[#A6C665]">
+            <span class="font-extrabold text-2xl sm:text-3xl tracking-wide uppercase text-white">Gumnaam Education</span>
+          </div>
+          <p class="text-sm text-[#F1EDD4]/90 leading-relaxed font-bold pr-0 md:pr-4 text-justify">
+            Pakistan's most trusted and reliable educational portal. We provide authentic study materials, latest news, target papers, and results for students across Sindh and Pakistan. Empowering students for a brighter tomorrow.
+          </p>
+        </div>
+
+        <!-- Quick Links -->
+        <div>
+          <h4 class="text-lg font-extrabold text-white mb-4 border-b border-[#A6C665]/30 pb-2 uppercase tracking-wide">Quick Links</h4>
+          <ul class="space-y-2 text-sm font-bold">
+            <li><a href="index.html" class="hover:text-[#A6C665] transition-colors flex items-center gap-2"><i class="fa-solid fa-angle-right text-[#A6C665]"></i> Home Portal</a></li>
+            <li><a href="about.html" class="hover:text-[#A6C665] transition-colors flex items-center gap-2"><i class="fa-solid fa-angle-right text-[#A6C665]"></i> About Us</a></li>
+            <li><a href="contact.html" class="hover:text-[#A6C665] transition-colors flex items-center gap-2"><i class="fa-solid fa-angle-right text-[#A6C665]"></i> Contact Support</a></li>
+            <li><a href="result.html" class="hover:text-[#A6C665] transition-colors flex items-center gap-2"><i class="fa-solid fa-angle-right text-[#A6C665]"></i> Result Portal</a></li>
+            <li><a href="supplystuff.html" class="hover:text-red-400 text-red-400 transition-colors flex items-center gap-2"><i class="fa-solid fa-angle-right text-red-500"></i> Supply Portal</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact & Social -->
+        <div>
+          <h4 class="text-lg font-extrabold text-white mb-4 border-b border-[#A6C665]/30 pb-2 uppercase tracking-wide">Connect With Us</h4>
+          <div class="flex flex-col gap-3 text-sm font-bold mb-5">
+            <a href="mailto:info@gumnaameducation.com" class="hover:text-[#A6C665] transition-colors flex items-center gap-2">
+              <i class="fa-solid fa-envelope text-[#A6C665]"></i> info@gumnaameducation.com
+            </a>
+            <span class="flex items-center gap-2">
+              <i class="fa-solid fa-location-dot text-[#A6C665]"></i> Karachi, Sindh, Pakistan
+            </span>
+          </div>
+          <div class="flex gap-4">
+            <a href="#" class="w-10 h-10 rounded-full bg-[#F1EDD4]/10 flex items-center justify-center hover:bg-[#A6C665] hover:text-[#1B3625] transition-all shadow-md"><i class="fa-brands fa-facebook-f text-lg"></i></a>
+            <a href="#" class="w-10 h-10 rounded-full bg-[#F1EDD4]/10 flex items-center justify-center hover:bg-[#A6C665] hover:text-[#1B3625] transition-all shadow-md"><i class="fa-brands fa-youtube text-lg"></i></a>
+            <a href="#" class="w-10 h-10 rounded-full bg-[#F1EDD4]/10 flex items-center justify-center hover:bg-[#A6C665] hover:text-[#1B3625] transition-all shadow-md"><i class="fa-brands fa-instagram text-lg"></i></a>
+            <a href="https://whatsapp.com/channel/0029Vam5DGJBPzjSPNeP7N1s" target="_blank" class="w-10 h-10 rounded-full bg-[#F1EDD4]/10 flex items-center justify-center hover:bg-[#25D366] hover:text-white transition-all shadow-md"><i class="fa-brands fa-whatsapp text-lg"></i></a>
+          </div>
+        </div>
+
+      </div>
+      
+      <div class="border-t border-[#F1EDD4]/20 pt-6 mt-4 flex flex-col md:flex-row justify-between items-center text-xs font-bold opacity-80">
+        <p>© 2026 Gumnaam Education Official. All Rights Reserved.</p>
+        <p class="mt-2 md:mt-0 tracking-wide text-[11px]">DEVELOPED WITH <i class="fa-solid fa-heart text-red-500 mx-1 animate-pulse"></i> FOR STUDENTS OF PAKISTAN</p>
+      </div>
+    </div>
   </footer>
 
-  <!-- Firebase & App Script Integration -->
+  <!-- Firebase & App Script Integration (Strictly Intact) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
@@ -290,7 +409,7 @@
 
     // Render 4 Main Material Cards Function
     async function renderMaterials(selectedClass) {
-      materialsGrid.innerHTML = '<p class="col-span-full text-center text-slate-500 py-8"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Loading resources for Class ' + selectedClass + '...</p>';
+      materialsGrid.innerHTML = '<p class="col-span-full text-center text-slate-500 py-8 font-bold"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Loading resources for Class ' + selectedClass + '...</p>';
       
       let links = {};
       try {
@@ -314,21 +433,21 @@
 
       items.forEach(item => {
         const card = document.createElement('div');
-        card.className = "bg-white p-5 sm:p-6 rounded-2xl shadow-md hover:shadow-xl border border-[#F1EDD4] transition-all flex flex-col justify-between items-center text-center";
+        card.className = "bg-white p-5 sm:p-6 rounded-2xl shadow-md hover:shadow-xl border-2 border-[#F1EDD4] transition-all flex flex-col justify-between items-center text-center transform hover:-translate-y-1";
         
         const isLinkAvailable = item.link && item.link !== "#";
 
         card.innerHTML = `
-          <div class="mb-4">
-            <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-[#F1EDD4]/30 border border-[#F1EDD4] text-[#1B3625] flex items-center justify-center text-xl sm:text-2xl shadow-sm mx-auto mb-3">
+          <div class="mb-4 w-full border-b border-[#F1EDD4] pb-4">
+            <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-[#F1EDD4]/30 border-2 border-[#1B3625] text-[#1B3625] flex items-center justify-center text-xl sm:text-2xl shadow-sm mx-auto mb-3">
               <i class="fa-solid ${item.icon}"></i>
             </div>
-            <h4 class="font-bold text-base sm:text-lg text-[#1B3625] mb-1">${item.title}</h4>
-            <span class="text-[10px] sm:text-xs text-[#1B3625] font-semibold bg-[#F1EDD4]/50 px-2.5 py-1 rounded-md">Class ${selectedClass}</span>
+            <h4 class="font-extrabold text-base sm:text-lg text-[#1B3625] mb-1 uppercase tracking-wide">${item.title}</h4>
+            <span class="text-[10px] sm:text-xs text-[#1B3625] font-bold bg-[#A6C665]/20 px-3 py-1 rounded-full border border-[#A6C665] mt-1 inline-block">Class ${selectedClass}</span>
           </div>
           
-          <a href="${item.link}" target="${isLinkAvailable ? '_blank' : '_self'}" class="w-full ${item.color} text-xs sm:text-sm font-bold py-2.5 sm:py-3 px-4 rounded-xl text-center flex items-center justify-center gap-2 transition-all shadow-md ${!isLinkAvailable ? 'opacity-60 cursor-not-allowed' : ''}">
-            ${isLinkAvailable ? 'Open Drive <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>' : 'Coming Soon'}
+          <a href="${item.link}" target="${isLinkAvailable ? '_blank' : '_self'}" class="w-full ${item.color} text-xs sm:text-sm font-bold py-3 px-4 rounded-xl text-center flex items-center justify-center gap-2 transition-all shadow-md ${!isLinkAvailable ? 'opacity-60 cursor-not-allowed' : ''}">
+            ${isLinkAvailable ? '<i class="fa-solid fa-folder-open"></i> Open Drive' : 'Coming Soon'}
           </a>
         `;
         materialsGrid.appendChild(card);
@@ -339,9 +458,9 @@
     document.querySelectorAll('.class-tab').forEach(tab => {
       tab.addEventListener('click', (e) => {
         document.querySelectorAll('.class-tab').forEach(t => {
-          t.className = "class-tab flex-shrink-0 bg-white text-[#1B3625] font-semibold px-5 py-2.5 rounded-xl border border-[#F1EDD4] hover:bg-[#F1EDD4]/50 transition-all text-sm sm:text-base";
+          t.className = "class-tab flex-shrink-0 bg-white text-[#1B3625] font-bold px-6 py-3 rounded-xl border border-[#F1EDD4] hover:bg-[#F1EDD4]/50 transition-all text-sm sm:text-base shadow-sm";
         });
-        e.target.className = "class-tab active-tab flex-shrink-0 bg-[#1B3625] text-[#F1EDD4] font-semibold px-5 py-2.5 rounded-xl border border-[#1B3625] shadow-md transition-all text-sm sm:text-base";
+        e.target.className = "class-tab active-tab flex-shrink-0 bg-[#1B3625] text-[#F1EDD4] font-bold px-6 py-3 rounded-xl border-2 border-[#A6C665] shadow-lg transition-all text-sm sm:text-base";
         renderMaterials(e.target.dataset.class);
       });
     });
@@ -398,7 +517,9 @@
         dashboardSection.classList.remove('hidden');
         userDisplay.classList.remove('hidden');
         userDisplay.innerText = user.displayName || user.email.split('@')[0];
-        authActionBtn.innerText = "Sign Out";
+        authActionBtn.innerHTML = '<i class="fa-solid fa-right-from-bracket mr-1"></i> Sign Out';
+        authActionBtn.classList.replace('bg-[#1B3625]', 'bg-red-600');
+        authActionBtn.classList.replace('hover:bg-[#122519]', 'hover:bg-red-700');
         
         try {
           await setDoc(doc(db, "users", user.uid), {
@@ -416,7 +537,9 @@
         landingSection.classList.remove('hidden');
         dashboardSection.classList.add('hidden');
         userDisplay.classList.add('hidden');
-        authActionBtn.innerText = "Sign In";
+        authActionBtn.innerHTML = '<i class="fa-solid fa-user mr-1"></i> Sign In';
+        authActionBtn.classList.replace('bg-red-600', 'bg-[#1B3625]');
+        authActionBtn.classList.replace('hover:bg-red-700', 'hover:bg-[#122519]');
       }
     });
   </script>
