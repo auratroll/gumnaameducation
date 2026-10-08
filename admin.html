@@ -82,6 +82,45 @@
         </div>
       </div>
 
+      <!-- MAIN FEATURE: NEWS & UPDATES MANAGER -->
+      <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-xl border-2 border-red-200 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1.5 bg-red-500"></div>
+        <div class="flex justify-between items-center mb-6 border-b border-red-100 pb-4">
+          <div>
+            <h2 class="text-xl sm:text-2xl font-bold text-red-700"><i class="fa-solid fa-bullhorn text-red-500 mr-2 animate-bounce"></i>Post News & Updates</h2>
+            <p class="text-xs text-slate-500 font-semibold mt-1">Publish unlimited updates directly to the Homepage</p>
+          </div>
+        </div>
+
+        <form id="updates-form" class="space-y-5">
+          <div>
+            <label class="block text-xs font-bold uppercase text-[#1B3625] mb-1">Update Title / Heading</label>
+            <input type="text" id="update-title" required placeholder="e.g. BIEK Karachi Final Date Sheet Announced!" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 font-bold">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase text-[#1B3625] mb-1">Update Details (Urdu/English)</label>
+            <textarea id="update-details" rows="4" required placeholder="Type the news details here..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 font-semibold resize-none"></textarea>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label class="block text-[11px] font-bold uppercase text-slate-600 mb-1"><i class="fa-solid fa-image mr-1 text-[#A6C665]"></i> Image URL (Optional)</label>
+              <input type="url" id="update-image" placeholder="https://example.com/poster.jpg" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-[#1B3625] text-sm">
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-bold uppercase text-slate-600 mb-1"><i class="fa-solid fa-link mr-1 text-blue-500"></i> Button Link (Optional)</label>
+              <input type="url" id="update-link" placeholder="https://example.com/download" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-[#1B3625] text-sm">
+            </div>
+          </div>
+
+          <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-extrabold tracking-wide py-3.5 rounded-xl shadow-md transition-all mt-4">
+            <i class="fa-solid fa-paper-plane mr-2"></i> Publish Update to Homepage
+          </button>
+        </form>
+      </div>
+
       <!-- Main Drive Links Update Section (Regular) -->
       <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-xl border border-[#F1EDD4]">
         <div class="flex justify-between items-center mb-6 border-b border-[#F1EDD4] pb-4">
@@ -224,7 +263,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { getFirestore, doc, setDoc, getDoc, collection, getDocs, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, getDoc, collection, getDocs, onSnapshot, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyD8-II4YOIt1ZGk6x4VhOMvAIr7xazjhPY",
@@ -344,10 +383,10 @@
     });
 
     // ============================================
-    // 2. SUPPLY LINKS LOGIC (NEW)
+    // 2. SUPPLY LINKS LOGIC
     // ============================================
     async function fetchSupplyClassLinks(className) {
-      const docRef = doc(db, "supply_materials", className); // New Collection
+      const docRef = doc(db, "supply_materials", className); 
       const docSnap = await getDoc(docRef);
       
       document.getElementById('supply-link-notes').value = '';
@@ -402,7 +441,48 @@
     });
 
     // ============================================
-    // 3. USERS LOGIC
+    // 3. NEWS & UPDATES PUBLISH LOGIC (NEW)
+    // ============================================
+    document.getElementById('updates-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const title = document.getElementById('update-title').value;
+      const details = document.getElementById('update-details').value;
+      const imageUrl = document.getElementById('update-image').value;
+      const linkUrl = document.getElementById('update-link').value;
+      
+      try {
+        // Add new document to "site_updates" collection
+        await addDoc(collection(db, "site_updates"), {
+          title: title,
+          details: details,
+          imageUrl: imageUrl || null,
+          linkUrl: linkUrl || null,
+          timestamp: serverTimestamp() // To sort latest updates first
+        });
+        
+        const btn = e.target.querySelector('button[type="submit"]');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check-circle mr-2"></i> Published Successfully!';
+        btn.classList.replace('bg-red-600', 'bg-green-600');
+        btn.classList.replace('hover:bg-red-700', 'hover:bg-green-700');
+        
+        // Reset form
+        document.getElementById('updates-form').reset();
+        
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.classList.replace('bg-green-600', 'bg-red-600');
+          btn.classList.replace('hover:bg-green-700', 'hover:bg-red-700');
+        }, 3000);
+
+      } catch (err) {
+        alert("Error publishing update: " + err.message);
+      }
+    });
+
+    // ============================================
+    // 4. USERS LOGIC
     // ============================================
     async function loadUsers() {
       const usersTableBody = document.getElementById('users-table-body');
@@ -461,7 +541,7 @@
     }
 
     // ============================================
-    // 4. AUTHENTICATION LOGIC
+    // 5. AUTHENTICATION LOGIC
     // ============================================
     document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -487,7 +567,6 @@
         loginCard.classList.add('hidden');
         panelCard.classList.remove('hidden');
         
-        // Load data for both Regular and Supply links on login
         fetchClassLinks("9th");
         fetchSupplyClassLinks("9th"); 
         
