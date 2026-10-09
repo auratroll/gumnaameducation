@@ -113,8 +113,10 @@
           <span id="notification-badge-static" class="hidden absolute top-1 right-1 sm:top-1.5 sm:right-1.5 w-2.5 h-2.5 bg-red-600 border border-white rounded-full"></span>
         </button>
 
-        <!-- Hidden on small screens to save space -->
-        <span id="user-display" class="hidden md:inline-block text-xs sm:text-sm font-bold text-[#1B3625] bg-[#F1EDD4]/50 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border border-[#F1EDD4]"></span>
+        <!-- Desktop Username Wrapper (Hidden on mobile) -->
+        <div class="hidden md:flex items-center">
+          <span id="user-display" class="hidden text-sm font-bold text-[#1B3625] bg-[#F1EDD4]/50 px-3 py-1.5 rounded-full border border-[#F1EDD4]"></span>
+        </div>
         
         <button id="auth-action-btn" class="bg-[#1B3625] hover:bg-[#122519] text-[#F1EDD4] font-bold text-xs sm:text-base px-3 py-1.5 sm:px-5 sm:py-2 rounded-full transition-all shadow-md whitespace-nowrap">
           Sign In
@@ -139,6 +141,13 @@
       </a>
     </div>
   </header>
+
+  <!-- Mobile User Bar (Shows only on mobile when logged in, above the highlighter) -->
+  <div id="mobile-user-bar" class="hidden md:hidden bg-[#F1EDD4]/50 w-full text-center py-1.5 border-b border-[#A6C665] shadow-sm">
+    <span class="text-[11px] font-extrabold text-[#1B3625] uppercase tracking-wider">
+      <i class="fa-solid fa-user-check mr-1 text-[#A6C665]"></i> Welcome, <span id="mobile-user-display-text"></span>
+    </span>
+  </div>
 
   <!-- LATEST EDUCATIONAL UPDATES TICKER -->
   <div class="ticker-wrap shadow-md z-40">
@@ -675,6 +684,9 @@
     });
 
     // Auth State Monitor
+    const mobileUserBar = document.getElementById('mobile-user-bar');
+    const mobileUserDisplayText = document.getElementById('mobile-user-display-text');
+
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         landingSection.classList.add('hidden');
@@ -682,10 +694,14 @@
         
         // Show ID & Notification Bell on Desktop
         userDisplay.classList.remove('hidden');
-        notifBell.classList.remove('hidden');
         userDisplay.innerText = user.displayName || user.email.split('@')[0];
         
-        authActionBtn.innerHTML = '<i class="fa-solid fa-right-from-bracket mr-1"></i> Sign Out';
+        // Show ID on Mobile Bar
+        mobileUserBar.classList.remove('hidden', 'md:hidden'); // Temporarily overriding md:hidden via Tailwind logic handling
+        mobileUserBar.className = "md:hidden bg-[#F1EDD4]/50 w-full text-center py-1.5 border-b border-[#A6C665] shadow-sm";
+        mobileUserDisplayText.innerText = user.displayName || user.email.split('@')[0];
+        
+        authActionBtn.innerHTML = '<i class="fa-solid fa-right-from-bracket md:mr-1"></i> <span class="hidden md:inline">Sign Out</span><span class="md:hidden">Out</span>';
         authActionBtn.classList.replace('bg-[#1B3625]', 'bg-red-600');
         authActionBtn.classList.replace('hover:bg-[#122519]', 'hover:bg-red-700');
         
@@ -705,9 +721,10 @@
         landingSection.classList.remove('hidden');
         dashboardSection.classList.add('hidden');
         
-        // Hide ID & Notification Bell
+        // Hide IDs
         userDisplay.classList.add('hidden');
-        notifBell.classList.add('hidden');
+        mobileUserBar.classList.add('hidden');
+        mobileUserBar.className = "hidden md:hidden bg-[#F1EDD4]/50 w-full text-center py-1.5 border-b border-[#A6C665] shadow-sm";
         
         authActionBtn.innerHTML = 'Sign In';
         authActionBtn.classList.replace('bg-red-600', 'bg-[#1B3625]');
