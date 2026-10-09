@@ -10,6 +10,9 @@
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
+  <!-- Noto Nastaliq Urdu Font for VIP Updates Section -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+  
   <!-- Custom Styles for Ticker & Animations -->
   <style>
     .ticker-wrap {
@@ -32,6 +35,11 @@
     @keyframes ticker-animation {
       0% { transform: translateX(100vw); }
       100% { transform: translateX(-100%); }
+    }
+    .urdu-text {
+      font-family: 'Noto Nastaliq Urdu', serif;
+      line-height: 2.4;
+      font-size: 1.15rem;
     }
   </style>
 </head>
@@ -71,6 +79,15 @@
       </nav>
       
       <div class="flex items-center gap-2 sm:gap-4">
+        
+        <!-- Notification Bell -->
+        <button id="notification-bell" class="hidden relative text-[#1B3625] hover:text-[#A6C665] p-2 focus:outline-none transition-all transform hover:scale-110">
+          <i class="fa-solid fa-bell text-xl sm:text-2xl drop-shadow-sm"></i>
+          <!-- Red Badge (Hidden by default, shown when new update arrives) -->
+          <span id="notification-badge" class="hidden absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-red-600 border border-white rounded-full animate-ping"></span>
+          <span id="notification-badge-static" class="hidden absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-red-600 border border-white rounded-full"></span>
+        </button>
+
         <span id="user-display" class="hidden text-xs sm:text-sm font-bold text-[#1B3625] bg-[#F1EDD4]/50 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border border-[#F1EDD4]"></span>
         <button id="auth-action-btn" class="bg-[#1B3625] hover:bg-[#122519] text-[#F1EDD4] font-bold text-sm sm:text-base px-4 py-1.5 sm:px-5 sm:py-2 rounded-full transition-all shadow-md">
           Sign In
@@ -154,6 +171,25 @@
     <!-- Main Materials Cards Grid -->
     <div id="materials-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12 sm:mb-16">
       <!-- Dynamic Material Cards Rendered via JS -->
+    </div>
+
+    <!-- DYNAMIC NEWS & UPDATES SECTION -->
+    <div id="updates-section" class="hidden bg-white rounded-3xl p-6 sm:p-8 border-2 border-red-100 shadow-xl mb-8 sm:mb-12 relative overflow-hidden">
+      <!-- Top Animated Highlight Line -->
+      <div class="absolute top-0 left-0 w-full h-1.5 bg-red-600 animate-pulse"></div>
+      
+      <div class="text-center mb-8">
+        <span class="bg-red-50 text-red-600 text-[10px] sm:text-xs font-extrabold px-4 py-1.5 rounded-full uppercase tracking-widest mb-3 inline-block border border-red-200 shadow-sm">
+          <i class="fa-solid fa-bolt text-red-500 mr-1 animate-bounce"></i> Breaking Updates
+        </span>
+        <h3 class="text-2xl sm:text-3xl font-extrabold text-[#1B3625] uppercase tracking-wide">Latest Educational News</h3>
+        <p class="text-slate-500 mt-2 text-xs sm:text-sm font-bold">Tap the button below any update to get details or access files.</p>
+      </div>
+
+      <!-- Updates Container -->
+      <div id="updates-container" class="grid grid-cols-1 gap-6 max-w-4xl mx-auto">
+        <!-- Updates dynamically injected here -->
+      </div>
     </div>
 
     <!-- Official WhatsApp Channels Hub -->
@@ -355,7 +391,7 @@
       onAuthStateChanged,
       signOut 
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     // Firebase Configuration
     const firebaseConfig = {
@@ -406,6 +442,87 @@
     const dashboardSection = document.getElementById('dashboard-section');
     const userDisplay = document.getElementById('user-display');
     const materialsGrid = document.getElementById('materials-grid');
+
+    // News & Updates Variables
+    const updatesSection = document.getElementById('updates-section');
+    const updatesContainer = document.getElementById('updates-container');
+    const notifBell = document.getElementById('notification-bell');
+    const notifBadge = document.getElementById('notification-badge');
+    const notifBadgeStatic = document.getElementById('notification-badge-static');
+    
+    // Check Local Storage for last seen update
+    let lastSeenUpdateId = localStorage.getItem('last_seen_update_id');
+    let latestFetchedUpdateId = null;
+
+    // Fetch Site Updates Dynamically
+    const updatesQuery = query(collection(db, "site_updates"), orderBy("timestamp", "desc"));
+    onSnapshot(updatesQuery, (snapshot) => {
+      if (!snapshot.empty) {
+        updatesSection.classList.remove('hidden');
+        updatesContainer.innerHTML = '';
+        
+        let isFirstDoc = true;
+
+        snapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          const updateId = docSnap.id;
+
+          // Notification Logic: If the newest update is not the one user saw last
+          if (isFirstDoc) {
+            latestFetchedUpdateId = updateId;
+            if (latestFetchedUpdateId !== lastSeenUpdateId) {
+              notifBadge.classList.remove('hidden');
+              notifBadgeStatic.classList.remove('hidden');
+            }
+            isFirstDoc = false;
+          }
+
+          const card = document.createElement('div');
+          card.className = "bg-slate-50 border border-slate-200 rounded-2xl p-5 sm:p-7 shadow-sm hover:shadow-md transition-all";
+          
+          let dateStr = "Recently";
+          if (data.timestamp) {
+            dateStr = new Date(data.timestamp.toDate()).toLocaleDateString('ur-PK', { day: 'numeric', month: 'short', year: 'numeric' });
+          }
+
+          let imageHtml = data.imageUrl ? `<img src="${data.imageUrl}" alt="Update Image" class="w-full max-h-72 object-cover rounded-xl mb-4 shadow-sm border border-slate-200">` : '';
+          
+          let linkHtml = data.linkUrl ? `
+            <div class="mt-4 border-t border-slate-200 pt-4">
+              <a href="${data.linkUrl}" target="_blank" class="inline-flex items-center justify-center w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white font-extrabold py-3 px-6 rounded-xl shadow-md transition-all text-sm tracking-wide uppercase">
+                <i class="fa-solid fa-link mr-2"></i> Get This Update
+              </a>
+            </div>
+          ` : '';
+
+          card.innerHTML = `
+            ${imageHtml}
+            <div class="flex justify-between items-start mb-3 gap-3">
+              <h4 class="text-xl sm:text-2xl font-extrabold text-[#1B3625]">${data.title}</h4>
+              <span class="text-[10px] sm:text-xs bg-[#A6C665]/20 text-[#1B3625] px-2.5 py-1 rounded font-extrabold whitespace-nowrap border border-[#A6C665]">${dateStr}</span>
+            </div>
+            <p class="urdu-text text-slate-700">${data.details}</p>
+            ${linkHtml}
+          `;
+          
+          updatesContainer.appendChild(card);
+        });
+      } else {
+        updatesSection.classList.add('hidden');
+      }
+    });
+
+    // Bell Icon Click Logic
+    notifBell.addEventListener('click', () => {
+      notifBadge.classList.add('hidden');
+      notifBadgeStatic.classList.add('hidden');
+      localStorage.setItem('last_seen_update_id', latestFetchedUpdateId);
+      
+      // Scroll smoothly to updates section
+      if (!updatesSection.classList.contains('hidden')) {
+        updatesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
 
     // Render 4 Main Material Cards Function
     async function renderMaterials(selectedClass) {
@@ -515,8 +632,12 @@
       if (user) {
         landingSection.classList.add('hidden');
         dashboardSection.classList.remove('hidden');
+        
+        // Show ID & Notification Bell
         userDisplay.classList.remove('hidden');
+        notifBell.classList.remove('hidden');
         userDisplay.innerText = user.displayName || user.email.split('@')[0];
+        
         authActionBtn.innerHTML = '<i class="fa-solid fa-right-from-bracket mr-1"></i> Sign Out';
         authActionBtn.classList.replace('bg-[#1B3625]', 'bg-red-600');
         authActionBtn.classList.replace('hover:bg-[#122519]', 'hover:bg-red-700');
@@ -536,7 +657,11 @@
       } else {
         landingSection.classList.remove('hidden');
         dashboardSection.classList.add('hidden');
+        
+        // Hide ID & Notification Bell
         userDisplay.classList.add('hidden');
+        notifBell.classList.add('hidden');
+        
         authActionBtn.innerHTML = '<i class="fa-solid fa-user mr-1"></i> Sign In';
         authActionBtn.classList.replace('bg-red-600', 'bg-[#1B3625]');
         authActionBtn.classList.replace('hover:bg-red-700', 'hover:bg-[#122519]');
