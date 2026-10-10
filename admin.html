@@ -6,6 +6,11 @@
   <title>Admin Dashboard - Gumnaam Education</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Styling to hide/show custom dropdowns */
+    .dropdown-menu { display: none; }
+    .dropdown-menu.show { display: block; }
+  </style>
 </head>
 <body class="bg-white text-slate-800 min-h-screen flex flex-col justify-between" style="font-family: 'Times New Roman', Times, serif;">
 
@@ -92,7 +97,8 @@
           </div>
         </div>
 
-        <form id="updates-form" class="space-y-5">
+        <form id="updates-form" class="space-y-5 mb-8">
+          <input type="hidden" id="edit-update-id" value="">
           <div>
             <label class="block text-xs font-bold uppercase text-[#1B3625] mb-1">Update Title / Heading</label>
             <input type="text" id="update-title" required placeholder="e.g. BIEK Karachi Final Date Sheet Announced!" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 font-bold">
@@ -115,10 +121,23 @@
             </div>
           </div>
 
-          <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-extrabold tracking-wide py-3.5 rounded-xl shadow-md transition-all mt-4">
-            <i class="fa-solid fa-paper-plane mr-2"></i> Publish Update to Homepage
-          </button>
+          <div class="flex gap-3">
+            <button type="button" id="cancel-edit-btn" class="hidden w-1/3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-extrabold tracking-wide py-3.5 rounded-xl shadow-sm transition-all mt-4">
+              Cancel
+            </button>
+            <button type="submit" id="publish-update-btn" class="w-full bg-red-600 hover:bg-red-700 text-white font-extrabold tracking-wide py-3.5 rounded-xl shadow-md transition-all mt-4">
+              <i class="fa-solid fa-paper-plane mr-2"></i> Publish Update
+            </button>
+          </div>
         </form>
+
+        <!-- List of Published Updates (For Editing/Deleting) -->
+        <div class="border-t border-red-100 pt-6">
+          <h3 class="text-lg font-bold text-[#1B3625] mb-4 uppercase tracking-wide border-b border-[#F1EDD4] pb-2">Manage Published Updates</h3>
+          <div id="admin-updates-list" class="space-y-4 max-h-80 overflow-y-auto pr-2">
+            <!-- Updates listed here by JS -->
+          </div>
+        </div>
       </div>
 
       <!-- Main Drive Links Update Section (Regular) -->
@@ -263,7 +282,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { getFirestore, doc, setDoc, getDoc, collection, getDocs, onSnapshot, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, getDoc, collection, getDocs, onSnapshot, addDoc, updateDoc, deleteDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyD8-II4YOIt1ZGk6x4VhOMvAIr7xazjhPY",
@@ -286,17 +305,15 @@
     const loginCard = document.getElementById('admin-login-card');
     const panelCard = document.getElementById('admin-panel-card');
     
-    // Regular Links Elements
+    // Links Elements
     const selectClass = document.getElementById('select-class');
-    // Supply Links Elements
     const supplySelectClass = document.getElementById('supply-select-class');
 
+    // Maintenance Mode
     const toggleMaintenanceBtn = document.getElementById('toggle-maintenance-btn');
     const maintenanceStatusText = document.getElementById('maintenance-status-text');
-
     let isMaintenanceActive = false;
 
-    // Listen Maintenance Mode Status
     onSnapshot(doc(db, "settings", "site_config"), (docSnap) => {
       if (docSnap.exists() && docSnap.data().maintenance) {
         isMaintenanceActive = true;
@@ -313,15 +330,10 @@
       }
     });
 
-    // Toggle Maintenance Mode Button
     toggleMaintenanceBtn.addEventListener('click', async () => {
       try {
-        await setDoc(doc(db, "settings", "site_config"), {
-          maintenance: !isMaintenanceActive
-        }, { merge: true });
-      } catch (err) {
-        alert("Error updating maintenance mode: " + err.message);
-      }
+        await setDoc(doc(db, "settings", "site_config"), { maintenance: !isMaintenanceActive }, { merge: true });
+      } catch (err) { alert("Error updating maintenance mode: " + err.message); }
     });
 
     // ============================================
@@ -377,9 +389,7 @@
           btn.classList.replace('text-[#A6C665]', 'text-[#1B3625]');
         }, 2500);
 
-      } catch (err) {
-        alert("Error saving regular links: " + err.message);
-      }
+      } catch (err) { alert("Error saving regular links: " + err.message); }
     });
 
     // ============================================
@@ -435,49 +445,169 @@
           btn.classList.replace('text-[#1B3625]', 'text-[#F1EDD4]');
         }, 2500);
 
-      } catch (err) {
-        alert("Error saving supply links: " + err.message);
-      }
+      } catch (err) { alert("Error saving supply links: " + err.message); }
     });
 
     // ============================================
-    // 3. NEWS & UPDATES PUBLISH LOGIC (NEW)
+    // 3. NEWS & UPDATES PUBLISH / EDIT / DELETE LOGIC
     // ============================================
+    const adminUpdatesList = document.getElementById('admin-updates-list');
+    const updateTitleInput = document.getElementById('update-title');
+    const updateDetailsInput = document.getElementById('update-details');
+    const updateImageInput = document.getElementById('update-image');
+    const updateLinkInput = document.getElementById('update-link');
+    const editUpdateIdInput = document.getElementById('edit-update-id');
+    const publishBtn = document.getElementById('publish-update-btn');
+    const cancelEditBtn = document.getElementById('cancel-edit-btn');
+    let allUpdatesData = {}; // Store updates temporarily for editing
+
+    // Fetch and list updates for admin management
+    onSnapshot(query(collection(db, "site_updates"), orderBy("timestamp", "desc")), (snapshot) => {
+      adminUpdatesList.innerHTML = '';
+      allUpdatesData = {};
+      
+      if(snapshot.empty) {
+        adminUpdatesList.innerHTML = '<p class="text-sm text-slate-400 font-bold italic">No updates published yet.</p>';
+        return;
+      }
+
+      snapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        const docId = docSnap.id;
+        allUpdatesData[docId] = data; // Save to local object
+
+        const dateStr = data.timestamp ? new Date(data.timestamp.toDate()).toLocaleDateString() : 'Recently';
+        
+        const item = document.createElement('div');
+        item.className = "bg-slate-50 border border-slate-200 rounded-xl p-4 flex justify-between items-start hover:shadow-md transition-all";
+        item.innerHTML = `
+          <div class="pr-4">
+            <h4 class="font-extrabold text-[#1B3625] text-base">${data.title}</h4>
+            <p class="text-xs text-slate-500 font-semibold mt-1 truncate max-w-xs sm:max-w-md">${data.details}</p>
+            <span class="text-[10px] text-[#A6C665] font-bold mt-2 inline-block"><i class="fa-regular fa-clock"></i> ${dateStr}</span>
+          </div>
+          
+          <div class="relative">
+            <button class="text-slate-400 hover:text-[#1B3625] p-2 focus:outline-none" onclick="toggleDropdown('${docId}')">
+              <i class="fa-solid fa-ellipsis-vertical text-xl"></i>
+            </button>
+            
+            <div id="dropdown-${docId}" class="dropdown-menu absolute right-0 top-8 w-32 bg-white border border-slate-200 rounded-xl shadow-lg overflow-hidden z-10">
+              <button class="w-full text-left px-4 py-2.5 text-sm font-bold text-[#1B3625] hover:bg-slate-50 border-b border-slate-100" onclick="startEditUpdate('${docId}')">
+                <i class="fa-solid fa-pen-to-square mr-2 text-[#A6C665]"></i> Edit
+              </button>
+              <button class="w-full text-left px-4 py-2.5 text-sm font-bold text-red-600 hover:bg-red-50" onclick="deleteUpdate('${docId}')">
+                <i class="fa-solid fa-trash mr-2"></i> Delete
+              </button>
+            </div>
+          </div>
+        `;
+        adminUpdatesList.appendChild(item);
+      });
+    });
+
+    // Make functions globally accessible for inline HTML onclick handlers
+    window.toggleDropdown = function(id) {
+      document.querySelectorAll('.dropdown-menu').forEach(menu => {
+        if(menu.id !== `dropdown-${id}`) menu.classList.remove('show');
+      });
+      document.getElementById(`dropdown-${id}`).classList.toggle('show');
+    };
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.relative')) {
+        document.querySelectorAll('.dropdown-menu').forEach(menu => menu.classList.remove('show'));
+      }
+    });
+
+    window.startEditUpdate = function(id) {
+      document.getElementById(`dropdown-${id}`).classList.remove('show');
+      const data = allUpdatesData[id];
+      if(!data) return;
+
+      editUpdateIdInput.value = id;
+      updateTitleInput.value = data.title;
+      updateDetailsInput.value = data.details;
+      updateImageInput.value = data.imageUrl || '';
+      updateLinkInput.value = data.linkUrl || '';
+
+      publishBtn.innerHTML = '<i class="fa-solid fa-floppy-disk mr-2"></i> Save Changes';
+      publishBtn.classList.replace('bg-red-600', 'bg-[#1B3625]');
+      publishBtn.classList.replace('hover:bg-red-700', 'hover:bg-[#122519]');
+      cancelEditBtn.classList.remove('hidden');
+      
+      // Scroll to form
+      document.getElementById('updates-form').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    };
+
+    window.deleteUpdate = async function(id) {
+      document.getElementById(`dropdown-${id}`).classList.remove('show');
+      if(confirm("Are you sure you want to delete this update permanently?")) {
+        try {
+          await deleteDoc(doc(db, "site_updates", id));
+          alert("Update deleted successfully.");
+        } catch (error) {
+          alert("Error deleting update: " + error.message);
+        }
+      }
+    };
+
+    cancelEditBtn.addEventListener('click', () => {
+      document.getElementById('updates-form').reset();
+      editUpdateIdInput.value = '';
+      
+      publishBtn.innerHTML = '<i class="fa-solid fa-paper-plane mr-2"></i> Publish Update';
+      publishBtn.classList.replace('bg-[#1B3625]', 'bg-red-600');
+      publishBtn.classList.replace('hover:bg-[#122519]', 'hover:bg-red-700');
+      cancelEditBtn.classList.add('hidden');
+    });
+
     document.getElementById('updates-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       
-      const title = document.getElementById('update-title').value;
-      const details = document.getElementById('update-details').value;
-      const imageUrl = document.getElementById('update-image').value;
-      const linkUrl = document.getElementById('update-link').value;
+      const updateId = editUpdateIdInput.value;
+      const title = updateTitleInput.value;
+      const details = updateDetailsInput.value;
+      const imageUrl = updateImageInput.value;
+      const linkUrl = updateLinkInput.value;
       
       try {
-        // Add new document to "site_updates" collection
-        await addDoc(collection(db, "site_updates"), {
+        const updateData = {
           title: title,
           details: details,
           imageUrl: imageUrl || null,
-          linkUrl: linkUrl || null,
-          timestamp: serverTimestamp() // To sort latest updates first
-        });
+          linkUrl: linkUrl || null
+        };
+
+        if (updateId) {
+          // Editing existing update
+          await updateDoc(doc(db, "site_updates", updateId), updateData);
+          publishBtn.innerHTML = '<i class="fa-solid fa-check-circle mr-2"></i> Changes Saved!';
+        } else {
+          // Creating new update
+          updateData.timestamp = serverTimestamp();
+          await addDoc(collection(db, "site_updates"), updateData);
+          publishBtn.innerHTML = '<i class="fa-solid fa-check-circle mr-2"></i> Published Successfully!';
+        }
         
-        const btn = e.target.querySelector('button[type="submit"]');
-        const originalText = btn.innerHTML;
-        btn.innerHTML = '<i class="fa-solid fa-check-circle mr-2"></i> Published Successfully!';
-        btn.classList.replace('bg-red-600', 'bg-green-600');
-        btn.classList.replace('hover:bg-red-700', 'hover:bg-green-700');
+        publishBtn.classList.replace('bg-red-600', 'bg-green-600');
+        publishBtn.classList.replace('hover:bg-red-700', 'hover:bg-green-700');
+        publishBtn.classList.replace('bg-[#1B3625]', 'bg-green-600');
+        publishBtn.classList.replace('hover:bg-[#122519]', 'hover:bg-green-700');
         
-        // Reset form
         document.getElementById('updates-form').reset();
+        editUpdateIdInput.value = '';
+        cancelEditBtn.classList.add('hidden');
         
         setTimeout(() => {
-          btn.innerHTML = originalText;
-          btn.classList.replace('bg-green-600', 'bg-red-600');
-          btn.classList.replace('hover:bg-green-700', 'hover:bg-red-700');
+          publishBtn.innerHTML = '<i class="fa-solid fa-paper-plane mr-2"></i> Publish Update';
+          publishBtn.classList.remove('bg-green-600', 'hover:bg-green-700');
+          publishBtn.classList.add('bg-red-600', 'hover:bg-red-700');
         }, 3000);
 
       } catch (err) {
-        alert("Error publishing update: " + err.message);
+        alert("Error saving update: " + err.message);
       }
     });
 
