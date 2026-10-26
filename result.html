@@ -433,15 +433,15 @@
 
     // Naya Grading System Logic
     function calculateGrade(percentage) {
-      if (percentage >= 96) return 'A++'; //[cite: 1]
-      if (percentage >= 91) return 'A+';  //[cite: 1]
-      if (percentage >= 86) return 'A';   //[cite: 1]
-      if (percentage >= 81) return 'B++'; //[cite: 1]
-      if (percentage >= 76) return 'B+';  //[cite: 1]
-      if (percentage >= 71) return 'B';   //[cite: 1]
-      if (percentage >= 61) return 'C+';  //[cite: 1]
-      if (percentage >= 40) return 'D';   //[cite: 1]
-      return 'U';                         //[cite: 1]
+      if (percentage >= 96) return 'A++'; 
+      if (percentage >= 91) return 'A+';  
+      if (percentage >= 86) return 'A';   
+      if (percentage >= 81) return 'B++'; 
+      if (percentage >= 76) return 'B+';  
+      if (percentage >= 71) return 'B';   
+      if (percentage >= 61) return 'C+';  
+      if (percentage >= 40) return 'D';   
+      return 'U';                         
     }
 
     // Result Check Logic
@@ -474,38 +474,77 @@
         
         const rawData = await response.json();
         
-        // Smart Data Format Handler (Fixes the .find error)
+        // Deep Array Extractor: PDF to JSON converters ke ajeeb formats theek karne ke liye
         let jsonData = [];
         if (Array.isArray(rawData)) {
           jsonData = rawData;
         } else if (typeof rawData === 'object' && rawData !== null) {
-          const firstKey = Object.keys(rawData)[0];
-          if (Array.isArray(rawData[firstKey])) {
-            jsonData = rawData[firstKey];
+          
+          const extractArray = (obj) => {
+            for (const key in obj) {
+              if (Array.isArray(obj[key])) return obj[key];
+              if (typeof obj[key] === 'object' && obj[key] !== null) {
+                const arr = extractArray(obj[key]);
+                if (arr) return arr;
+              }
+            }
+            return null;
+          };
+          
+          const foundArray = extractArray(rawData);
+          if (foundArray) {
+            jsonData = foundArray;
           } else {
-            throw new Error('JSON data ka format theek nahi hai. Array format required hai.');
+            const vals = Object.values(rawData);
+            if (vals.length > 0 && typeof vals[0] === 'object') {
+               jsonData = vals;
+            } else {
+               throw new Error('JSON file mein valid students ka array nahi mila.');
+            }
           }
-        } else {
-           throw new Error('JSON format recognize nahi ho raha.');
         }
         
-        // Find exact student by roll number
-        const student = jsonData.find(s => String(s.rollNo) === String(rollNo));
+        // Smart Key Finder: Roll number search karna
+        const student = jsonData.find(s => {
+          const rKey = Object.keys(s).find(k => k.toLowerCase().replace(/[^a-z]/g, '').includes('roll'));
+          return rKey && String(s[rKey]).trim() === String(rollNo);
+        });
         
         if (student) {
-          // Check if marks and totalMarks exist, otherwise set default or throw error
-          if(student.marks === undefined || student.totalMarks === undefined) {
-             throw new Error('JSON mein "marks" aur "totalMarks" ki headings missing hain.');
+          // Smart Key Finder: Marks aur Total dhoondna
+          const mKey = Object.keys(student).find(k => {
+             const norm = k.toLowerCase().replace(/[^a-z]/g, '');
+             return norm === 'marks' || norm.includes('obtained') || norm.includes('obt');
+          });
+          const tKey = Object.keys(student).find(k => {
+             const norm = k.toLowerCase().replace(/[^a-z]/g, '');
+             return norm === 'totalmarks' || norm === 'total';
+          });
+
+          if(!mKey) {
+             throw new Error('JSON file mein marks wala column nahi mila (Obtained Marks, Marks).');
           }
 
+          const obtainedMarks = Number(student[mKey]);
+          const totalMarksAmount = tKey ? Number(student[tKey]) : 1100; // Default 1100 agar total na ho
+
           // Calculate percentage and grade
-          const percentage = ((student.marks / student.totalMarks) * 100).toFixed(2);
+          const percentage = ((obtainedMarks / totalMarksAmount) * 100).toFixed(2);
           const grade = calculateGrade(parseFloat(percentage));
           const gradeColor = grade === 'U' ? '#ef4444' : 'var(--wa-green)';
 
-          // Calculate Karachi Rank (Sort all students in this JSON by marks descending)
-          const sortedData = [...jsonData].sort((a, b) => b.marks - a.marks);
-          const rankIndex = sortedData.findIndex(s => String(s.rollNo) === String(rollNo));
+          // Calculate Karachi Rank smartly
+          const sortedData = [...jsonData].sort((a, b) => {
+             const aMarks = a[mKey] ? Number(a[mKey]) : 0;
+             const bMarks = b[mKey] ? Number(b[mKey]) : 0;
+             return bMarks - aMarks;
+          });
+          
+          const rankIndex = sortedData.findIndex(s => {
+             const rKey = Object.keys(s).find(k => k.toLowerCase().replace(/[^a-z]/g, '').includes('roll'));
+             return rKey && String(s[rKey]).trim() === String(rollNo);
+          });
+          
           const rank = rankIndex !== -1 ? (rankIndex + 1) : 'N/A';
           const totalStudents = jsonData.length;
 
@@ -529,7 +568,7 @@
 
               <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                 <p style="color: #333; font-size: 15px; font-weight: bold;">Marks:</p>
-                <p style="color: var(--main-dark); font-size: 15px; font-weight: bold;">${student.marks} / ${student.totalMarks}</p>
+                <p style="color: var(--main-dark); font-size: 15px; font-weight: bold;">${obtainedMarks} / ${totalMarksAmount}</p>
               </div>
 
               <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
