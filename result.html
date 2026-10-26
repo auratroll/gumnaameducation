@@ -450,7 +450,7 @@
       
       const selectedGroup = document.getElementById('group').value;
       const rollNoInput = document.getElementById('roll-no').value.trim();
-      const cleanRollNo = rollNoInput.replace(/\D/g, ''); // User input ko completely clean kar diya
+      const cleanRollNo = rollNoInput.replace(/\D/g, ''); 
       const resultBox = document.getElementById('result-box');
       const resultContent = document.getElementById('result-content');
       const btn = document.getElementById('submit-btn');
@@ -474,84 +474,82 @@
         }
         
         const rawData = await response.json();
-        
-        // Deep Array Extractor
-        let jsonData = [];
-        if (Array.isArray(rawData)) {
-          jsonData = rawData;
-        } else if (typeof rawData === 'object' && rawData !== null) {
-          const extractArray = (obj) => {
-            for (const key in obj) {
-              if (Array.isArray(obj[key])) return obj[key];
-              if (typeof obj[key] === 'object' && obj[key] !== null) {
-                const arr = extractArray(obj[key]);
-                if (arr) return arr;
-              }
-            }
-            return null;
-          };
-          
-          const foundArray = extractArray(rawData);
-          if (foundArray) {
-            jsonData = foundArray;
-          } else {
-            const vals = Object.values(rawData);
-            if (vals.length > 0 && typeof vals[0] === 'object') {
-               jsonData = vals;
-            } else {
-               throw new Error('JSON file mein valid students ka array nahi mila.');
-            }
-          }
+        let studentData = [];
+
+        // Attempt 1: Standard Table/Array JSON
+        let possibleArray = Array.isArray(rawData) ? rawData : (typeof rawData === 'object' && rawData !== null && Object.values(rawData).find(v => Array.isArray(v))) || [];
+        if (possibleArray.length > 0 && typeof possibleArray[0] === 'object' && !possibleArray[0].type && Object.keys(possibleArray[0]).length > 0) {
+            possibleArray.forEach(item => {
+                let rKey = Object.keys(item).find(k => k.toLowerCase().replace(/[^a-z]/g, '').includes('roll'));
+                let mKey = Object.keys(item).find(k => k.toLowerCase().replace(/[^a-z]/g, '').includes('marks') || k.toLowerCase().includes('obt'));
+                if (rKey) {
+                    studentData.push({
+                        rollNo: String(item[rKey]).replace(/\D/g, ''),
+                        marks: mKey && item[mKey] !== null ? Number(String(item[mKey]).replace(/[^\d.]/g, '')) : null
+                    });
+                }
+            });
         }
-        
-        // Clean Key Finder: Roll number search karna with strictly numbers matching
-        const student = jsonData.find(s => {
-          const rKey = Object.keys(s).find(k => k.toLowerCase().replace(/[^a-z]/g, '').includes('roll'));
-          if(!rKey) return false;
-          const fileRollNo = String(s[rKey]).replace(/\D/g, ''); // JSON ka roll number bhi completely clean kar diya
-          return fileRollNo === cleanRollNo;
+
+        // Attempt 2: PDF Design Block JSON (Deep Text Extraction - For exact format you shared)
+        if (studentData.length === 0) {
+            let allTexts = [];
+            const extractText = (obj) => {
+                if (typeof obj === 'string') allTexts.push(obj);
+                else if (typeof obj === 'number') allTexts.push(String(obj));
+                else if (Array.isArray(obj)) obj.forEach(extractText);
+                else if (obj && typeof obj === 'object') Object.values(obj).forEach(extractText);
+            }
+            extractText(rawData);
+            let combinedText = allTexts.join(' ');
+
+            // Extract values like 453276(264)
+            let regex = /(?:^|[^\d])(\d{5,7})(?:\s*\(\s*(\d{2,4})\s*\))?(?=[^\d]|$)/g;
+            let match;
+            while ((match = regex.exec(combinedText)) !== null) {
+                studentData.push({
+                    rollNo: match[1],
+                    marks: match[2] ? Number(match[2]) : null
+                });
+            }
+        }
+
+        // Deduplicate students array to fix ranking bugs
+        let uniqueStudents = new Map();
+        studentData.forEach(s => {
+           if(!uniqueStudents.has(s.rollNo) || (uniqueStudents.get(s.rollNo).marks === null && s.marks !== null)){
+               uniqueStudents.set(s.rollNo, s);
+           }
         });
+        studentData = Array.from(uniqueStudents.values());
+
+        // Find exact student by roll number
+        const student = studentData.find(s => s.rollNo === cleanRollNo);
         
         if (student) {
-          // Clean Key Finder: Marks aur Total dhoondna
-          const mKey = Object.keys(student).find(k => {
-             const norm = k.toLowerCase().replace(/[^a-z]/g, '');
-             return norm === 'marks' || norm.includes('obtained') || norm.includes('obt');
-          });
-          const tKey = Object.keys(student).find(k => {
-             const norm = k.toLowerCase().replace(/[^a-z]/g, '');
-             return norm === 'totalmarks' || norm === 'total';
-          });
+          const obtainedMarks = student.marks;
+          const totalMarksAmount = 550; // Jaisa aapne kaha, Total Marks strictly 550 par set hai
 
-          if(!mKey) {
-             throw new Error('JSON file mein marks wala column nahi mila (Obtained Marks, Marks).');
+          let percentageDisplay = "N/A";
+          let grade = "Pass";
+          let gradeColor = "var(--wa-green)";
+          
+          if (obtainedMarks !== null) {
+            const percentage = ((obtainedMarks / totalMarksAmount) * 100).toFixed(2);
+            percentageDisplay = percentage + '%';
+            grade = calculateGrade(parseFloat(percentage));
+            gradeColor = grade === 'U' ? '#ef4444' : 'var(--wa-green)';
           }
 
-          // PDF ke text se sirf digits nikalne ka filter
-          const obtainedMarks = Number(String(student[mKey]).replace(/[^\d.]/g, ''));
-          const totalMarksAmount = tKey && student[tKey] ? Number(String(student[tKey]).replace(/[^\d.]/g, '')) : 550; // Set to 550 default
-
-          // Calculate percentage and grade
-          const percentage = ((obtainedMarks / totalMarksAmount) * 100).toFixed(2);
-          const grade = calculateGrade(parseFloat(percentage));
-          const gradeColor = grade === 'U' ? '#ef4444' : 'var(--wa-green)';
-
-          // Calculate Karachi Rank smartly
-          const sortedData = [...jsonData].sort((a, b) => {
-             const aMarks = a[mKey] ? Number(String(a[mKey]).replace(/[^\d.]/g, '')) : 0;
-             const bMarks = b[mKey] ? Number(String(b[mKey]).replace(/[^\d.]/g, '')) : 0;
-             return bMarks - aMarks;
-          });
+          // Calculate Karachi Rank smartly (Only comparing candidates who have marks)
+          let rank = "N/A";
+          let totalStudents = studentData.length;
           
-          const rankIndex = sortedData.findIndex(s => {
-             const rKey = Object.keys(s).find(k => k.toLowerCase().replace(/[^a-z]/g, '').includes('roll'));
-             if(!rKey) return false;
-             const fileRollNo = String(s[rKey]).replace(/\D/g, '');
-             return fileRollNo === cleanRollNo;
-          });
-          
-          const rank = rankIndex !== -1 ? (rankIndex + 1) : 'N/A';
-          const totalStudents = jsonData.length;
+          if (obtainedMarks !== null) {
+            const sortedData = studentData.filter(s => s.marks !== null).sort((a, b) => b.marks - a.marks);
+            const rankIndex = sortedData.findIndex(s => s.rollNo === cleanRollNo);
+            if (rankIndex !== -1) rank = rankIndex + 1;
+          }
 
           resultBox.classList.add('success');
           resultContent.innerHTML = `
@@ -573,12 +571,12 @@
 
               <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                 <p style="color: #333; font-size: 15px; font-weight: bold;">Marks:</p>
-                <p style="color: var(--main-dark); font-size: 15px; font-weight: bold;">${obtainedMarks} / ${totalMarksAmount}</p>
+                <p style="color: var(--main-dark); font-size: 15px; font-weight: bold;">${obtainedMarks !== null ? obtainedMarks + ' / ' + totalMarksAmount : 'Not Mentioned'}</p>
               </div>
 
               <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                 <p style="color: #333; font-size: 15px; font-weight: bold;">Percentage:</p>
-                <p style="color: var(--main-dark); font-size: 15px; font-weight: bold;">${percentage}%</p>
+                <p style="color: var(--main-dark); font-size: 15px; font-weight: bold;">${percentageDisplay}</p>
               </div>
 
               <div style="background: #ffffff; padding: 10px; border-radius: 8px; text-align: center; border: 1px dashed #cbd5e1; margin-top: 12px;">
