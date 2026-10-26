@@ -472,12 +472,32 @@
           throw new Error('Selected field data is not available right now. Please try again later.');
         }
         
-        const jsonData = await response.json();
+        const rawData = await response.json();
+        
+        // Smart Data Format Handler (Fixes the .find error)
+        let jsonData = [];
+        if (Array.isArray(rawData)) {
+          jsonData = rawData;
+        } else if (typeof rawData === 'object' && rawData !== null) {
+          const firstKey = Object.keys(rawData)[0];
+          if (Array.isArray(rawData[firstKey])) {
+            jsonData = rawData[firstKey];
+          } else {
+            throw new Error('JSON data ka format theek nahi hai. Array format required hai.');
+          }
+        } else {
+           throw new Error('JSON format recognize nahi ho raha.');
+        }
         
         // Find exact student by roll number
         const student = jsonData.find(s => String(s.rollNo) === String(rollNo));
         
         if (student) {
+          // Check if marks and totalMarks exist, otherwise set default or throw error
+          if(student.marks === undefined || student.totalMarks === undefined) {
+             throw new Error('JSON mein "marks" aur "totalMarks" ki headings missing hain.');
+          }
+
           // Calculate percentage and grade
           const percentage = ((student.marks / student.totalMarks) * 100).toFixed(2);
           const grade = calculateGrade(parseFloat(percentage));
