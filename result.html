@@ -348,7 +348,7 @@
 
         <div class="form-group">
           <label for="roll-no">Roll Number</label>
-          <input type="text" id="roll-no" placeholder="Enter your roll number" required>
+          <input type="text" id="roll-no" placeholder="Enter your roll number" required pattern="[0-9\s]{5,10}">
         </div>
 
         <button type="submit" class="btn-animated" id="submit-btn">
@@ -450,7 +450,7 @@
       
       const selectedGroup = document.getElementById('group').value;
       const rollNoInput = document.getElementById('roll-no').value.trim();
-      const cleanRollNo = rollNoInput.replace(/\D/g, ''); // Removes spaces or alphabets from user input
+      const cleanRollNo = rollNoInput.replace(/\D/g, ''); // User ka roll number safai karke sirf digits bacha liye
       const resultBox = document.getElementById('result-box');
       const resultContent = document.getElementById('result-content');
       const btn = document.getElementById('submit-btn');
@@ -469,7 +469,7 @@
       try {
         let textData = '';
         
-        // Smart Data Fetcher: Tries to fetch TXT first, if not found, tries JSON
+        // Smart Data Fetcher: Pehle TXT check karega, agar na mili tou JSON check karega
         try {
             const resTxt = await fetch(`${selectedGroup}.txt`);
             if (resTxt.ok) {
@@ -481,28 +481,32 @@
             const resJson = await fetch(`${selectedGroup}.json`);
             if (resJson.ok) {
                 const rawJson = await resJson.json();
-                textData = JSON.stringify(rawJson); // Convert JSON object to raw string for uniform parsing
+                textData = JSON.stringify(rawJson); // JSON file ko bhi properly text mein convert kardega search k liye
             } else {
-                throw new Error('Data file (TXT or JSON) is not available on the server.');
+                throw new Error('Result file server par mojood nahi hai. Dobara try karein.');
             }
         }
 
         let studentData = [];
 
-        // ADVANCED UNIVERSAL REGEX: Matches numbers from 5 to 7 digits, even if there are spaces inside (e.g. 41 001)
-        // Also captures marks in brackets next to it.
-        const regex = /(?:^|[^0-9])(\d{2,3}\s?\d{3})(?:[^\d]*\(\s*(\d{1,4})\s*\))?/g;
+        // ADVANCED UNIVERSAL REGEX: Yeh spaces aur length (5 ya 6 digits) ko accurately handle karta hai
+        // Matches e.g. "451001", "496 005 (350)", "41 001 (407)", "41001" etc.
+        const regex = /(?:^|[^0-9a-zA-Z])(\d[\d\s]{3,8}\d)(?:[^\da-zA-Z]*\(\s*(\d{1,4})\s*\))?/g;
         let match;
         
         while ((match = regex.exec(textData)) !== null) {
-            let extractedRoll = match[1].replace(/\D/g, ''); // Clean spaces inside matched roll numbers
-            studentData.push({
-                rollNo: extractedRoll,
-                marks: match[2] ? Number(match[2]) : null
-            });
+            let extractedRoll = match[1].replace(/\D/g, ''); // Extract hue number se space nikaal kar safai kardi
+            
+            // Sirf 5 aur 6 digit walay asil roll numbers ko array mein daalna hai
+            if (extractedRoll.length === 5 || extractedRoll.length === 6) {
+                studentData.push({
+                    rollNo: extractedRoll,
+                    marks: match[2] ? Number(match[2]) : null
+                });
+            }
         }
 
-        // Deduplicate students
+        // Deduplicate students array to fix ranking bugs
         let uniqueStudents = new Map();
         studentData.forEach(s => {
            if(!uniqueStudents.has(s.rollNo) || (uniqueStudents.get(s.rollNo).marks === null && s.marks !== null)){
@@ -516,7 +520,7 @@
         
         if (student) {
           const obtainedMarks = student.marks;
-          const totalMarksAmount = 550; // Jaisa aapne kaha, Total Marks strictly 550
+          const totalMarksAmount = 550; // Total Marks set to 550
 
           let percentageDisplay = "N/A";
           let grade = "Pass";
@@ -574,7 +578,7 @@
             </div>
           `;
         } else {
-          // RESULT NOT FOUND -> FAIL MESSAGE
+          // PROPER FAIL MESSAGE SECTION
           resultBox.classList.add('error');
           resultContent.innerHTML = `
             <h3 style="color: #ef4444; font-weight: 800; font-size: 18px; margin-bottom: 8px; text-transform: uppercase;">
@@ -584,8 +588,8 @@
                <p style="color: #333; font-size: 16px; font-weight: bold; margin-bottom: 5px;">
                  Roll Number: <span style="color: #ef4444;">${rollNoInput}</span>
                </p>
-               <h2 style="color: #ef4444; font-size: 24px; font-weight: 900; margin-top: 10px; text-transform: uppercase; letter-spacing: 1px;">
-                 You Are Fail
+               <h2 style="color: #ef4444; font-size: 26px; font-weight: 900; margin-top: 10px; text-transform: uppercase; letter-spacing: 1px;">
+                 YOU ARE FAIL
                </h2>
                <p style="color: #7f1d1d; font-size: 13px; font-weight: bold; margin-top: 8px;">
                  Your roll number was not found in the passing gazette. Best of luck for next time!
