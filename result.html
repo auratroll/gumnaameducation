@@ -449,12 +449,13 @@
       e.preventDefault();
       
       const selectedGroup = document.getElementById('group').value;
-      const rollNo = document.getElementById('roll-no').value.trim();
+      const rollNoInput = document.getElementById('roll-no').value.trim();
+      const cleanRollNo = rollNoInput.replace(/\D/g, ''); // User input ko completely clean kar diya
       const resultBox = document.getElementById('result-box');
       const resultContent = document.getElementById('result-content');
       const btn = document.getElementById('submit-btn');
 
-      if (!rollNo || !selectedGroup) return;
+      if (!cleanRollNo || !selectedGroup) return;
 
       // Show loading UI
       resultBox.style.display = 'block';
@@ -474,12 +475,11 @@
         
         const rawData = await response.json();
         
-        // Deep Array Extractor: PDF to JSON converters ke ajeeb formats theek karne ke liye
+        // Deep Array Extractor
         let jsonData = [];
         if (Array.isArray(rawData)) {
           jsonData = rawData;
         } else if (typeof rawData === 'object' && rawData !== null) {
-          
           const extractArray = (obj) => {
             for (const key in obj) {
               if (Array.isArray(obj[key])) return obj[key];
@@ -504,14 +504,16 @@
           }
         }
         
-        // Smart Key Finder: Roll number search karna
+        // Clean Key Finder: Roll number search karna with strictly numbers matching
         const student = jsonData.find(s => {
           const rKey = Object.keys(s).find(k => k.toLowerCase().replace(/[^a-z]/g, '').includes('roll'));
-          return rKey && String(s[rKey]).trim() === String(rollNo);
+          if(!rKey) return false;
+          const fileRollNo = String(s[rKey]).replace(/\D/g, ''); // JSON ka roll number bhi completely clean kar diya
+          return fileRollNo === cleanRollNo;
         });
         
         if (student) {
-          // Smart Key Finder: Marks aur Total dhoondna
+          // Clean Key Finder: Marks aur Total dhoondna
           const mKey = Object.keys(student).find(k => {
              const norm = k.toLowerCase().replace(/[^a-z]/g, '');
              return norm === 'marks' || norm.includes('obtained') || norm.includes('obt');
@@ -525,8 +527,9 @@
              throw new Error('JSON file mein marks wala column nahi mila (Obtained Marks, Marks).');
           }
 
-          const obtainedMarks = Number(student[mKey]);
-          const totalMarksAmount = tKey ? Number(student[tKey]) : 1100; // Default 1100 agar total na ho
+          // PDF ke text se sirf digits nikalne ka filter
+          const obtainedMarks = Number(String(student[mKey]).replace(/[^\d.]/g, ''));
+          const totalMarksAmount = tKey && student[tKey] ? Number(String(student[tKey]).replace(/[^\d.]/g, '')) : 550; // Set to 550 default
 
           // Calculate percentage and grade
           const percentage = ((obtainedMarks / totalMarksAmount) * 100).toFixed(2);
@@ -535,14 +538,16 @@
 
           // Calculate Karachi Rank smartly
           const sortedData = [...jsonData].sort((a, b) => {
-             const aMarks = a[mKey] ? Number(a[mKey]) : 0;
-             const bMarks = b[mKey] ? Number(b[mKey]) : 0;
+             const aMarks = a[mKey] ? Number(String(a[mKey]).replace(/[^\d.]/g, '')) : 0;
+             const bMarks = b[mKey] ? Number(String(b[mKey]).replace(/[^\d.]/g, '')) : 0;
              return bMarks - aMarks;
           });
           
           const rankIndex = sortedData.findIndex(s => {
              const rKey = Object.keys(s).find(k => k.toLowerCase().replace(/[^a-z]/g, '').includes('roll'));
-             return rKey && String(s[rKey]).trim() === String(rollNo);
+             if(!rKey) return false;
+             const fileRollNo = String(s[rKey]).replace(/\D/g, '');
+             return fileRollNo === cleanRollNo;
           });
           
           const rank = rankIndex !== -1 ? (rankIndex + 1) : 'N/A';
@@ -558,7 +563,7 @@
               <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 10px;">
                 <div>
                   <p style="color: #64748b; font-size: 12px; font-weight: bold; text-transform: uppercase;">Roll Number</p>
-                  <p style="color: var(--main-dark); font-size: 18px; font-weight: 900;">${rollNo}</p>
+                  <p style="color: var(--main-dark); font-size: 18px; font-weight: 900;">${rollNoInput}</p>
                 </div>
                 <div style="text-align: right;">
                   <p style="color: #64748b; font-size: 12px; font-weight: bold; text-transform: uppercase;">Field Rank</p>
@@ -590,7 +595,7 @@
               <i class="fa-solid fa-circle-xmark"></i> Not Found
             </h3>
             <p style="color: #333; font-size: 14px; font-weight: bold;">
-              Roll Number: <span style="color: #ef4444;">${rollNo}</span>
+              Roll Number: <span style="color: #ef4444;">${rollNoInput}</span>
             </p>
             <p style="color: #ef4444; font-size: 13px; margin-top: 5px; font-weight: bold;">
               Sorry, your roll number was not found in the gazette list.
