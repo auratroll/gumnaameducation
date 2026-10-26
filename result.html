@@ -348,7 +348,7 @@
 
         <div class="form-group">
           <label for="roll-no">Roll Number</label>
-          <input type="text" id="roll-no" placeholder="Enter your 6-digit roll number" required pattern="[0-9]{1,10}">
+          <input type="text" id="roll-no" placeholder="Enter your roll number" required>
         </div>
 
         <button type="submit" class="btn-animated" id="submit-btn">
@@ -431,7 +431,7 @@
       mobileMenu.classList.toggle('hidden');
     });
 
-    // Naya Grading System Logic
+    // Grading System
     function calculateGrade(percentage) {
       if (percentage >= 96) return 'A++'; 
       if (percentage >= 91) return 'A+';  
@@ -450,7 +450,7 @@
       
       const selectedGroup = document.getElementById('group').value;
       const rollNoInput = document.getElementById('roll-no').value.trim();
-      const cleanRollNo = rollNoInput.replace(/\D/g, ''); 
+      const cleanRollNo = rollNoInput.replace(/\D/g, ''); // Removes spaces or alphabets from user input
       const resultBox = document.getElementById('result-box');
       const resultContent = document.getElementById('result-content');
       const btn = document.getElementById('submit-btn');
@@ -467,34 +467,42 @@
       btn.disabled = true;
 
       try {
-        // FETCHING TXT INSTEAD OF JSON
-        const response = await fetch(`${selectedGroup}.txt`);
+        let textData = '';
         
-        if (!response.ok) {
-          throw new Error('Selected field data is not available right now. Please try again later.');
+        // Smart Data Fetcher: Tries to fetch TXT first, if not found, tries JSON
+        try {
+            const resTxt = await fetch(`${selectedGroup}.txt`);
+            if (resTxt.ok) {
+                textData = await resTxt.text();
+            } else {
+                throw new Error('TXT not found');
+            }
+        } catch (err) {
+            const resJson = await fetch(`${selectedGroup}.json`);
+            if (resJson.ok) {
+                const rawJson = await resJson.json();
+                textData = JSON.stringify(rawJson); // Convert JSON object to raw string for uniform parsing
+            } else {
+                throw new Error('Data file (TXT or JSON) is not available on the server.');
+            }
         }
-        
-        // Reading as plain text directly (Fast and Error Free)
-        const textData = await response.text();
+
         let studentData = [];
 
-        // AGGRESSIVE TEXT EXTRACTOR: Ignore structure completely, just find 6-digit numbers and marks!
-        // RegEx finds any 6 digit number, and optional bracketed numbers right after it. e.g. "453276(264)" or just "453276"
-        const regex = /(?:^|[^0-9])(\d{6})(?:\s*[^0-9a-zA-Z]*\(\s*(\d{2,4})\s*\))?/g;
+        // ADVANCED UNIVERSAL REGEX: Matches numbers from 5 to 7 digits, even if there are spaces inside (e.g. 41 001)
+        // Also captures marks in brackets next to it.
+        const regex = /(?:^|[^0-9])(\d{2,3}\s?\d{3})(?:[^\d]*\(\s*(\d{1,4})\s*\))?/g;
         let match;
         
         while ((match = regex.exec(textData)) !== null) {
+            let extractedRoll = match[1].replace(/\D/g, ''); // Clean spaces inside matched roll numbers
             studentData.push({
-                rollNo: match[1],
+                rollNo: extractedRoll,
                 marks: match[2] ? Number(match[2]) : null
             });
         }
 
-        if (studentData.length === 0) {
-            throw new Error('Aapki text file mein koi roll number nahi mila. Kripya data check karein.');
-        }
-
-        // Deduplicate students to fix ranking (in case a roll number appears twice in the text file)
+        // Deduplicate students
         let uniqueStudents = new Map();
         studentData.forEach(s => {
            if(!uniqueStudents.has(s.rollNo) || (uniqueStudents.get(s.rollNo).marks === null && s.marks !== null)){
@@ -508,7 +516,7 @@
         
         if (student) {
           const obtainedMarks = student.marks;
-          const totalMarksAmount = 550; // Total Marks set to 550 strictly
+          const totalMarksAmount = 550; // Jaisa aapne kaha, Total Marks strictly 550
 
           let percentageDisplay = "N/A";
           let grade = "Pass";
@@ -521,7 +529,6 @@
             gradeColor = grade === 'U' ? '#ef4444' : 'var(--wa-green)';
           }
 
-          // Calculate Karachi Rank smartly (Only comparing candidates who have marks)
           let rank = "N/A";
           let totalStudents = studentData.filter(s => s.marks !== null).length;
           
@@ -567,17 +574,23 @@
             </div>
           `;
         } else {
+          // RESULT NOT FOUND -> FAIL MESSAGE
           resultBox.classList.add('error');
           resultContent.innerHTML = `
             <h3 style="color: #ef4444; font-weight: 800; font-size: 18px; margin-bottom: 8px; text-transform: uppercase;">
-              <i class="fa-solid fa-circle-xmark"></i> Not Found
+              <i class="fa-solid fa-circle-xmark"></i> Result Not Found
             </h3>
-            <p style="color: #333; font-size: 14px; font-weight: bold;">
-              Roll Number: <span style="color: #ef4444;">${rollNoInput}</span>
-            </p>
-            <p style="color: #ef4444; font-size: 13px; margin-top: 5px; font-weight: bold;">
-              Sorry, your roll number was not found in the gazette list.
-            </p>
+            <div style="background: #fff5f5; padding: 15px; border-radius: 12px; margin-top: 10px; border: 1px solid #fecaca; text-align: center;">
+               <p style="color: #333; font-size: 16px; font-weight: bold; margin-bottom: 5px;">
+                 Roll Number: <span style="color: #ef4444;">${rollNoInput}</span>
+               </p>
+               <h2 style="color: #ef4444; font-size: 24px; font-weight: 900; margin-top: 10px; text-transform: uppercase; letter-spacing: 1px;">
+                 You Are Fail
+               </h2>
+               <p style="color: #7f1d1d; font-size: 13px; font-weight: bold; margin-top: 8px;">
+                 Your roll number was not found in the passing gazette. Best of luck for next time!
+               </p>
+            </div>
           `;
         }
       } catch (error) {
